@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-045",
+  "revision": 1,
+  "kind": "document",
+  "name": "장애 대응 안내서",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1802,
+      "sha256": "ef5386a034681e9e2aad6e51793ce5a9e0bfb92867024c16ea5a53e154e411e2"
+    },
+    {
+      "path": "incident-timeline.csv",
+      "bytes": 380,
+      "sha256": "2f59cc6cd48efcc7f12396e7bb578272048d5264fc42258e437e76263066520b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1340,
+      "sha256": "ea07f3785aa2997d5210642f9a6290de6389b85f394bbf3039b8b40e1cc262c9"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

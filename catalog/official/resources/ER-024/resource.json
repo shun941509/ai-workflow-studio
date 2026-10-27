@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-024",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "접근성 검토 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2313,
+      "sha256": "d202f191bc8a8cbab7881bf1c811895b64683d116ae330ed2e3a3eb97b42da21"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1457,
+      "sha256": "45b0abaeedb48df78aee91c9a1c26ec0ec5d20f53563249c4cdec2aa72153a18"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 727,
+      "sha256": "23d19b0317c6335ed501c89fd0544ec1d2c6c613424ea390156124b80e23ac32"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1132,
+      "sha256": "4ea94a2ad91df3bdc16bcaeae364b4f968c6cf9d6282b2586ebf46d981bafc0a"
+    }
+  ]
+}

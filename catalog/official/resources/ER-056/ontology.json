@@ -1,0 +1,42 @@
+[
+  {
+    "type": "USES",
+    "from": [
+      "service"
+    ],
+    "to": [
+      "dataset"
+    ],
+    "meaning": "서비스가 데이터셋을 사용한다"
+  },
+  {
+    "type": "BACKED_UP_BY",
+    "from": [
+      "dataset"
+    ],
+    "to": [
+      "service"
+    ],
+    "meaning": "데이터셋의 백업을 서비스가 담당한다"
+  },
+  {
+    "type": "OWNED_BY",
+    "from": [
+      "service"
+    ],
+    "to": [
+      "role"
+    ],
+    "meaning": "서비스 운영 책임 역할"
+  },
+  {
+    "type": "DEPENDS_ON",
+    "from": [
+      "service"
+    ],
+    "to": [
+      "service"
+    ],
+    "meaning": "서비스 운영 의존; 인과 보장 아님"
+  }
+]

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-075",
+  "revision": 1,
+  "kind": "skill",
+  "name": "공개본 가림 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3546,
+      "sha256": "88bdfd5ceafd8a231cd3c33c37b9877fc5e0d705c27e9f183c342b12dd63908c"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1510,
+      "sha256": "69fa46d171451ed884c15cedf1f1aca21afc7aaa0393058763f452bbbbe4120d"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 408,
+      "sha256": "2ad167e299ab87c53f5a45500d9f6cc70686982a893ea5a730ae334b8f6233cc"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 798,
+      "sha256": "17375d0f557e19c48c6c41283822924f123d4b34b1b257de7362fb702e1d23a9"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 348,
+      "sha256": "130ab45b2ce51fc6117a28f00962af4e387ec012f9bec1adbc44eba03995225a"
+    },
+    {
+      "path": "scripts/mask-copy.mjs",
+      "bytes": 2286,
+      "sha256": "cb13d9105ae5bea75317a957f322178c9f28870caa0706fe896f0f28425340c6"
+    }
+  ]
+}

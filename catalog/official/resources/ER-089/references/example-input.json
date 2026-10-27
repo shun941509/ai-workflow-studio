@@ -1,0 +1,9 @@
+{
+  "fictional": true,
+  "paths": [
+    "허용된 references/a.txt 절대 경로",
+    "허용된 references/b.txt 절대 경로",
+    "허용된 references/c.txt 절대 경로"
+  ],
+  "normalizeText": true
+}

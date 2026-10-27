@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "type": {
+      "const": "retrieval"
+    },
+    "typeVersion": {
+      "const": 1
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "inputBindings": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "../binding.schema.json"
+      }
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "keyword",
+            "vector",
+            "web",
+            "hybrid",
+            "graph_local",
+            "graph_global"
+          ]
+        },
+        "topK": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "maxContextTokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200000
+        },
+        "keywordTopK": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "vectorTopK": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "candidateLimit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "fusion": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "const": "rrf"
+            },
+            "k": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            }
+          },
+          "required": [
+            "method",
+            "k"
+          ],
+          "additionalProperties": false
+        },
+        "reranker": {
+          "type": "object",
+          "properties": {
+            "modelProfile": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 120000
+            },
+            "onFailure": {
+              "type": "string",
+              "enum": [
+                "fail",
+                "use_original"
+              ]
+            }
+          },
+          "required": [
+            "modelProfile",
+            "timeoutMs",
+            "onFailure"
+          ],
+          "additionalProperties": false
+        },
+        "allowedOrigins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "maxHops": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "maxCommunities": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "communityLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "mode",
+        "topK",
+        "maxContextTokens"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "hybrid"
+              }
+            },
+            "type": "object"
+          },
+          "then": {
+            "required": [
+              "keywordTopK",
+              "vectorTopK",
+              "candidateLimit",
+              "fusion"
+            ],
+            "type": "object",
+            "properties": {
+              "keywordTopK": {},
+              "vectorTopK": {},
+              "candidateLimit": {},
+              "fusion": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "web"
+              }
+            },
+            "type": "object"
+          },
+          "then": {
+            "required": [
+              "allowedOrigins"
+            ],
+            "type": "object",
+            "properties": {
+              "allowedOrigins": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "graph_local"
+              }
+            },
+            "type": "object"
+          },
+          "then": {
+            "required": [
+              "maxHops"
+            ],
+            "type": "object",
+            "properties": {
+              "maxHops": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "graph_global"
+              }
+            },
+            "type": "object"
+          },
+          "then": {
+            "required": [
+              "maxCommunities",
+              "communityLevel"
+            ],
+            "type": "object",
+            "properties": {
+              "maxCommunities": {},
+              "communityLevel": {}
+            }
+          }
+        }
+      ]
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "$ref": "../attachment.schema.json"
+      },
+      "minItems": 0
+    },
+    "execution": {
+      "$ref": "../execution.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "typeVersion",
+    "label",
+    "inputBindings",
+    "config",
+    "attachments",
+    "execution"
+  ],
+  "additionalProperties": false,
+  "title": "RetrievalNode"
+}

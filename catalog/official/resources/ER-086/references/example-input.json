@@ -1,0 +1,28 @@
+{
+  "fictional": true,
+  "outputDirectory": "새 절대 출력 폴더",
+  "title": "가상 처리 현황",
+  "summary": "<script>는 실행 코드가 아닌 원문 표기입니다.",
+  "headers": [
+    "분류",
+    "건수",
+    "비고"
+  ],
+  "rows": [
+    [
+      "완료",
+      8,
+      "확인됨"
+    ],
+    [
+      "대기",
+      2,
+      "담당 미정"
+    ],
+    [
+      "검토",
+      null,
+      "<img src=x onerror=alert(1)>"
+    ]
+  ]
+}

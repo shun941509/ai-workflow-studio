@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-098",
+  "revision": 1,
+  "kind": "skill",
+  "name": "환경 점검 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/inspect_environment.py",
+      "bytes": 5395,
+      "sha256": "61a9b5a2d0a0864dde915b254ea131a174f72d38a7bd73033275264f94cdcc27"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 189,
+      "sha256": "ddfc338c64d2b1a6d91c0f6d0973fe712de604b9b4c69ddce23c0d4eb089883a"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3357,
+      "sha256": "c6ffc6b42d11e99c840123e2dffccd7bb2956488495cb8075b2fe1a980703650"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1025,
+      "sha256": "8d39830a8d9aa0117a4dcb5ef0fecab2e0403963b03f4d2678d4ec1ea84cf390"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 544,
+      "sha256": "d0c144c7818f9bdf76c536c933f6c1964e0a8fb04ba9e1a0c4c92f2ba35ee8f4"
+    }
+  ]
+}

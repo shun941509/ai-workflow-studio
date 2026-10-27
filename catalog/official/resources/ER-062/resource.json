@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-062",
+  "revision": 1,
+  "kind": "skill",
+  "name": "근거 보드 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2540,
+      "sha256": "9fd262299229108ef037a12807d877f84062833fb69d2e1bc6d7b77aeb955f14"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1403,
+      "sha256": "c8140a2ba06ccde8d8529f14fce03861cef494dd0d557304e294271e20fe5212"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 450,
+      "sha256": "432dd17e1de9de453c9af6f1c43cedd55e9c48e205d1925fdc82384e30474450"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 792,
+      "sha256": "17aa35cd09ab270817d4b05a9d67144112f2a3e2f7c00072cb4d577cc300370d"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 576,
+      "sha256": "9254a2b89dab7f9c18aa502608cb9c14cda33a7b67f486595091490accbfe49a"
+    }
+  ]
+}

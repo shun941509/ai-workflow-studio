@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-056",
+  "revision": 1,
+  "kind": "document",
+  "name": "관계·출처 온톨로지†",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1875,
+      "sha256": "cb1129dcceb2bbb70fd1c6b789023dd380fce658040c6da34f9d73a2c0ec95fa"
+    },
+    {
+      "path": "ontology.json",
+      "bytes": 661,
+      "sha256": "5cc21e71e71ade063c8177a92d2a1adb1d3fb85ba969e11871cfe1636a4664d5"
+    },
+    {
+      "path": "entities.json",
+      "bytes": 1671,
+      "sha256": "e8008119c80353dcc1c2ccd496846495b644d60582513966c5a18dad84398597"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 623,
+      "sha256": "5b850dc907d3f6a54673334b1e7bea27b31cbac495e119209a24740c0a92dcc5"
+    },
+    {
+      "path": "edges.json",
+      "bytes": 612,
+      "sha256": "55372587b7e2bca904e595aac388d2ac2e104191fd20c31570ee64b65280df4e"
+    },
+    {
+      "path": "invalid-candidates.json",
+      "bytes": 336,
+      "sha256": "bf5a5954c122345072ccd137dd5f94bd568bff127569d9d381edc28b623f7173"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1344,
+      "sha256": "450483c9485ea9ff5bf32459550500f9ad2bad6b095509cb6f5e1dea935d0291"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

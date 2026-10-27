@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-083",
+  "revision": 1,
+  "kind": "skill",
+  "name": "OCR 필드 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/extract_ocr_fields.py",
+      "bytes": 5038,
+      "sha256": "8bc7edd5d9951310329de04e19f6aa352fb5ce6229c677bf67a92b9982018327"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 610,
+      "sha256": "7c200eb3a386b4ba484963ba86094c1543d6ea3a302bcf1b76ced5190f9e7547"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3829,
+      "sha256": "3b32a6517d28fa3ceed46ece90e825cd6be20596e1838f775d996db32b191d89"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1181,
+      "sha256": "bf560c3ecaef2bded37abe975272148c0ac99adbbade74341ef2c812e7af83be"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 434,
+      "sha256": "0a47163cde56a03d93f58aafdd88b8bd1c8af1b9705c3b0c71800deb0e4d8182"
+    },
+    {
+      "path": "scripts/windows_ocr.ps1",
+      "bytes": 3877,
+      "sha256": "c111ab105c05d14483b00aa4b91f1545c15dc9674c450960adc81c6fc2b8fa26"
+    },
+    {
+      "path": "references/scan.jpg",
+      "bytes": 119360,
+      "sha256": "04bf2db6dcac8e163917720ee50fbcb95d5ddb20f89155c5ff99cdeee6a30c91"
+    },
+    {
+      "path": "assets/field-contract.json",
+      "bytes": 1728,
+      "sha256": "0809b83e815df80b4a611af34d18a3414f7d88254512cb43d11252e84f724512"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-091",
+  "revision": 1,
+  "kind": "skill",
+  "name": "실행 계약 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/validate_contract.py",
+      "bytes": 8371,
+      "sha256": "708a1dd34a5e787706f18051b3bed9ce6e2e4b508ec27051302876a08a3f61fe"
+    },
+    {
+      "path": "assets/contract-profile.json",
+      "bytes": 729,
+      "sha256": "ba3a996fc745ecabf344d1312d617349a52ca76b9893f4ae46dae003b6a6c750"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 621,
+      "sha256": "567cc72836b0beb9a04149d2a7a2e5199425dc669f89dddcdce76d41471a1808"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3275,
+      "sha256": "f70dbc79b1086cc5f6c594c74067fac320edb2103d4993417c2809ceac01811e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1010,
+      "sha256": "37b853e2ad1486a4910a46074530d33ed5ee1a53b27702d75f463eca9ef79285"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 497,
+      "sha256": "ec331ca89cfdd8dd725e0a5b39001790d1f0fd63259215f06745025b5f8372f0"
+    }
+  ]
+}

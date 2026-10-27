@@ -1,0 +1,18 @@
+{
+  "fictional": true,
+  "proposal": "가상 서비스에서 ZIP 다운로드 전 모든 설정을 의무 입력",
+  "views": [
+    {
+      "role": "운영",
+      "claim": "누락 문의 감소 가능",
+      "state": "inferred"
+    },
+    {
+      "role": "사용자",
+      "claim": "시작 전 입력 부담 증가 가능",
+      "state": "inferred"
+    }
+  ],
+  "issue": "필수 설정을 처음에 모두 받을지, 사용하는 기능에만 받을지",
+  "nextEvidence": "실제 입력 흐름 관찰"
+}

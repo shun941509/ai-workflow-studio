@@ -1,0 +1,10 @@
+{
+  "fictional": true,
+  "operationId": "W-19",
+  "effect": "write",
+  "attempts": 1,
+  "maxAttempts": 3,
+  "outcome": "unknown",
+  "retryable": true,
+  "evidence": "가상 요청 W-19의 응답 시간 초과; 외부 상태 미조회"
+}

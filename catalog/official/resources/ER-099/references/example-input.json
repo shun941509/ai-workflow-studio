@@ -1,0 +1,45 @@
+{
+  "fictional": true,
+  "before": {
+    "output": {
+      "summary": "가상 초안",
+      "count": 3
+    },
+    "metrics": {
+      "coverage": 0.8
+    },
+    "sources": [
+      {
+        "id": "D1",
+        "revision": 1,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ]
+  },
+  "after": {
+    "output": {
+      "summary": "가상 수정 초안",
+      "count": 3
+    },
+    "metrics": {
+      "coverage": 0.82
+    },
+    "sources": [
+      {
+        "id": "D1",
+        "revision": 1,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ]
+  },
+  "requiredPointers": [
+    "/summary",
+    "/count"
+  ],
+  "allowedPointers": [
+    "/summary"
+  ],
+  "metricTolerance": {
+    "coverage": 0.03
+  }
+}

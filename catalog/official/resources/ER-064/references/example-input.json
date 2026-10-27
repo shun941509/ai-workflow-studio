@@ -1,0 +1,47 @@
+{
+  "fictional": true,
+  "before": {
+    "openapi": "3.1.0",
+    "paths": {
+      "/reports": {
+        "get": {
+          "responses": {
+            "200": {
+              "description": "목록"
+            }
+          }
+        }
+      },
+      "/legacy": {
+        "get": {
+          "responses": {
+            "200": {
+              "description": "이전"
+            }
+          }
+        }
+      }
+    }
+  },
+  "after": {
+    "openapi": "3.1.0",
+    "paths": {
+      "/reports": {
+        "get": {
+          "responses": {
+            "200": {
+              "description": "페이지 목록"
+            }
+          }
+        },
+        "post": {
+          "responses": {
+            "201": {
+              "description": "생성"
+            }
+          }
+        }
+      }
+    }
+  }
+}

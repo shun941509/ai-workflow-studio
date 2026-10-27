@@ -1,0 +1,27 @@
+{
+  "fictional": true,
+  "budgets": {
+    "calls": 20,
+    "tokens": 20000
+  },
+  "steps": [
+    {
+      "id": "draft",
+      "calls": 1,
+      "iterations": 2,
+      "maxAttempts": 2,
+      "inputTokens": 1000,
+      "outputTokens": 500,
+      "inputBasis": "사용자 추정"
+    },
+    {
+      "id": "review",
+      "calls": 1,
+      "iterations": 1,
+      "maxAttempts": 1,
+      "inputTokens": 1800,
+      "outputTokens": 300,
+      "inputBasis": "사용자 추정"
+    }
+  ]
+}

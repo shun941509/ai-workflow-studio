@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "resource": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "instructions",
+        "reference",
+        "skill",
+        "tool",
+        "knowledge",
+        "template"
+      ]
+    }
+  },
+  "required": [
+    "resource",
+    "role"
+  ],
+  "additionalProperties": false,
+  "title": "Attachment"
+}

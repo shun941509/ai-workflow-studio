@@ -1,0 +1,33 @@
+[
+  {
+    "input": "Raon Board",
+    "namespace": "service",
+    "expected": [
+      "SVC-BOARD"
+    ],
+    "decision": "resolved"
+  },
+  {
+    "input": "Atlas",
+    "namespace": null,
+    "expected": [
+      "SVC-API",
+      "PRJ-ATLAS"
+    ],
+    "decision": "ambiguous"
+  },
+  {
+    "input": "Atlas",
+    "namespace": "project",
+    "expected": [
+      "PRJ-ATLAS"
+    ],
+    "decision": "resolved"
+  },
+  {
+    "input": "Nova",
+    "namespace": "service",
+    "expected": [],
+    "decision": "unregistered"
+  }
+]

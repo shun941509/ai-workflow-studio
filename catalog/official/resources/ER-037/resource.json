@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-037",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "Sub Agent 인계 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2401,
+      "sha256": "61df8ce98f1ce8ce88440d55ba1af9435fd4e1d0c3dbf76dfb8dab509dbb9371"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1452,
+      "sha256": "5f4dfe42150206453b2dadecd1b0394fdf172c5af64025f1a0c897c779f4698b"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 777,
+      "sha256": "bd86039f45b4b32831cf2b6713037557f4ed031d2705682e5f7cabff2e6fd9a8"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1152,
+      "sha256": "5084a5810278f9ec959ed99d6ce16c5e19011095d1ba9c4e6b30832dea4ae487"
+    }
+  ]
+}

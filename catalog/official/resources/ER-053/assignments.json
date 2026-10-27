@@ -1,0 +1,18 @@
+[
+  {
+    "task": "보고서 초안",
+    "owner": "R-EDITOR",
+    "reviewer": "R-QA"
+  },
+  {
+    "task": "공개 범위 확인",
+    "owner": "R-OPS",
+    "reviewer": "R-PLAN"
+  },
+  {
+    "task": "법률 판단",
+    "owner": null,
+    "reviewer": null,
+    "reason": "정의된 역할 없음"
+  }
+]

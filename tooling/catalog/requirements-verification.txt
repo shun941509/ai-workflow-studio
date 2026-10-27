@@ -1,0 +1,15 @@
+# Internal document verification/authoring dependencies; never include this file in operational ZIPs.
+# Verified interpreter: CPython 3.12.14. CI installs these pins; STUDIO_CATALOG_PYTHON overrides PATH discovery.
+pypdf==6.10.0
+pdfplumber==0.11.9
+Pillow==12.3.0
+pdfminer.six==20251230
+pypdfium2==5.14.0
+charset-normalizer==3.5.2
+cryptography==50.0.2
+cffi==2.1.1
+pycparser==3.11
+reportlab==4.4.9
+python-docx==1.2.0
+lxml==6.1.1
+typing_extensions==4.16.0

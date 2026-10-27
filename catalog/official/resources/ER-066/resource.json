@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-066",
+  "revision": 1,
+  "kind": "skill",
+  "name": "로그 정리 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3556,
+      "sha256": "a4f6edf582e86293d2cbb95a794928fea7ea6989ec873a776756d05ddbb3ed1a"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1504,
+      "sha256": "55d9bcbf53a6b3f9d468234ee40abb10cab434ee46c8966a77ad3eda466a2b46"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 467,
+      "sha256": "37fee4606055ad091934d9eba64e588be6e35cd8dd629063ad264cb19787907c"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 768,
+      "sha256": "6891505f86595453c2e05d8ae0fbe7130d2eeccd641b5d9f45551b695fc7308a"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 332,
+      "sha256": "e4254065d66bf3e68daca265f2e97c9eaa3b7a820132bcd07108ab57ccc35c38"
+    },
+    {
+      "path": "scripts/group-logs.mjs",
+      "bytes": 2393,
+      "sha256": "d6ea394add29b82865415d686787a1d1a7d17604adb00f0dd7eaa42f41781c4a"
+    },
+    {
+      "path": "references/classification.md",
+      "bytes": 487,
+      "sha256": "c179d25e7e365b432bed194d809abb879f42462070bebfcae8d20c85b8ea375b"
+    }
+  ]
+}

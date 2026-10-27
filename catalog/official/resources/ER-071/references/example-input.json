@@ -1,0 +1,43 @@
+{
+  "fictional": true,
+  "fields": {
+    "requestId": {
+      "type": "string",
+      "required": true
+    },
+    "quantity": {
+      "type": "integer",
+      "required": true
+    },
+    "due": {
+      "type": "string",
+      "required": false,
+      "nullable": true
+    }
+  },
+  "sources": [
+    {
+      "id": "D1",
+      "text": "가상 요청 R-7: 수량 2개. 기한은 미정."
+    }
+  ],
+  "records": [
+    {
+      "requestId": "R-7",
+      "quantity": 2,
+      "due": null
+    }
+  ],
+  "evidence": [
+    {
+      "requestId": {
+        "sourceId": "D1",
+        "quote": "요청 R-7"
+      },
+      "quantity": {
+        "sourceId": "D1",
+        "quote": "수량 2개"
+      }
+    }
+  ]
+}

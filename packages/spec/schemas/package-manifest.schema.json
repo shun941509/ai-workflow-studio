@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ai-workflow-studio:schema:package-manifest:1.0.0",
+  "title": "PackageManifest",
+  "description": "운영 배포의 요청 권한과 파일 무결성 선언. 실행 승인이나 실제 호스트 검증을 대신하지 않는다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "packageId", "packageVersion", "packageKind", "purpose", "targetHost", "entrypoint", "requiredCapabilities", "compatibility", "requestedPermissions", "requiredConnections", "resources", "indexes", "files", "createdAt"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "packageId": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "packageVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "packageKind": { "enum": ["workflow", "materials"] },
+    "purpose": { "const": "production" },
+    "targetHost": { "enum": ["codex", "claude-code", "opencode"] },
+    "entrypoint": { "type": ["string", "null"] },
+    "requiredCapabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["runner", "host", "platforms"],
+      "properties": {
+        "runner": { "type": "string", "minLength": 1 },
+        "host": {
+          "type": "object", "additionalProperties": false,
+          "required": ["verification", "testedVersions"],
+          "properties": {
+            "verification": { "enum": ["unverified", "verified"] },
+            "testedVersions": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+          }
+        },
+        "platforms": { "type": "array", "items": { "enum": ["win32-x64", "win32-arm64"] }, "minItems": 1 }
+      }
+    },
+    "requestedPermissions": {
+      "type": "array", "items": { "type": "object", "additionalProperties": false,
+        "required": ["kind", "target"], "properties": {
+          "kind": { "enum": ["model", "resource", "connection", "capability"] }, "target": { "type": "string" }
+        }
+      }
+    },
+    "requiredConnections": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "resources": { "type": "object", "additionalProperties": { "type": "object" } },
+    "indexes": { "type": "array", "items": { "type": "object", "additionalProperties": false,
+      "required": ["id", "policy"], "properties": { "id": { "type": "string" }, "policy": { "enum": ["rebuild", "bundled"] } }
+    } },
+    "files": { "type": "array", "minItems": 1, "maxItems": 10000,
+      "items": { "type": "object", "additionalProperties": false,
+        "required": ["path", "bytes", "sha256", "role"], "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "bytes": { "type": "integer", "minimum": 0 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "role": { "enum": ["workflow", "editor", "runtime-lock", "instructions", "host-config", "skill", "resource", "documentation", "license", "index"] }
+        }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

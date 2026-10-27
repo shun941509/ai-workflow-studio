@@ -1,0 +1,38 @@
+{
+  "projects": {
+    "primaryKey": "project_id",
+    "fields": {
+      "project_id": "TEXT NOT NULL",
+      "name": "TEXT NOT NULL",
+      "status": "TEXT: active|paused|closed"
+    }
+  },
+  "roles": {
+    "primaryKey": "role_id",
+    "fields": {
+      "role_id": "TEXT NOT NULL",
+      "title": "TEXT NOT NULL"
+    }
+  },
+  "tasks": {
+    "primaryKey": "task_id",
+    "fields": {
+      "task_id": "TEXT NOT NULL",
+      "project_id": "TEXT NOT NULL -> projects.project_id",
+      "owner_role_id": "TEXT NULL -> roles.role_id",
+      "title": "TEXT NOT NULL",
+      "status": "TEXT: todo|doing|done",
+      "due_date": "TEXT NULL, YYYY-MM-DD"
+    }
+  },
+  "reports": {
+    "primaryKey": "report_id",
+    "fields": {
+      "report_id": "TEXT NOT NULL",
+      "project_id": "TEXT NOT NULL -> projects.project_id",
+      "title": "TEXT NOT NULL",
+      "created_at": "TEXT NOT NULL, ISO8601 UTC",
+      "status": "TEXT: draft|review|approved"
+    }
+  }
+}

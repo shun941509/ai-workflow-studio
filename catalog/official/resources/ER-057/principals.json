@@ -1,0 +1,26 @@
+[
+  {
+    "id": "U-READER",
+    "tenant": "lab-a",
+    "groups": []
+  },
+  {
+    "id": "U-OPS",
+    "tenant": "lab-a",
+    "groups": [
+      "ops"
+    ]
+  },
+  {
+    "id": "U-REVIEW",
+    "tenant": "lab-a",
+    "groups": [
+      "review"
+    ]
+  },
+  {
+    "id": "U-B",
+    "tenant": "lab-b",
+    "groups": []
+  }
+]

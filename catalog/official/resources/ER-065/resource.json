@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-065",
+  "revision": 1,
+  "kind": "skill",
+  "name": "읽기 SQL Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 4122,
+      "sha256": "5c52098c531e77facdd32cc3d7b962a1edcb1ba1cf603ec96f3efcb45409c175"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1523,
+      "sha256": "5ce22777e8ee51a8c3a1ce20e2588f09bf1745d070bd55d4ba9fce7aa798e855"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 423,
+      "sha256": "ef52f52f6a7c65cf45c39738376d24557185588313c98df3a783078f2b76cda0"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 843,
+      "sha256": "dd76cb24beca756dd40ac74f37d55f1ff9903f4a1ebe57fba2373195d67a7379"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 192,
+      "sha256": "41d70db2d68b88bb5addcb713ab22cdcd55f05660bf9cdf42691ffd4598435f9"
+    },
+    {
+      "path": "scripts/query-readonly.mjs",
+      "bytes": 2652,
+      "sha256": "2bfa8b6f3c534f142cfb79cf31d82a0ed614de9b5e4f8db8f6f76e71b1629fd7"
+    },
+    {
+      "path": "references/example.sqlite",
+      "bytes": 36864,
+      "sha256": "c52af14ace0026f57f3099124bf3a69af1b3252430406424138db5629f55b499"
+    },
+    {
+      "path": "references/schema.sql",
+      "bytes": 811,
+      "sha256": "cd13c1780d1dd7bb164c809edf0bab6699cbe6f1ddccf4db953c423ebdf8ff39"
+    },
+    {
+      "path": "references/dictionary.json",
+      "bytes": 953,
+      "sha256": "e7085a1457835b107bdee389a4cf113a8231cd95ea48a2810c5dcba50d39de54"
+    }
+  ]
+}

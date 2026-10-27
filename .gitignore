@@ -1,0 +1,19 @@
+# Generated dependencies, local runtimes, secrets, and runtime state stay outside Git and ZIP exports.
+node_modules/
+.tools/
+.next/
+dist/
+coverage/
+test-results/
+playwright-report/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+*.db
+*.db-shm
+*.db-wal
+.studio-local/
+# Root build outputs only; apps/runner/src/artifacts contains required source code.
+/artifacts/
+*.log

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-085",
+  "revision": 1,
+  "kind": "skill",
+  "name": "DOCX 보고서 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/generate_docx.py",
+      "bytes": 5029,
+      "sha256": "be6881c3cf1123da3e9927bb2203c6ae641bcdfb008f0fa19caa91e86f7abd01"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 992,
+      "sha256": "ba6e1498d67509d0f9153112439f1b0a99d473930b56111562a876c59c8977fd"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3331,
+      "sha256": "2b780beeb81de5b8995dedcf359841583618e2e72f61be5147577164b73ec446"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1131,
+      "sha256": "15752efdaacedd8d1434de662c167ef130a20f2b5be7a8bad990cc087185a0c3"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 402,
+      "sha256": "d1dd9c151b0fadbb6f4b63a6cfec4e9543d705bf0c011668b3dbc1d2231025f9"
+    }
+  ]
+}

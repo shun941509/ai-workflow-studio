@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-032",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "정규화 작업 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2158,
+      "sha256": "cf069fc035727259ec84298d193a3d0342131302c1749ee156d15963f5c228af"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1436,
+      "sha256": "8ea164f287b2e0e54b20b0784a83736704ae6e9c289f9eb0aa4b1cf6db11a832"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 670,
+      "sha256": "1b0ac0a21d0086ba8490fcbb74ae993a66aef6917b32c2506bb048577108562e"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1074,
+      "sha256": "3f30eda8b0ba284cf581f41adff9bd73cea9708d286478fbdcc8d33865dc4d91"
+    }
+  ]
+}

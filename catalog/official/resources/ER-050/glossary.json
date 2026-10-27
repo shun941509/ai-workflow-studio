@@ -1,0 +1,170 @@
+[
+  {
+    "id": "TERM-01",
+    "en": "workflow",
+    "ko": "워크플로",
+    "meaning": "정해진 작업 순서와 데이터 연결",
+    "restriction": "단일 AI 응답으로 축약 금지"
+  },
+  {
+    "id": "TERM-02",
+    "en": "draft",
+    "ko": "초안",
+    "meaning": "검토 전 작업 사본",
+    "restriction": "완성본으로 번역 금지"
+  },
+  {
+    "id": "TERM-03",
+    "en": "approval",
+    "ko": "승인",
+    "meaning": "특정 범위의 행동을 허용한 결정",
+    "restriction": "제안·요청과 구분"
+  },
+  {
+    "id": "TERM-04",
+    "en": "review",
+    "ko": "검토",
+    "meaning": "내용을 기준에 따라 살피는 과정",
+    "restriction": "승인 완료와 구분"
+  },
+  {
+    "id": "TERM-05",
+    "en": "revision",
+    "ko": "개정 버전",
+    "meaning": "내용이 바뀐 고정 판본",
+    "restriction": "실행 횟수와 구분"
+  },
+  {
+    "id": "TERM-06",
+    "en": "run",
+    "ko": "실행",
+    "meaning": "하나의 수행 이력",
+    "restriction": "프로젝트 정의와 구분"
+  },
+  {
+    "id": "TERM-07",
+    "en": "retry",
+    "ko": "재시도",
+    "meaning": "조건을 확인한 추가 수행",
+    "restriction": "새 작업 생성과 구분"
+  },
+  {
+    "id": "TERM-08",
+    "en": "resume",
+    "ko": "재개",
+    "meaning": "중단된 수행을 이어감",
+    "restriction": "처음부터 반복과 구분"
+  },
+  {
+    "id": "TERM-09",
+    "en": "timeout",
+    "ko": "시간 초과",
+    "meaning": "기다리는 한도를 넘음",
+    "restriction": "실패 확정으로 번역 금지"
+  },
+  {
+    "id": "TERM-10",
+    "en": "unknown outcome",
+    "ko": "결과 불명",
+    "meaning": "외부 처리 여부를 모름",
+    "restriction": "취소 완료와 구분"
+  },
+  {
+    "id": "TERM-11",
+    "en": "source",
+    "ko": "출처",
+    "meaning": "근거가 나온 원본",
+    "restriction": "검색 결과 제목만으로 대체 금지"
+  },
+  {
+    "id": "TERM-12",
+    "en": "citation",
+    "ko": "인용",
+    "meaning": "주장과 원문 위치의 연결",
+    "restriction": "단순 링크 목록과 구분"
+  },
+  {
+    "id": "TERM-13",
+    "en": "scope",
+    "ko": "범위",
+    "meaning": "허용된 대상과 행동의 경계",
+    "restriction": "조직 전체로 확대 금지"
+  },
+  {
+    "id": "TERM-14",
+    "en": "permission",
+    "ko": "권한",
+    "meaning": "접근·행동을 허용하는 조건",
+    "restriction": "인증과 구분"
+  },
+  {
+    "id": "TERM-15",
+    "en": "authentication",
+    "ko": "인증",
+    "meaning": "주체를 확인하는 과정",
+    "restriction": "권한 전체를 뜻하지 않음"
+  },
+  {
+    "id": "TERM-16",
+    "en": "retention",
+    "ko": "보관 기간",
+    "meaning": "정해진 데이터 유지 기간",
+    "restriction": "복구 보증과 구분"
+  },
+  {
+    "id": "TERM-17",
+    "en": "nullable",
+    "ko": "null 허용",
+    "meaning": "명시적 null 값이 유효함",
+    "restriction": "선택 필드와 구분"
+  },
+  {
+    "id": "TERM-18",
+    "en": "optional",
+    "ko": "선택 항목",
+    "meaning": "필드 생략 가능",
+    "restriction": "null 허용과 구분"
+  },
+  {
+    "id": "TERM-19",
+    "en": "record",
+    "ko": "레코드",
+    "meaning": "구조화된 한 건의 데이터",
+    "restriction": "로그 전체와 구분"
+  },
+  {
+    "id": "TERM-20",
+    "en": "checkpoint",
+    "ko": "체크포인트",
+    "meaning": "검증된 중간 상태",
+    "restriction": "실행 성공 자체와 구분"
+  },
+  {
+    "id": "TERM-21",
+    "en": "index",
+    "ko": "색인",
+    "meaning": "검색을 위한 파생 구조",
+    "restriction": "원문 자체와 구분"
+  },
+  {
+    "id": "TERM-22",
+    "en": "rerank",
+    "ko": "재정렬",
+    "meaning": "기존 후보의 관련성 순서 변경",
+    "restriction": "새 문서 생성과 구분"
+  },
+  {
+    "id": "TERM-23",
+    "en": "entity",
+    "ko": "개체",
+    "meaning": "식별된 대상",
+    "restriction": "이름이 같다고 동일 개체 아님"
+  },
+  {
+    "id": "TERM-24",
+    "en": "relationship",
+    "ko": "관계",
+    "meaning": "개체 사이의 명시된 연결",
+    "restriction": "인과로 확대 금지"
+  }
+]

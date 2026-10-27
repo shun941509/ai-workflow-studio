@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-040",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "그래프 근거 설명†",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2441,
+      "sha256": "59b96459a50d8337551c6f65319d5867c38676928229ee8b919df7b225dfa905"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1752,
+      "sha256": "34d0631707ac08349f76b0d4b89ff083602c419ba21666e7b4b0a7a4fd1ae507"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 777,
+      "sha256": "93b781903ba4d8a4e04b89d9e9f077f44ebc69a6f3e74390f46361f411992b42"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1123,
+      "sha256": "7b9fa7c012d32d11526ee6a6c9005c325451337c1e503f470159938fabb6cc06"
+    }
+  ]
+}

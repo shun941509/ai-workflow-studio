@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-086",
+  "revision": 1,
+  "kind": "skill",
+  "name": "HTML 보고서 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/generate_html.py",
+      "bytes": 4248,
+      "sha256": "59bbc49c2099300af33cbeb27daf8b7854a312ae98ff78bbd85ce8cdd3ee4a0c"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 455,
+      "sha256": "445831c58bfed32df57737f7882b02400915822bffa554dff39fe17f209f8fd3"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3204,
+      "sha256": "d9821ca803040a95dcde482d373d7f1517e6a85a19fb7f9c33072cb53fec53c0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1105,
+      "sha256": "7b02532536700ed13030d9062c60c84cb8e8e5ef1d607df9f361640413dcdbec"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 390,
+      "sha256": "d8c1c2fa46c8c6595bc62433724c8e505263559164341ca2afeef8627bd50354"
+    },
+    {
+      "path": "assets/report.css",
+      "bytes": 633,
+      "sha256": "f4357e6d52db61654c42724ccbe58de4a141dd5c53894f1d7a7a500280436b3b"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-050",
+  "revision": 1,
+  "kind": "document",
+  "name": "한·영 업무 용어집",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 3415,
+      "sha256": "6a09e8c5ed08f7b5993777c5d749d4adf85a1bc568a9b876ff0b9f008aa9e458"
+    },
+    {
+      "path": "glossary.json",
+      "bytes": 4176,
+      "sha256": "aa8ab4d7c9e5e87676852ebb3e467557dcf856e711d8ce7088b188b479aec719"
+    },
+    {
+      "path": "glossary.csv",
+      "bytes": 2354,
+      "sha256": "41dee8ed7d82d2fc122e551a080fd4b924c1cda429fe049e39aed08955d27b1f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1342,
+      "sha256": "160f64200636aac0872b28479c6b699494d758a83ba571e6df088346653451fe"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

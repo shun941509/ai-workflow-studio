@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-070",
+  "revision": 1,
+  "kind": "skill",
+  "name": "관점별 이견 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2484,
+      "sha256": "18b150d1ac9b94bad108c2f5836ed09e977e64de5cd19880d4e75cad9edac6c1"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1398,
+      "sha256": "8486306588328be56e0e59e1be082f26a32f5f4881ef6693a8bb5df86f475ec1"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 431,
+      "sha256": "1e44a929d0b0b37968ef2979adf1197b82fd47098de2a883470772f3ff85538e"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 760,
+      "sha256": "f56edbd15ecfc63c6bf3acd0e8e4b7b8c70415d932f6e3383d0c56e4eca86eb7"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 509,
+      "sha256": "f2911b14d6a66b4bd364626ce155010d930a75c58b93f36ede54092fa9013b6b"
+    }
+  ]
+}

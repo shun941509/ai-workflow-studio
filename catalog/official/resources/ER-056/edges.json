@@ -1,0 +1,37 @@
+[
+  {
+    "id": "E-1",
+    "type": "USES",
+    "from": "SVC-BOARD",
+    "to": "DATA-CARDS",
+    "sourceId": "SRC-1"
+  },
+  {
+    "id": "E-2",
+    "type": "USES",
+    "from": "SVC-API",
+    "to": "DATA-REPORTS",
+    "sourceId": "SRC-2"
+  },
+  {
+    "id": "E-3",
+    "type": "BACKED_UP_BY",
+    "from": "DATA-CARDS",
+    "to": "SVC-BACKUP",
+    "sourceId": "SRC-3"
+  },
+  {
+    "id": "E-4",
+    "type": "OWNED_BY",
+    "from": "SVC-BOARD",
+    "to": "ROLE-OPS",
+    "sourceId": "SRC-4"
+  },
+  {
+    "id": "E-5",
+    "type": "DEPENDS_ON",
+    "from": "SVC-API",
+    "to": "SVC-BOARD",
+    "sourceId": "SRC-5"
+  }
+]

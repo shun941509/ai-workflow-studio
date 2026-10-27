@@ -1,0 +1,5 @@
+-- All records describe fictional projects and roles; no personal information.
+INSERT INTO projects VALUES('P-ALPHA','문서 검색 개선','active'),('P-BETA','보고서 자동 정리','active'),('P-GAMMA','운영 안내 개정','paused');
+INSERT INTO roles VALUES('R-PLAN','기획 역할'),('R-OPS','운영 역할'),('R-QA','검토 역할'),('R-EDITOR','편집 역할');
+INSERT INTO tasks VALUES('T-001','P-ALPHA','R-PLAN','검색 질문 범위 정리','done','2026-10-05'),('T-002','P-ALPHA','R-QA','인용 누락 점검','doing','2026-10-12'),('T-003','P-ALPHA',NULL,'접근 범위 안내 검토','todo',NULL),('T-004','P-BETA','R-EDITOR','보고서 목차 정리','done','2026-10-06'),('T-005','P-BETA','R-QA','표 합계 대조','done','2026-10-08'),('T-006','P-BETA','R-OPS','생성 오류 분류','doing','2026-10-15'),('T-007','P-GAMMA','R-PLAN','개정 요구 취합','done','2026-10-04'),('T-008','P-GAMMA',NULL,'공개 범위 결정','todo',NULL);
+INSERT INTO reports VALUES('RPT-001','P-ALPHA','검색 범위 초안','2026-10-01T09:00:00Z','approved'),('RPT-002','P-ALPHA','인용 점검 중간 결과','2026-10-10T09:00:00Z','review'),('RPT-003','P-BETA','표 대조 요약','2026-10-08T08:00:00Z','approved'),('RPT-004','P-GAMMA','운영 안내 개정안','2026-10-11T07:00:00Z','draft');

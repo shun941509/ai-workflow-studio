@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-095",
+  "revision": 1,
+  "kind": "skill",
+  "name": "재시도 상태 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/assess_retry.py",
+      "bytes": 4571,
+      "sha256": "e195b2e454d471e1fb2b2fa03701e46e2f664416311a02e4bef4107bee47e890"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 237,
+      "sha256": "ad03d05cf18c3fa8491cd6dccab5c69c0000db8606154a80e3030ed0d92e7ce1"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3234,
+      "sha256": "7816f0e47e90ad4a6dc909c3ffdc53692dd2809793f1c8db201f67bc435fba1b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1031,
+      "sha256": "3d5933dd3b4c65c345e6305c1ce95037a235d4fc6ac9b42d6dab97edf4fe9c9f"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 528,
+      "sha256": "ed5983ba365fad8faba0a2c3e5795fe4af98f1930c258361beb65b2dd48e0548"
+    }
+  ]
+}

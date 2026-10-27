@@ -1,0 +1,42 @@
+{
+  "name": "ai-workflow-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.15.0",
+  "engines": { "node": ">=24.22.1 <25" },
+  "scripts": {
+    "generate:spec": "tsx tooling/generate-spec.ts",
+    "generate:package": "tsx tooling/generate-package-types.ts",
+    "check:generated": "node tooling/check-generated.mjs",
+    "typecheck": "pnpm -r typecheck && tsc --noEmit -p tsconfig.tooling.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test -c tests/e2e/studio-web.config.ts",
+    "build": "pnpm -r build",
+    "build:runner": "pnpm --filter @studio/runner-ui build && node tooling/build-runner.mjs",
+    "verify:runner": "tsx tooling/verify-runner.ts",
+    "check:boundaries": "tsx tooling/check-boundaries.ts",
+    "check:catalog": "tsx tooling/catalog/generate-contracts.ts --check && tsx tooling/catalog/generate-inventory.ts --check && tsx tooling/catalog/cli.ts",
+    "check:release": "tsx tooling/release/cli.ts",
+    "check:catalog-release": "tsx tooling/catalog/cli.ts --release",
+    "dev": "pnpm --filter @studio/web dev",
+    "start": "pnpm --filter @studio/web start"
+  },
+  "devDependencies": {
+    "@studio/spec": "workspace:*",
+    "@studio/workflow-core": "workspace:*",
+    "@studio/package-kit": "workspace:*",
+    "@studio/rag-core": "workspace:*",
+    "@playwright/test": "1.64.1",
+    "@electric-sql/pglite": "0.5.12",
+    "@types/node": "24.19.2",
+    "json-schema-to-typescript": "16.0.0",
+    "json-canonicalize": "3.0.1",
+    "fflate": "0.8.3",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "esbuild": "0.28.2",
+    "vitest": "5.0.5"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-044",
+  "revision": 1,
+  "kind": "document",
+  "name": "변경 절차 문서",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1823,
+      "sha256": "cbb5f8562a230c8bcfbf82859b00a2d92ceb4722ab40220d62f8ef4d512b77a3"
+    },
+    {
+      "path": "change-request.json",
+      "bytes": 310,
+      "sha256": "0634cfce87b9574142e0845a887ce160cbfb1c53e6af48b21e93537b8188f9fe"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1350,
+      "sha256": "74fac2106667b28983b2c7dc1ae6449c25eb5aa491e3bebaab5ab47542389f32"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

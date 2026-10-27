@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0.0",
+  "fictional": true,
+  "scanKind": "synthetic-raster-document-not-physical-scan",
+  "imageSize": [
+    1200,
+    1600
+  ],
+  "origin": "top-left",
+  "pages": [
+    {
+      "page": 1,
+      "image": "scan-01.jpg",
+      "transcript": "EQUIPMENT REQUEST\nRequest ID: REQ-DEMO-001\nDepartment: Operations\nItem: Laptop stand\nQuantity: 2\nRequested date: 2026-10-03\nNeeded by: [blank]",
+      "fields": [
+        {
+          "name": "request_id",
+          "value": "REQ-DEMO-001",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            360,
+            213,
+            22
+          ]
+        },
+        {
+          "name": "department",
+          "value": "Operations",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            505,
+            150,
+            26
+          ]
+        },
+        {
+          "name": "item",
+          "value": "Laptop stand",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            649,
+            180,
+            27
+          ]
+        },
+        {
+          "name": "quantity",
+          "value": "2",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            795,
+            17,
+            20
+          ]
+        },
+        {
+          "name": "requested_at",
+          "value": "2026-10-03",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            940,
+            152,
+            20
+          ]
+        },
+        {
+          "name": "needed_by",
+          "value": null,
+          "blank": true,
+          "bboxPixels": [
+            490,
+            1075,
+            600,
+            50
+          ]
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "image": "scan-02.jpg",
+      "transcript": "EXPENSE SUMMARY\nExpense ID: EXP-DEMO-002\nCategory: Training\nDescription: Workshop materials\nAmount: 18000\nCurrency: KRW\nStatus: Pending review",
+      "fields": [
+        {
+          "name": "expense_id",
+          "value": "EXP-DEMO-002",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            360,
+            209,
+            20
+          ]
+        },
+        {
+          "name": "category",
+          "value": "Training",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            505,
+            112,
+            26
+          ]
+        },
+        {
+          "name": "description",
+          "value": "Workshop materials",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            648,
+            269,
+            28
+          ]
+        },
+        {
+          "name": "amount",
+          "value": "18000",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            795,
+            85,
+            20
+          ]
+        },
+        {
+          "name": "currency",
+          "value": "KRW",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            940,
+            67,
+            20
+          ]
+        },
+        {
+          "name": "status",
+          "value": "Pending review",
+          "blank": false,
+          "bboxPixels": [
+            490,
+            1084,
+            210,
+            27
+          ]
+        }
+      ]
+    }
+  ]
+}

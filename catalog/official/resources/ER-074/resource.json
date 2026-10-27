@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-074",
+  "revision": 1,
+  "kind": "skill",
+  "name": "문서 품질 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3550,
+      "sha256": "82ca9247860055fb058ac8eb1a46776289df82f7079bdd0acbd122a6fa4e21fe"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1515,
+      "sha256": "a6f97ab2249ad69c098e64394cc2c36d46b4ef8b3ed2bab2938c38bb5e09d355"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 436,
+      "sha256": "95374e2d936ca3bb0cfc046473f19ec952e958974cc356080a9edaf4d47e1770"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 742,
+      "sha256": "91bd20a0b9496695ed106f12a35c04f10b15935289caeb8a019fc4ba382d8b58"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 629,
+      "sha256": "66f65a9df1e82ac2dc8fa16784029d4448145172b1e749f06c00c9d976c8941d"
+    },
+    {
+      "path": "scripts/score-quality.mjs",
+      "bytes": 2525,
+      "sha256": "95675abbc746e112bb6c89e81038ca4ca4360ff948dae458f09e7a99ea23d979"
+    }
+  ]
+}

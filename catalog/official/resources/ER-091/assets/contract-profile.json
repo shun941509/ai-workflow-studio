@@ -1,0 +1,37 @@
+{
+  "name": "studio-structural-subset-v1",
+  "$comment": "A closed useful JSON Schema subset, not the full Studio/JSON Schema validator. Unsupported keywords fail.",
+  "requiredKeyword": "type",
+  "supportedKeywords": [
+    "$schema",
+    "$comment",
+    "title",
+    "description",
+    "type",
+    "properties",
+    "required",
+    "additionalProperties",
+    "items",
+    "minItems",
+    "maxItems",
+    "uniqueItems",
+    "minLength",
+    "maxLength",
+    "minimum",
+    "maximum",
+    "enum",
+    "const"
+  ],
+  "unsupportedExamples": [
+    "$ref",
+    "allOf",
+    "oneOf",
+    "anyOf",
+    "pattern",
+    "format",
+    "prefixItems"
+  ],
+  "maximumDepth": 20,
+  "maximumSchemaNodes": 1000,
+  "maximumReportedErrors": 200
+}

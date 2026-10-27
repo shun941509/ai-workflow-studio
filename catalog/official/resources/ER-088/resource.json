@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-088",
+  "revision": 1,
+  "kind": "skill",
+  "name": "파일 분할 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/split_join.py",
+      "bytes": 5399,
+      "sha256": "e2458abbcdbddaacb8344522dfb42babc67a8c1e8c37edbf28d9278299878af6"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 177,
+      "sha256": "5860a2cfa6fe87510a982d49f5f7c22061a0f35169a1a8b0f7ac3c8195d264e7"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3258,
+      "sha256": "6d53e9afee8a57ddad13be5952dc26bff054d336d432bf7eeaffa07f6705af86"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1096,
+      "sha256": "15cb753ba15f0c9b37291c13ae364b6affab2861da2f551b4b6d6528d6834ebd"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 417,
+      "sha256": "5f5fe9602de6cf3fe30ade4a94540a12f187606269236d447d7cb39f27f4f3d5"
+    },
+    {
+      "path": "references/source.txt",
+      "bytes": 4320,
+      "sha256": "25a00ee6976758d0851bec4bf0b0fca30f31d1256d664bb809fc67ee10759c08"
+    }
+  ]
+}

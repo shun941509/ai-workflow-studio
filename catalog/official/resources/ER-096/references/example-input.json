@@ -1,0 +1,22 @@
+{
+  "fictional": true,
+  "runId": "RUN-DEMO",
+  "cancelRequested": true,
+  "nodes": [
+    {
+      "id": "draft",
+      "state": "cancelled"
+    },
+    {
+      "id": "send",
+      "state": "succeeded"
+    }
+  ],
+  "effects": [
+    {
+      "operationId": "send-1",
+      "state": "applied",
+      "evidence": "가상 수신함 확인 기록"
+    }
+  ]
+}

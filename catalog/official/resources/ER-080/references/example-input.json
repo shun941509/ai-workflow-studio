@@ -1,0 +1,40 @@
+{
+  "fictional": true,
+  "before": {
+    "permissions": [
+      "read:provided"
+    ],
+    "tasks": [
+      {
+        "id": "read",
+        "status": "completed",
+        "action": "자료 읽기",
+        "resultSha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      {
+        "id": "extract",
+        "status": "failed",
+        "action": "표 추출"
+      }
+    ]
+  },
+  "after": {
+    "permissions": [
+      "read:provided",
+      "network:converter"
+    ],
+    "tasks": [
+      {
+        "id": "read",
+        "status": "completed",
+        "action": "자료 읽기",
+        "resultSha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      {
+        "id": "extract",
+        "status": "pending",
+        "action": "제공된 CSV 읽기"
+      }
+    ]
+  }
+}

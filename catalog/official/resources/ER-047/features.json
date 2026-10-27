@@ -1,0 +1,146 @@
+[
+  {
+    "id": "F-001",
+    "name": "구성원 한도",
+    "type": "number",
+    "unit": "members",
+    "plans": {
+      "Basic": 5,
+      "Team": 25
+    },
+    "constraint": "워크스페이스당",
+    "fictional": true
+  },
+  {
+    "id": "F-002",
+    "name": "파일 크기",
+    "type": "number",
+    "unit": "MiB",
+    "plans": {
+      "Basic": 20,
+      "Team": 100
+    },
+    "constraint": "파일 하나당",
+    "fictional": true
+  },
+  {
+    "id": "F-003",
+    "name": "휴지통 보관",
+    "type": "number",
+    "unit": "days",
+    "plans": {
+      "Basic": 30,
+      "Team": 90
+    },
+    "constraint": "삭제 시점부터",
+    "fictional": true
+  },
+  {
+    "id": "F-004",
+    "name": "CSV 내보내기",
+    "type": "boolean",
+    "unit": "",
+    "plans": {
+      "Basic": true,
+      "Team": true
+    },
+    "constraint": "읽기 권한 필드만",
+    "fictional": true
+  },
+  {
+    "id": "F-005",
+    "name": "API 조회",
+    "type": "boolean",
+    "unit": "",
+    "plans": {
+      "Basic": false,
+      "Team": true
+    },
+    "constraint": "reports:read와 프로젝트 권한 필요",
+    "fictional": true
+  },
+  {
+    "id": "F-006",
+    "name": "프로젝트 기본 공개",
+    "type": "boolean",
+    "unit": "",
+    "plans": {
+      "Basic": false,
+      "Team": false
+    },
+    "constraint": "명시적 공개 승인 필요",
+    "fictional": true
+  },
+  {
+    "id": "F-007",
+    "name": "초대 유효 시간",
+    "type": "number",
+    "unit": "hours",
+    "plans": {
+      "Basic": 48,
+      "Team": 48
+    },
+    "constraint": "일회용 링크",
+    "fictional": true
+  },
+  {
+    "id": "F-008",
+    "name": "UTC 저장",
+    "type": "boolean",
+    "unit": "",
+    "plans": {
+      "Basic": true,
+      "Team": true
+    },
+    "constraint": "표시 시간대는 사용자 선택",
+    "fictional": true
+  },
+  {
+    "id": "F-009",
+    "name": "필드별 접근 제한",
+    "type": "boolean",
+    "unit": "",
+    "plans": {
+      "Basic": false,
+      "Team": true
+    },
+    "constraint": "권한 밖 필드는 검색·CSV에서 제외",
+    "fictional": true
+  },
+  {
+    "id": "F-010",
+    "name": "감사 기록 보관",
+    "type": "number",
+    "unit": "days",
+    "plans": {
+      "Basic": 7,
+      "Team": 90
+    },
+    "constraint": "조회 권한 별도",
+    "fictional": true
+  },
+  {
+    "id": "F-011",
+    "name": "동시 보고서 생성",
+    "type": "number",
+    "unit": "jobs",
+    "plans": {
+      "Basic": 1,
+      "Team": 3
+    },
+    "constraint": "상한 초과는 대기",
+    "fictional": true
+  },
+  {
+    "id": "F-012",
+    "name": "사용자 정의 역할",
+    "type": "boolean",
+    "unit": "",
+    "plans": {
+      "Basic": false,
+      "Team": true
+    },
+    "constraint": "범위 담당자만 관리",
+    "fictional": true
+  }
+]

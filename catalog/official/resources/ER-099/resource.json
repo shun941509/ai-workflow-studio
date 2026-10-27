@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-099",
+  "revision": 1,
+  "kind": "skill",
+  "name": "결과 변화 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/compare_results.py",
+      "bytes": 6247,
+      "sha256": "f7d62bb14040eec77a47126add750cbab6a6c7cb970e76a2e715c11707d0361c"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 793,
+      "sha256": "2ed413a8ecf8dbab2f807dabc77f33af994427a684510348b7c2b90a9a2f0a7d"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3247,
+      "sha256": "8b17050682d1e1dc76835cc6f22bba0a193700068e19f6473605721c73ce77b0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1027,
+      "sha256": "eff2e38f9c5e0630523623ee314bd9b1215fdce887d63f5bb775a127e3d870c1"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 541,
+      "sha256": "55d1fd72d28ba0a52a07a480e3e3e763efe7f0ed7787bb928e042c58c08b0ed8"
+    }
+  ]
+}

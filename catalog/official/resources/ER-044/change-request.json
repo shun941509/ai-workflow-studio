@@ -1,0 +1,14 @@
+{
+  "id": "C-101",
+  "fictional": true,
+  "status": "proposed",
+  "target": "GUIDE-RAON-02",
+  "beforeVersion": 3,
+  "proposedVersion": 4,
+  "change": "2절의 “실행 완료”를 “초안 작성 완료”로 정확히 표현",
+  "requiredReviewRoles": [
+    "R-PLAN",
+    "R-QA"
+  ],
+  "approval": null
+}

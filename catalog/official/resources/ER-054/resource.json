@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-054",
+  "revision": 1,
+  "kind": "document",
+  "name": "승인 흐름 정의서",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2461,
+      "sha256": "5031594c898aa0ad86484d514b88ce880d703275e7623e074886c31859abba5b"
+    },
+    {
+      "path": "approval-flows.json",
+      "bytes": 1853,
+      "sha256": "63a8ed0399c928d6feab5df8de7f9c6789d9b37540816e0b8d103ed492908ff2"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1338,
+      "sha256": "c22e7227072de1b337bb4afcf413c6d176ae74b60ee898cc323e9a34f1a177c0"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

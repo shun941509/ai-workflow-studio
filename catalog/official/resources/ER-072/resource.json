@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-072",
+  "revision": 1,
+  "kind": "skill",
+  "name": "회의 후속 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2542,
+      "sha256": "f6d6faf1302fcd4702c5a279ad5f9c6f406eea3fff8d88a76241a1310843b75c"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1398,
+      "sha256": "b9ba4c3fa4ba37b584f7e4be3e3ac239e7266b433a1823911b7f232befa971c4"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 413,
+      "sha256": "361d42584691c38415f18e360733306e0e58a627e7a3fd9808cf08e943a57ac8"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 776,
+      "sha256": "3a0e6c9d56bd9517519e4dfefe265ed2fc707e92b1657913737b430db300ff70"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 461,
+      "sha256": "c9c03c18a4ef93bde4aced2ca5d0406f0589781f8c1fa7f8a71e503dc3718319"
+    },
+    {
+      "path": "references/meeting.md",
+      "bytes": 683,
+      "sha256": "3aeba066fdd0aedaeb4eeb7519f009470a9bdce8407589ac7dda308b5a44987d"
+    }
+  ]
+}

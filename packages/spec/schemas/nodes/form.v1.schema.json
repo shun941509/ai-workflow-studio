@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "type": {
+      "const": "form"
+    },
+    "typeVersion": {
+      "const": 1
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "inputBindings": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "../binding.schema.json"
+      }
+    },
+    "config": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "const": "initial"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "mode",
+            "title"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "const": "request"
+            },
+            "title": {
+              "type": "string"
+            },
+            "schema": {
+              "$ref": "../user-schema.schema.json"
+            }
+          },
+          "required": [
+            "mode",
+            "title",
+            "schema"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "$ref": "../attachment.schema.json"
+      },
+      "minItems": 0
+    },
+    "execution": {
+      "$ref": "../execution.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "typeVersion",
+    "label",
+    "inputBindings",
+    "config",
+    "attachments",
+    "execution"
+  ],
+  "additionalProperties": false,
+  "title": "FormNode"
+}

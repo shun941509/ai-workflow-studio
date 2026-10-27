@@ -1,0 +1,27 @@
+{
+  "goal": "가상 요청서 기능의 검증 설계",
+  "requirements": [
+    {
+      "id": "REQ1",
+      "text": "이름이 비어 있으면 제출을 막고 해당 필드에 오류를 표시한다.",
+      "priority": "must"
+    },
+    {
+      "id": "REQ2",
+      "text": "저장 뒤 목록에 새 요청이 한 번만 표시된다.",
+      "priority": "must"
+    },
+    {
+      "id": "REQ3",
+      "text": "키보드만으로 이름 입력부터 제출까지 이동할 수 있다.",
+      "priority": "should"
+    }
+  ],
+  "availableEvidence": [
+    {
+      "id": "UI1",
+      "description": "가상 화면 설계: 이름 필드와 제출 버튼, 오류 안내 영역이 있다."
+    }
+  ],
+  "environment": "테스트 서버와 실제 화면은 아직 준비되지 않았다."
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-041",
+  "revision": 1,
+  "kind": "document",
+  "name": "에이전트 업무 운영 안내서",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2845,
+      "sha256": "a737987e954300d08fded7b4764e45bc47e75c9644226b982d2b3cba3b14db4a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1368,
+      "sha256": "db747ce34cbddd20bbedfb6ffede67b8e9c39b85306542f94c575fa79ce1eb0f"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

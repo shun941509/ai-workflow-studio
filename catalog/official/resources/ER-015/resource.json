@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-015",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "최소 도구 사용",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2367,
+      "sha256": "0209f1cef143fcb28a133900ffc1a3d2b0b5b9920b4ca0b94702c134d73c8c83"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1442,
+      "sha256": "5d1deb82b731d73adb2d78a8b159d6f8f3e0b3dd42a05924270c7c50eb5df165"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 761,
+      "sha256": "532160aa9204d307dc31d63fd077f49f3e43a31f049fdfe2974eee3a53cdb871"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1148,
+      "sha256": "de25f213f533f1319022cd057b05a198777afdf3fc7a789229a43f85d697deb9"
+    }
+  ]
+}

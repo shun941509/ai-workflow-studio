@@ -1,0 +1,15 @@
+{
+  "fictional": true,
+  "sourceDirectory": "허용된 references/files 절대 경로",
+  "outputDirectory": "새 절대 출력 폴더",
+  "renames": [
+    {
+      "from": "draft-a.txt",
+      "to": "hanbit-summary.txt"
+    },
+    {
+      "from": "draft-b.txt",
+      "to": "hanbit-actions.txt"
+    }
+  ]
+}

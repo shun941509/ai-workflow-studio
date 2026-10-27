@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "entryNodeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "inputs": {
+      "$ref": "user-schema.schema.json"
+    },
+    "outputs": {
+      "$ref": "user-schema.schema.json"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "node.schema.json"
+      },
+      "minItems": 2
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "edge.schema.json"
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "entryNodeId",
+    "inputs",
+    "outputs",
+    "nodes",
+    "edges"
+  ],
+  "additionalProperties": false,
+  "title": "FlowDefinition"
+}

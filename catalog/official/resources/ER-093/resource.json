@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-093",
+  "revision": 1,
+  "kind": "skill",
+  "name": "실행량 예상 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/estimate_usage.py",
+      "bytes": 4644,
+      "sha256": "3ae40ac2c76e07946f19c7ec4d7e62778c8b21847e3d5384e22527b5fbbb612f"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 483,
+      "sha256": "9a39b26cabcb948a472e803dfb2af01e4dffd3a0360db46b5d5121f4e5caf936"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3212,
+      "sha256": "dd00095e119ea72ffbbc1a063ed0985f4345d7e52a29b101701ad04a09bc584d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1012,
+      "sha256": "f2ee4e29411d7d81fd62b24406a6942254eed66d170eb04858c22cb3a7fd3c03"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 497,
+      "sha256": "873fd08fb1047f1d1f480beed6592d745045b819479a11a651ec00d31400aa1d"
+    }
+  ]
+}

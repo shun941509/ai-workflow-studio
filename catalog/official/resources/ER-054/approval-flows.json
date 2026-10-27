@@ -1,0 +1,95 @@
+[
+  {
+    "id": "AP-01",
+    "type": "private-draft",
+    "condition": "제공 자료로 비공개 초안 작성",
+    "stages": [
+      "scope-check",
+      "draft",
+      "result-check"
+    ],
+    "requiredApprovers": [],
+    "externalWrite": false
+  },
+  {
+    "id": "AP-02",
+    "type": "external-publish",
+    "condition": "내용을 외부에 공개",
+    "stages": [
+      "scope-check",
+      "content-review",
+      "access-review",
+      "owner-approval",
+      "publish",
+      "read-back"
+    ],
+    "requiredApprovers": [
+      "R-QA",
+      "R-OPS",
+      "R-PLAN"
+    ],
+    "externalWrite": true
+  },
+  {
+    "id": "AP-03",
+    "type": "original-delete",
+    "condition": "원본 파일 삭제",
+    "stages": [
+      "target-pin",
+      "backup-check",
+      "owner-approval",
+      "delete",
+      "state-check"
+    ],
+    "requiredApprovers": [
+      "R-PLAN"
+    ],
+    "externalWrite": true
+  },
+  {
+    "id": "AP-04",
+    "type": "service-config",
+    "condition": "운영 서비스 설정 변경",
+    "stages": [
+      "target-pin",
+      "impact-review",
+      "rollback-plan",
+      "owner-approval",
+      "apply",
+      "health-check"
+    ],
+    "requiredApprovers": [
+      "R-OPS",
+      "R-PLAN"
+    ],
+    "externalWrite": true
+  },
+  {
+    "id": "AP-05",
+    "type": "cost-incurring",
+    "condition": "비용이 발생하는 작업",
+    "stages": [
+      "scope-check",
+      "cost-bound",
+      "owner-approval",
+      "execute",
+      "usage-check"
+    ],
+    "requiredApprovers": [
+      "R-PLAN"
+    ],
+    "externalWrite": true
+  },
+  {
+    "id": "AP-06",
+    "type": "unknown-outcome",
+    "condition": "외부 변경 결과를 확인하지 못함",
+    "stages": [
+      "pause-new-write",
+      "status-query",
+      "human-check-if-needed"
+    ],
+    "requiredApprovers": [],
+    "externalWrite": false
+  }
+]

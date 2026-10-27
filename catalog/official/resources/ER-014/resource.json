@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-014",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "외부 자료 취급",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2476,
+      "sha256": "50b930163b7824bbf6efbd6f462690b867db2bd6ab71a4cf70a3428ccd1c62e4"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1439,
+      "sha256": "a2c525d6e79ac1194fb4ac07aca8f43609da1c66f17413790d5a497b755e558b"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 739,
+      "sha256": "b83b546790f254e63b4a39a686d6025ee2b34171e71d56afcc8853e2699cda30"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1204,
+      "sha256": "693942667afeb75f03e7d4c923ff2f182ee535ef9816e94b3bacf4db8c498707"
+    }
+  ]
+}

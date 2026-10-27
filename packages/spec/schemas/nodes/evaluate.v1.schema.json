@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "type": {
+      "const": "evaluate"
+    },
+    "typeVersion": {
+      "const": 1
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "inputBindings": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "../binding.schema.json"
+      }
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "rules",
+            "model"
+          ]
+        },
+        "resultSchema": {
+          "$ref": "../user-schema.schema.json"
+        },
+        "passRule": {
+          "$ref": "../expression.schema.json"
+        },
+        "modelProfile": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              },
+              "expression": {
+                "$ref": "../expression.schema.json"
+              }
+            },
+            "required": [
+              "id",
+              "expression"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "mode",
+        "resultSchema",
+        "passRule"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "model"
+              }
+            },
+            "type": "object"
+          },
+          "then": {
+            "required": [
+              "modelProfile",
+              "instructions"
+            ],
+            "type": "object",
+            "properties": {
+              "modelProfile": {},
+              "instructions": {}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "rules"
+              }
+            },
+            "type": "object"
+          },
+          "then": {
+            "required": [
+              "rules"
+            ],
+            "type": "object",
+            "properties": {
+              "rules": {}
+            }
+          }
+        }
+      ]
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "$ref": "../attachment.schema.json"
+      },
+      "minItems": 0
+    },
+    "execution": {
+      "$ref": "../execution.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "typeVersion",
+    "label",
+    "inputBindings",
+    "config",
+    "attachments",
+    "execution"
+  ],
+  "additionalProperties": false,
+  "title": "EvaluateNode"
+}

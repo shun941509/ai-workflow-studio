@@ -1,0 +1,24 @@
+{
+  "fictional": true,
+  "tasks": [
+    {
+      "id": "T1",
+      "action": "FAQ 초안 공유",
+      "owner": "문서 담당",
+      "due": "2026-10-09",
+      "source": "발언 2"
+    },
+    {
+      "id": "T2",
+      "action": "기존 안내 링크 목록 수집",
+      "owner": null,
+      "due": null,
+      "source": "발언 4"
+    }
+  ],
+  "proposal": {
+    "text": "다음 달 설문 진행",
+    "source": "발언 3",
+    "state": "not-decided"
+  }
+}

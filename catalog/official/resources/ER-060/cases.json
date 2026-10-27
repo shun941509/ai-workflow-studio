@@ -1,0 +1,50 @@
+[
+  {
+    "id": "CF-01",
+    "question": "10월 22일 표준 변경 알림 기준은?",
+    "sourceIds": [
+      "C1",
+      "C2"
+    ],
+    "decision": "resolve-by-effective-date",
+    "selected": [
+      "C1"
+    ],
+    "explanation": "C2는 시행 전"
+  },
+  {
+    "id": "CF-02",
+    "question": "파일 한도는?",
+    "sourceIds": [
+      "C3",
+      "C4"
+    ],
+    "decision": "ask-scope",
+    "selected": [],
+    "explanation": "Basic 또는 Team을 확인"
+  },
+  {
+    "id": "CF-03",
+    "question": "지원 접수 마감은?",
+    "sourceIds": [
+      "C5",
+      "C6"
+    ],
+    "decision": "abstain-conflict",
+    "selected": [],
+    "explanation": "동일 범위·시점의 승인 자료 충돌"
+  },
+  {
+    "id": "CF-04",
+    "question": "11월 3일 표준 변경 알림 기준은?",
+    "sourceIds": [
+      "C1",
+      "C2"
+    ],
+    "decision": "resolve-by-effective-date",
+    "selected": [
+      "C2"
+    ],
+    "explanation": "C1의 시행 기간 종료"
+  }
+]

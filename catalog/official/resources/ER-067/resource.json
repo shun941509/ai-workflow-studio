@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-067",
+  "revision": 1,
+  "kind": "skill",
+  "name": "성능 해석 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3571,
+      "sha256": "520fd6c0ded27119471b6cd44b63778ee705fccd2f39920a7ca01c34513da418"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1501,
+      "sha256": "e7ae400b0353539bebdfd6073c2afd53fa50ea76a796e015debf7da7eff47530"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 461,
+      "sha256": "3470bf80f0f6962fcdb41d3372c1beb25be01d4261e35f3717a71db54ba8ead4"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 760,
+      "sha256": "1a0e8bb6e1e4401e9265cae03235a0a9a5990dc6531019cc6a296f1d4173202d"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 226,
+      "sha256": "f7e1e5099eb260435fdf0e04355354e36d1004a3497039c77ab0ca3ad5e7695b"
+    },
+    {
+      "path": "scripts/compare-performance.mjs",
+      "bytes": 2274,
+      "sha256": "53f96c0b792fa65fe3cbdfd7aed78dc3c59e544c6fc428755c5d29af844bb659"
+    }
+  ]
+}

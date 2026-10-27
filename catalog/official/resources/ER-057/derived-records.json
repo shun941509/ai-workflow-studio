@@ -1,0 +1,25 @@
+[
+  {
+    "id": "SUM-1",
+    "sourceIds": [
+      "ACL-D1",
+      "ACL-D2"
+    ],
+    "requiredTenant": "lab-a",
+    "requiredGroups": [
+      "ops"
+    ]
+  },
+  {
+    "id": "EDGE-1",
+    "sourceIds": [
+      "ACL-D2",
+      "ACL-D3"
+    ],
+    "requiredTenant": "lab-a",
+    "requiredGroups": [
+      "ops",
+      "review"
+    ]
+  }
+]

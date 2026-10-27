@@ -1,0 +1,19 @@
+{
+  "fictional": true,
+  "rootDirectory": "허용된 references/checkpoint 절대 경로",
+  "checkpoint": {
+    "workflow": {
+      "path": "workflow.json",
+      "sha256": "ed0fa65a2c6348dd3ac8fe6ae6bd2bcb0fd8f579be6682a4b0b790a3cf430ce0"
+    },
+    "artifacts": [
+      {
+        "path": "result.txt",
+        "bytes": 36,
+        "sha256": "521b7e603755f02844751c0cbe0fadeda1b55a96e14a2329199e6eccdd16038c"
+      }
+    ],
+    "resources": [],
+    "unresolvedOperations": []
+  }
+}

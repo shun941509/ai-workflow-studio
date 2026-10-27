@@ -1,0 +1,23 @@
+{
+  "name": "@studio/package-kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "browser": "./src/browser-unsupported.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@studio/spec": "workspace:*",
+    "@studio/workflow-core": "workspace:*",
+    "fflate": "0.8.3",
+    "json-canonicalize": "3.0.1",
+    "yaml": "2.9.1"
+  }
+}

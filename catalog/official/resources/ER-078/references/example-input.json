@@ -1,0 +1,32 @@
+{
+  "fictional": true,
+  "request": {
+    "taskId": "H1",
+    "objective": "제공 표의 합계 검산",
+    "resources": [
+      {
+        "id": "D1",
+        "revision": 1,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "permissions": [
+      "read:provided-files"
+    ],
+    "budget": {
+      "maxCalls": 0,
+      "maxSeconds": 30
+    },
+    "completion": [
+      "행별 합과 총합의 대조 결과"
+    ],
+    "allowSubdelegation": false
+  },
+  "response": {
+    "taskId": "H1",
+    "status": "question",
+    "outputs": {},
+    "evidence": [],
+    "stopReason": "표 D1의 실제 파일과 해시가 제공되지 않음"
+  }
+}

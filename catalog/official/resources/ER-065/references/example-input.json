@@ -1,0 +1,6 @@
+{
+  "fictional": true,
+  "databasePath": "사용자가 허용한 절대 경로로 바꿀 것",
+  "sql": "SELECT project_id, name, status FROM projects ORDER BY project_id",
+  "rowLimit": 20
+}

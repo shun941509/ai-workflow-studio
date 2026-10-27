@@ -1,0 +1,21 @@
+{
+  "name": "@studio/runner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit",
+    "start": "tsx src/cli/main.ts",
+    "bridge": "tsx src/mcp/bridge.ts --stdio"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "@studio/package-kit": "workspace:*",
+    "@studio/rag-core": "workspace:*",
+    "@studio/spec": "workspace:*",
+    "@studio/workflow-core": "workspace:*",
+    "js-tiktoken": "1.0.21",
+    "zod": "4.6.7"
+  }
+}

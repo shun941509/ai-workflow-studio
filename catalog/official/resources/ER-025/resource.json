@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-025",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "빌드 오류 분석",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2413,
+      "sha256": "6f39c99b7899d1e8195a9c99f334bfdc9318f2830e21802ff9f17e4aeab1ffb8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1457,
+      "sha256": "d1f58a9e915235c780c2ff69a224eacbb2dee252704f16731977851065c023dc"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 748,
+      "sha256": "d202d1fadc24e12467d6b9ce2b290346b8ba9ae0377bde5b2baee87c88c6354f"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1115,
+      "sha256": "3ea4c5b5e39e748e8ab474e2530168a29ba82a80b4da77c8f88d5ae6e22d9a27"
+    }
+  ]
+}

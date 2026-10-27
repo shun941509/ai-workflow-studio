@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-021",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "API 전문가 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2388,
+      "sha256": "def1ea02e5508751aad48dc4a108b2120dccecd4add66df8a05d6ae703913f8f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1437,
+      "sha256": "64a207c90e2d1cdb76a1e52483d3da981c7f7a648cf9ab409fb5b031333d3aa0"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 772,
+      "sha256": "9a5db389da47c2c53d912428abdf262757df8573077072a7ad4043fe9aedc5ce"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1116,
+      "sha256": "90e2c544447bac9d736e70db9e021b6b4b4f45386c238f393b219e0e71cd4c3b"
+    }
+  ]
+}

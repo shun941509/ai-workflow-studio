@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-046",
+  "revision": 1,
+  "kind": "document",
+  "name": "제품 FAQ 지식집",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2934,
+      "sha256": "84f3a0ea346c851b223671a48dfc7c07be9bcfdaf78332318230d942c94ef32d"
+    },
+    {
+      "path": "faq.json",
+      "bytes": 3769,
+      "sha256": "d41a180d33449f6c4819c51cd3cf18f2435df773fd0020e3d5002f07e753a57c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1336,
+      "sha256": "d6f546b3e43b0e12ea64963990f9abd94e087f82f3d2974aed87fdaeca930505"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

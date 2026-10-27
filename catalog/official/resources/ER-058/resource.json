@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-058",
+  "revision": 1,
+  "kind": "document",
+  "name": "질문·정답·출처 평가집",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1502,
+      "sha256": "37c964a8659bdbbde65d0edaec3715293db800943b55464d2a478ed837e04f69"
+    },
+    {
+      "path": "corpus.json",
+      "bytes": 840,
+      "sha256": "ddd1139610cc69c480b4e9d5f3551860158406c2f2365d10d0e4ffdc0107009d"
+    },
+    {
+      "path": "questions.json",
+      "bytes": 1899,
+      "sha256": "a23ae0e1db703915be4e4d1410181ff71d6600543b64cf7866d724234aae57fd"
+    },
+    {
+      "path": "metric-example.json",
+      "bytes": 250,
+      "sha256": "75dd95410735cea7afad944ce56f6c0e041a0bcf1fd93627f2affa9d62c3abbe"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1343,
+      "sha256": "db7591ca1b17ac8737fe9579d76c8e8353fc607def5981d5c8dd965c9246dfc6"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

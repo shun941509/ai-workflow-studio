@@ -1,0 +1,24 @@
+{
+  "fictional": true,
+  "rootDirectory": "허용된 references/output 절대 경로",
+  "resultFile": "result.json",
+  "expected": {
+    "files": [
+      {
+        "path": "result.json",
+        "required": true
+      },
+      {
+        "path": "summary.txt",
+        "required": true
+      }
+    ],
+    "requiredFields": [
+      "/count",
+      "/approved"
+    ],
+    "fileReferences": [
+      "/attachment"
+    ]
+  }
+}

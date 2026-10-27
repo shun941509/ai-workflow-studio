@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FileRef",
+  "description": "Runner-issued reference to immutable managed bytes. The caller must still authorize the current run and verify the persisted descriptor; shape validation grants no access.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "pattern": "^file_[a-f0-9]{64}$" },
+    "relativePath": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "filename": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "mimeType": { "type": "string", "pattern": "^[a-z0-9][a-z0-9!#$&^_.+-]*/[a-z0-9][a-z0-9!#$&^_.+-]*$", "maxLength": 120 },
+    "bytes": { "type": "integer", "minimum": 0, "maximum": 134217728 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  },
+  "required": ["id", "relativePath", "filename", "mimeType", "bytes", "sha256"],
+  "additionalProperties": false
+}

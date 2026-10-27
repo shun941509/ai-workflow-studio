@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-057",
+  "revision": 1,
+  "kind": "document",
+  "name": "자료 접근 범위 정의서",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1659,
+      "sha256": "87527ca3f857f898c64e45548ac15e3d0dd382f1fa61728876cc6a3d518f9b78"
+    },
+    {
+      "path": "access-documents.json",
+      "bytes": 821,
+      "sha256": "d73c9064542a6b86bec2be5aa4581aa113fa5f5e4e330bd8ed9c74f940a1eee1"
+    },
+    {
+      "path": "principals.json",
+      "bytes": 316,
+      "sha256": "63ec1ae658a1b00b41f6f16b4adfe66e02012b63709e75a9a11152a397fca99b"
+    },
+    {
+      "path": "expected-access.json",
+      "bytes": 159,
+      "sha256": "88d2483132a695eacd893a5463562ff71a596695e50d7ca6981f2682d567b597"
+    },
+    {
+      "path": "derived-records.json",
+      "bytes": 336,
+      "sha256": "2d1903ddf8c39b98168bc451495332c4368e3e4d892057b345de1de1c730c298"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1353,
+      "sha256": "e943b09aa09a3564238cc9120d82b9c833430b1de32653d0ffece4e7826d84e6"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

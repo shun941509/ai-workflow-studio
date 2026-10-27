@@ -1,0 +1,17 @@
+{
+  "fictional": true,
+  "source": "가상 정책: 10MB 이하 PDF만 접수한다. 암호화 PDF는 크기와 관계없이 보류한다.",
+  "facts": [
+    {
+      "id": "F1",
+      "value": "10MB 이하",
+      "condition": "PDF 접수 크기"
+    },
+    {
+      "id": "F2",
+      "value": "보류",
+      "condition": "암호화 PDF"
+    }
+  ],
+  "beginner": "PDF 파일은 10MB까지 받을 수 있어요. 비밀번호가 걸린 PDF는 작아도 먼저 확인해야 합니다."
+}

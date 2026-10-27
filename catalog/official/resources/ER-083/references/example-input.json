@@ -1,0 +1,40 @@
+{
+  "fictional": true,
+  "imagePath": "허용된 references/scan.jpg 절대 경로",
+  "language": "ko",
+  "fields": [
+    {
+      "name": "request_id",
+      "type": "string",
+      "required": true,
+      "rect": [
+        470,
+        338,
+        640,
+        77
+      ]
+    },
+    {
+      "name": "quantity",
+      "type": "integer",
+      "required": true,
+      "rect": [
+        470,
+        773,
+        640,
+        77
+      ]
+    },
+    {
+      "name": "needed_by",
+      "type": "date",
+      "required": true,
+      "rect": [
+        470,
+        1063,
+        640,
+        77
+      ]
+    }
+  ]
+}

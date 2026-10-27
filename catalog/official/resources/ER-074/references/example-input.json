@@ -1,0 +1,33 @@
+{
+  "fictional": true,
+  "sections": {
+    "goal": "목표: 가상 행사 준비 현황 공유.",
+    "actions": "담당과 기한은 미정이다."
+  },
+  "rubric": [
+    {
+      "id": "purpose",
+      "weight": 1,
+      "required": true
+    },
+    {
+      "id": "ownership",
+      "weight": 2,
+      "required": true
+    }
+  ],
+  "assessments": [
+    {
+      "id": "purpose",
+      "score": 1,
+      "section": "goal",
+      "quote": "목표: 가상 행사 준비 현황 공유."
+    },
+    {
+      "id": "ownership",
+      "score": 0,
+      "section": "actions",
+      "quote": "담당과 기한은 미정이다."
+    }
+  ]
+}

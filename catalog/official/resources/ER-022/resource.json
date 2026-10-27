@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-022",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "DB 전문가 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2477,
+      "sha256": "cbeb28bdd74b2a852b97a7b60e8a642a739c2179bb365f0a3bc6bff1df023298"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1551,
+      "sha256": "850c4b7ed126b6e7c789b8d570738b24a40c40e4a52783bf0a85dbee4733a73a"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 758,
+      "sha256": "37977a9076ffc50718466889148503ee9805c517b8a39aad11bd947b9f16f31b"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1120,
+      "sha256": "b2d74c897a1c76d057dae8935d5382f8e59d689012060f62ee8a36f1c3154478"
+    }
+  ]
+}

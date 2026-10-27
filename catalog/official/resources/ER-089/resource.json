@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-089",
+  "revision": 1,
+  "kind": "skill",
+  "name": "중복 문서 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/fingerprint_documents.py",
+      "bytes": 3863,
+      "sha256": "baf115da7f69e3d93e0e04402a072d9a416229bf2f78f66945e2a46fcc157bee"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 210,
+      "sha256": "56b81cd5f85ce832aaac56bcb4d2031a6a861e963c2b05757be752d5824f044c"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3334,
+      "sha256": "a52589b01dc6db6e1bdb4889317faf74f7f71ec94a4d0c92ca792b2462cd44a0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1107,
+      "sha256": "d9d2ef4cd48bf8f573ddbaea8bba6042febb1f9ca6d4908d7276b2b7d100cccd"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 416,
+      "sha256": "db43ae8ae9cfd1d077eeb4b7f4a40587f32a8988f9d68437b814b05b20fd47ec"
+    },
+    {
+      "path": "references/a.txt",
+      "bytes": 52,
+      "sha256": "8769f1e106c6a0d12a305cff337a85c96330cad5f582a4e95a5437ae6def6a2d"
+    },
+    {
+      "path": "references/b.txt",
+      "bytes": 52,
+      "sha256": "8769f1e106c6a0d12a305cff337a85c96330cad5f582a4e95a5437ae6def6a2d"
+    },
+    {
+      "path": "references/c.txt",
+      "bytes": 55,
+      "sha256": "0766de72f926aed7c57d17b2eae7a233bb3b7b65805b0767d1e8fb39bb9ec2b2"
+    }
+  ]
+}

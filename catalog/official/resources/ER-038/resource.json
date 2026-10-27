@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-038",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "재계획 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2343,
+      "sha256": "36aa5bdb778df5e00d0d3c2144535bd3e2c2b22a99c0c5f3c132f1d884204466"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1446,
+      "sha256": "e7befc511aea82b4329affa6fa74a7531e7281ebac5713266de582febded731c"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 761,
+      "sha256": "80de807dc0853741ff682ff00c7bec9302bf2ab9c59fff0e92c40866e2718c47"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1207,
+      "sha256": "e840e69072d2f875bc6dbf093f3fa2194eec9083c7b2c0f2d2aa2a03cb4be1a3"
+    }
+  ]
+}

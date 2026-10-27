@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "title": "Expression",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "literal": {
+          "$ref": "json-value.schema.json"
+        }
+      },
+      "required": [
+        "literal"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "var": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        }
+      },
+      "required": [
+        "var"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "op": {
+          "type": "string",
+          "enum": [
+            "eq",
+            "ne",
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "and",
+            "or",
+            "not",
+            "exists",
+            "in"
+          ]
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "$ref": "expression.schema.json"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "op",
+        "args"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

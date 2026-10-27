@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-016",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "변경 작업 설명",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2355,
+      "sha256": "c2db195439bd0939e03decbc39b7c57ded8d64838d1a5019ad97af8524a89175"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1446,
+      "sha256": "cfcc514f980192dbf58a3c7c6614819c6468385d770fd4c6a6d295daccdbe455"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 752,
+      "sha256": "4f8696518d81d7dfe150cb1671119a5d93b11a938d1e7b29cf741dce0f888984"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1173,
+      "sha256": "f4cf562461d3e8c5ee8d5d1d89631148cc72eecf30504d55a958f369fbb9845c"
+    }
+  ]
+}

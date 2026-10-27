@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-060",
+  "revision": 1,
+  "kind": "document",
+  "name": "상충 출처 사례집",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2034,
+      "sha256": "3d76db8cf19a7b9204c447f0ace4a5bbfd69b209188d96744d0f020d32504856"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 1333,
+      "sha256": "c0afb1531bdcbf6d46c7855f4b4fe1992c2476b5f59bb459574ebe5baafe19f9"
+    },
+    {
+      "path": "cases.json",
+      "bytes": 986,
+      "sha256": "c62e372d6cc50b3982d3c8d0a488e7c6bdf22c8a5f3b2f0e054a0432f46e14c8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1344,
+      "sha256": "1adb7358a50702694ca3434347fe97d736581499faf4b355b315947c4fae177b"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

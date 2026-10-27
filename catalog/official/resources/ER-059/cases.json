@@ -1,0 +1,94 @@
+[
+  {
+    "id": "AB-01",
+    "question": "환불 기간은?",
+    "sources": [
+      {
+        "id": "A1",
+        "text": "배송은 3영업일 걸린다."
+      }
+    ],
+    "decision": "abstain",
+    "reason": "배송 기간은 환불 근거가 아님"
+  },
+  {
+    "id": "AB-02",
+    "question": "현재 Team 가격은?",
+    "sources": [
+      {
+        "id": "A2",
+        "text": "이 문서는 기능만 설명하며 가격은 포함하지 않는다."
+      }
+    ],
+    "decision": "abstain",
+    "reason": "가격 정보 없음"
+  },
+  {
+    "id": "AB-03",
+    "question": "모든 지역에서 전화 상담을 하나?",
+    "sources": [
+      {
+        "id": "A3",
+        "text": "지원 문의에는 요청 ID를 적는다."
+      }
+    ],
+    "decision": "abstain",
+    "reason": "문의 절차와 지역별 전화 지원은 다른 사실"
+  },
+  {
+    "id": "AB-04",
+    "question": "2026년 11월 적용 규칙은?",
+    "sources": [
+      {
+        "id": "A4",
+        "text": "2026년 10월까지 적용되는 규칙은 2일 전 알림이다."
+      }
+    ],
+    "decision": "abstain",
+    "reason": "질문 시점에 적용되는 근거 없음"
+  },
+  {
+    "id": "AB-05",
+    "question": "Basic 인원 한도와 환불 기간은?",
+    "sources": [
+      {
+        "id": "A5",
+        "text": "Basic은 최대 5명이다."
+      }
+    ],
+    "decision": "partial",
+    "reason": "인원은 답할 수 있으나 환불은 유보",
+    "answerablePart": "Basic 최대 5명"
+  },
+  {
+    "id": "AB-06",
+    "question": "운영 내부 일정은?",
+    "sources": [],
+    "decision": "abstain",
+    "reason": "허용 범위의 자료 없음; 권한 밖 조회 금지"
+  },
+  {
+    "id": "AB-07",
+    "question": "삭제 후 반드시 복구 가능한가?",
+    "sources": [
+      {
+        "id": "A7",
+        "text": "삭제 자료는 30일 동안 휴지통에 보관한다."
+      }
+    ],
+    "decision": "abstain",
+    "reason": "보관 기간은 모든 상황의 복구 보증이 아님"
+  },
+  {
+    "id": "AB-08",
+    "question": "“48”은 구성원 수인가?",
+    "sources": [
+      {
+        "id": "A8",
+        "text": "초대 링크는 48시간 유효하다."
+      }
+    ],
+    "decision": "abstain",
+    "reason": "숫자가 같아도 단위와 대상이 다름"
+  }
+]

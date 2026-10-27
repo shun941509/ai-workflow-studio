@@ -1,0 +1,7 @@
+{
+  "fictional": true,
+  "mode": "split",
+  "sourcePath": "허용된 references/source.txt 절대 경로",
+  "outputDirectory": "새 절대 출력 폴더",
+  "chunkBytes": 64
+}

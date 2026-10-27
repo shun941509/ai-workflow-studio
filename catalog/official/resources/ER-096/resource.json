@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-096",
+  "revision": 1,
+  "kind": "skill",
+  "name": "취소 결과 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/report_cancellation.py",
+      "bytes": 4596,
+      "sha256": "f53b23be71e61d29fc3b31a5856101fffc12a4802f61614c20a7a314ec395c4c"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 352,
+      "sha256": "cb921519c34d9c588dd48223ee7a348b6c98fd701c17bae7eb8a34c6ea59d956"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3185,
+      "sha256": "774236576c6025e60861ebac340af1885dd02f54d26f5ffc99724ee1bbb7098d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1026,
+      "sha256": "fe5bf2aa23eeded17bd4b7de490529d0bf3b4d2ea3e46204b4f7a176adc44bca"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 549,
+      "sha256": "36d58e153aa948cde4145261b8234ca6a9e6418dbe21586bed7b5cb0865b7720"
+    }
+  ]
+}

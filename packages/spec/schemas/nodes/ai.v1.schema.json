@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "type": {
+      "const": "ai"
+    },
+    "typeVersion": {
+      "const": 1
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "inputBindings": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "../binding.schema.json"
+      }
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "modelProfile": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "responseFormat": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "text"
+                }
+              },
+              "required": [
+                "mode"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "const": "json"
+                },
+                "schema": {
+                  "$ref": "../user-schema.schema.json"
+                }
+              },
+              "required": [
+                "mode",
+                "schema"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 131072
+        }
+      },
+      "required": [
+        "modelProfile",
+        "instructions",
+        "responseFormat",
+        "maxOutputTokens"
+      ],
+      "additionalProperties": false
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "$ref": "../attachment.schema.json"
+      },
+      "minItems": 0
+    },
+    "execution": {
+      "$ref": "../execution.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "typeVersion",
+    "label",
+    "inputBindings",
+    "config",
+    "attachments",
+    "execution"
+  ],
+  "additionalProperties": false,
+  "title": "AiNode"
+}

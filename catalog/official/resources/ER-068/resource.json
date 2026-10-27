@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-068",
+  "revision": 1,
+  "kind": "skill",
+  "name": "접근성 점검 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2598,
+      "sha256": "4ec5d11f04f3aa2c77ec098c717b2473381ed3393db882fa1e4b8a86160f376b"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1401,
+      "sha256": "5e6815720afaa0fb128a75731ddb91fc927649e3fcd97a44d396fb6711f22714"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 414,
+      "sha256": "b21a0b5acfea8588b0528ce88d97d654dc4e9d8ca83d384bbcc89f6eaf5be95f"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 791,
+      "sha256": "b66ae29738c94de1e73abf25adcb3331b7b70ce0f50ddac7049029b0760173bc"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 210,
+      "sha256": "2316779147ab029faaab107957e5edda081e6676703ee438b3253ad373572137"
+    },
+    {
+      "path": "references/screen.html",
+      "bytes": 1466,
+      "sha256": "5715297c9832977593bb03aa12eec9604b6b0e24f924d1879b0ff64cca0df093"
+    }
+  ]
+}

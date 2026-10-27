@@ -1,0 +1,98 @@
+[
+  {
+    "id": "FAQ-001",
+    "question": "라온 협업보드는 무엇인가요?",
+    "answer": "가상 팀의 업무 카드와 보고서를 정리하는 연습용 제품입니다. 실제 상용 서비스가 아닙니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-002",
+    "question": "Basic의 구성원 한도는?",
+    "answer": "Basic은 워크스페이스당 최대 5명의 구성원을 등록할 수 있습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-003",
+    "question": "Team의 구성원 한도는?",
+    "answer": "Team은 워크스페이스당 최대 25명의 구성원을 등록할 수 있습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-004",
+    "question": "파일 크기 한도는?",
+    "answer": "파일 하나당 Basic 20 MiB, Team 100 MiB입니다. MiB는 1,048,576바이트입니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-005",
+    "question": "삭제한 카드를 복구할 수 있나요?",
+    "answer": "휴지통 보관 기간은 Basic 30일, Team 90일입니다. 보관 기간이 지난 카드의 복구는 이 문서에서 보장하지 않습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-006",
+    "question": "외부 공개는 기본인가요?",
+    "answer": "새 프로젝트는 비공개입니다. 외부 공개에는 범위 담당자의 별도 승인이 필요합니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-007",
+    "question": "CSV 내보내기가 가능한가요?",
+    "answer": "두 플랜 모두 읽기 권한이 있는 카드의 CSV 내보내기를 지원합니다. 숨겨진 필드는 내보내지 않습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-008",
+    "question": "API 조회는 어느 플랜에 있나요?",
+    "answer": "API 조회는 Team에서 지원합니다. reports:read 범위와 프로젝트 접근 권한이 모두 필요합니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-009",
+    "question": "초대 링크는 얼마나 유효한가요?",
+    "answer": "초대 링크는 생성 후 48시간 동안 유효하며 사용하면 다시 사용할 수 없습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-010",
+    "question": "시간은 어떻게 보이나요?",
+    "answer": "기록은 UTC로 저장하고 화면에서는 사용자가 선택한 시간대로 표시합니다. 날짜만 있는 기한은 시각으로 변환하지 않습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-011",
+    "question": "지원 문의에 무엇을 보내나요?",
+    "answer": "요청 ID·발생 시각·기능 이름·가린 오류 화면을 보냅니다. 비밀번호·API 키·고객 원문은 보내지 않습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  },
+  {
+    "id": "FAQ-012",
+    "question": "실패한 보고서 요청을 다시 보내도 되나요?",
+    "answer": "응답이 없으면 기존 요청 ID로 처리 상태를 먼저 확인합니다. 결과 불명 상태에서 새 요청 ID로 자동 재전송하지 않습니다.",
+    "version": 1,
+    "effectiveFrom": "2026-10-01",
+    "access": "fictional-public"
+  }
+]

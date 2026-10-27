@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-027",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "운영 담당자 관점",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2213,
+      "sha256": "e5aeb54d07f912a7ce7466407e7b7d1399f4fccb1d4b51f2559856d82543b889"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1434,
+      "sha256": "032657d72c1e4982922e9794093a75689d3ca92665947a259d00ef50892c379d"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 755,
+      "sha256": "e7e1bf81c4e0abf7389fdb65dd41718a1143370b65471a3190606fa65cf8d223"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1173,
+      "sha256": "88defb7a6a98a3335edb55a03a387fb339d11f9fb74a399c52aaaf2a435670ae"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "U-READER": [
+    "ACL-D1"
+  ],
+  "U-OPS": [
+    "ACL-D1",
+    "ACL-D2"
+  ],
+  "U-REVIEW": [
+    "ACL-D1",
+    "ACL-D3"
+  ],
+  "U-B": [
+    "ACL-D4"
+  ]
+}

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "ACL-D1",
+    "tenant": "lab-a",
+    "scope": "public",
+    "groups": [],
+    "text": "라온 공개 소개: 업무 카드를 정리합니다."
+  },
+  {
+    "id": "ACL-D2",
+    "tenant": "lab-a",
+    "scope": "group",
+    "groups": [
+      "ops"
+    ],
+    "text": "가상 운영 점검 주기는 월요일입니다."
+  },
+  {
+    "id": "ACL-D3",
+    "tenant": "lab-a",
+    "scope": "group",
+    "groups": [
+      "review"
+    ],
+    "text": "가상 검토 회의는 수요일입니다."
+  },
+  {
+    "id": "ACL-D4",
+    "tenant": "lab-b",
+    "scope": "public",
+    "groups": [],
+    "text": "다른 가상 조직의 소개입니다."
+  },
+  {
+    "id": "ACL-D5",
+    "tenant": "lab-a",
+    "scope": "private",
+    "groups": [],
+    "text": "개인 작업 초안은 검색 대상이 아닙니다."
+  }
+]

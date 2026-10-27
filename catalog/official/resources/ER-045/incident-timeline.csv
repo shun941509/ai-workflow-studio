@@ -1,0 +1,6 @@
+event_id,time_utc,request_id,event,observed_scope
+E1,2026-10-14T09:10:00Z,REQ-204-1,generation_timeout,report-generation
+E2,2026-10-14T09:12:00Z,REQ-204-2,generation_error,report-generation
+E3,2026-10-14T09:14:00Z,REQ-204-3,read_success,report-read
+E4,2026-10-14T09:17:00Z,REQ-204-1,status_unknown,one-request
+E5,2026-10-14T09:25:00Z,REQ-204-4,generation_success,new-request-only

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-078",
+  "revision": 1,
+  "kind": "skill",
+  "name": "Sub Agent 인계 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2645,
+      "sha256": "3bef9bcfdb16404d8530638aed388cf3268dea99eec7e4ddc432052b3a63f55f"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1427,
+      "sha256": "53d63bed9b653819c63e658297340825ef97d349942fb5441be5419c0cf15abc"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 445,
+      "sha256": "694b8b98ad01aecc68a5d768d8db0cce6561bb0c2bf4f07eb85a4da8ef6eb003"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 839,
+      "sha256": "9f101f5cb4cdac58ccc5f9a8267241d033b0a1af2088a70c2a853cae4f93c053"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 693,
+      "sha256": "655e1de9637509e9ecdd2ea7be56e9ac36a2438948786cd68a3d96dfffe4d0a5"
+    },
+    {
+      "path": "assets/handoff.schema.json",
+      "bytes": 3671,
+      "sha256": "ee672d8974fc0e05655ee36128d557838b6d31861477604d513670235a6417b8"
+    }
+  ]
+}

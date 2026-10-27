@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-076",
+  "revision": 1,
+  "kind": "skill",
+  "name": "역할 분배 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2569,
+      "sha256": "24e67ed020593f1e9e0bd8ea44914be7bb13c2822fad838f8d1135cd15e65bf7"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1399,
+      "sha256": "60a96bd11d3f6f8490a65311fc486e153458deb87fc4e3dc42d69b9518598342"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 460,
+      "sha256": "3ed25edbb59a0991722807a407aa849aa74d4c62b3465f6b15c7334d3205aa67"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 811,
+      "sha256": "34b358f984b9fa0ec5ca11521f215c1c7accb4ab24ed75f8e0d038adda70794b"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 779,
+      "sha256": "13dae9faf36d4873abf699e12bf9fbf6374998e87451b049d3015c2af9492d3d"
+    },
+    {
+      "path": "assets/role-contract.schema.json",
+      "bytes": 946,
+      "sha256": "876a6d4575b52746cec310618c12dacf5d0e05799805ac027e6da2da1924a43f"
+    }
+  ]
+}

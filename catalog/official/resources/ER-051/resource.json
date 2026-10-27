@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-051",
+  "revision": 1,
+  "kind": "document",
+  "name": "표 포함 보고서",
+  "entrypoint": "report.pdf",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1571,
+      "sha256": "c7363ebd3a9edd617d2b2e690eb00f1799823c6dc846e8951321c36b6d4685e3"
+    },
+    {
+      "path": "report.pdf",
+      "bytes": 7061,
+      "sha256": "891f62fbaf7b35ce2dcd9c70e37a1b8fa1d61a400d23ed590471fcfbde6fbcd1"
+    },
+    {
+      "path": "table-cells.json",
+      "bytes": 10898,
+      "sha256": "2ccae549b9411179b22710173c2481c8522fa10eae57770d23d86089aa58a1d8"
+    },
+    {
+      "path": "expected-tables.csv",
+      "bytes": 238,
+      "sha256": "4774e5d4acba2248be697e3f97ece60458ef489762c038ac2406ab0cfd3ed8dd"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1340,
+      "sha256": "0b451c605812b7c73ee3b9935b9279109e8163fb6517e7aa867bb3bea121c73f"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "fictional": true,
+  "targetOffset": "+09:00",
+  "targetUnit": "m",
+  "digits": 3,
+  "unitFactors": {
+    "m": "1",
+    "cm": "0.01"
+  },
+  "records": [
+    {
+      "id": "A",
+      "datetime": "2026-10-01T23:30:00Z",
+      "value": "123.45",
+      "unit": "cm"
+    },
+    {
+      "id": "B",
+      "datetime": "2026-10-02T08:30:00+09:00",
+      "value": "2.5",
+      "unit": "m"
+    }
+  ]
+}

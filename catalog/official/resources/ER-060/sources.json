@@ -1,0 +1,56 @@
+[
+  {
+    "id": "C1",
+    "subject": "export-notice",
+    "scope": "standard",
+    "status": "approved",
+    "effectiveFrom": "2026-10-01",
+    "effectiveTo": "2026-10-31",
+    "text": "표준 변경은 2일 전에 알린다."
+  },
+  {
+    "id": "C2",
+    "subject": "export-notice",
+    "scope": "standard",
+    "status": "approved",
+    "effectiveFrom": "2026-11-01",
+    "effectiveTo": null,
+    "text": "표준 변경은 5일 전에 알린다."
+  },
+  {
+    "id": "C3",
+    "subject": "file-limit",
+    "scope": "Basic",
+    "status": "approved",
+    "effectiveFrom": "2026-10-01",
+    "effectiveTo": null,
+    "text": "파일 하나의 한도는 20 MiB이다."
+  },
+  {
+    "id": "C4",
+    "subject": "file-limit",
+    "scope": "Team",
+    "status": "approved",
+    "effectiveFrom": "2026-10-01",
+    "effectiveTo": null,
+    "text": "파일 하나의 한도는 100 MiB이다."
+  },
+  {
+    "id": "C5",
+    "subject": "support-window",
+    "scope": "all",
+    "status": "approved",
+    "effectiveFrom": "2026-10-01",
+    "effectiveTo": null,
+    "text": "가상 지원 접수는 17시에 끝난다."
+  },
+  {
+    "id": "C6",
+    "subject": "support-window",
+    "scope": "all",
+    "status": "approved",
+    "effectiveFrom": "2026-10-01",
+    "effectiveTo": null,
+    "text": "가상 지원 접수는 18시에 끝난다."
+  }
+]

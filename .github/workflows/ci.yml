@@ -1,0 +1,35 @@
+# Credential-free checks never substitute for recorded live-model, host, or release verification.
+name: contracts-and-build
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 12.15.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.1
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # PDF/SQLite sample verification is internal tooling, never a prerequisite in user ZIPs.
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.14'
+          cache: pip
+          cache-dependency-path: tooling/catalog/requirements-verification.txt
+      - run: python -m pip install --only-binary=:all: -r tooling/catalog/requirements-verification.txt
+      # Internal HTML safety tests use the Playwright-pinned browser; no browser binary enters user ZIPs.
+      - run: pnpm exec playwright install chromium
+      # Experimental Python isolation proof uses verified embed bytes; no global installer or user ZIP dependency.
+      - run: node tooling/prepare-windows-python.mjs
+      - run: pnpm check:generated
+      - run: pnpm check:boundaries
+      - run: pnpm check:catalog
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build

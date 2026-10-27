@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-097",
+  "revision": 1,
+  "kind": "skill",
+  "name": "재개 준비 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/check_resume.py",
+      "bytes": 4829,
+      "sha256": "bb9d70363073709e50f46bd3e9ff471f98665dad7f8e41b872835d78ea9686cd"
+    },
+    {
+      "path": "references/checkpoint/workflow.json",
+      "bytes": 57,
+      "sha256": "ed0fa65a2c6348dd3ac8fe6ae6bd2bcb0fd8f579be6682a4b0b790a3cf430ce0"
+    },
+    {
+      "path": "references/checkpoint/result.txt",
+      "bytes": 36,
+      "sha256": "521b7e603755f02844751c0cbe0fadeda1b55a96e14a2329199e6eccdd16038c"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 484,
+      "sha256": "5d81110f332ce292db14b696c7aee02a94df2333f99b560a425b87bb81a11c6e"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3254,
+      "sha256": "e1b4c9c4aa4e4b5f57c357490ddb3eff2a5c152cd1cdea9eed336d6db508f576"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1023,
+      "sha256": "9b513c4fd0d1d5eb45119e4678b764101630db945a406c46aa0bb5a7a902ad45"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 587,
+      "sha256": "c07a228193c26364c20f8dc1ab5c4f5dd08b8269cf851bb653eb1fe75d05e62c"
+    }
+  ]
+}

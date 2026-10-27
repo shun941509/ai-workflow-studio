@@ -1,0 +1,43 @@
+{
+  "goal": "가상 행사 장소 A와 B를 비용·이동 시간 기준으로 비교",
+  "options": [
+    {
+      "id": "a",
+      "name": "가상 장소 A"
+    },
+    {
+      "id": "b",
+      "name": "가상 장소 B"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "cost",
+      "description": "사용자가 받은 대관료"
+    },
+    {
+      "id": "travel",
+      "description": "참가자가 확인한 이동 시간"
+    }
+  ],
+  "facts": [
+    {
+      "optionId": "a",
+      "criterionId": "cost",
+      "value": "20만 원",
+      "source": "연습용 견적 A"
+    },
+    {
+      "optionId": "b",
+      "criterionId": "cost",
+      "value": "25만 원",
+      "source": "연습용 견적 B"
+    },
+    {
+      "optionId": "a",
+      "criterionId": "travel",
+      "value": "30분",
+      "source": "연습용 이동 기록 A"
+    }
+  ]
+}

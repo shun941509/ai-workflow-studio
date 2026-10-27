@@ -1,0 +1,33 @@
+{
+  "fictional": true,
+  "criteria": [
+    {
+      "id": "monthlyCost",
+      "unit": "가상 비용 단위/월",
+      "required": true,
+      "max": 20
+    },
+    {
+      "id": "offline",
+      "unit": "boolean",
+      "required": false
+    }
+  ],
+  "options": [
+    {
+      "id": "A",
+      "values": {
+        "monthlyCost": 18,
+        "offline": false
+      }
+    },
+    {
+      "id": "B",
+      "values": {
+        "monthlyCost": null,
+        "offline": true
+      }
+    }
+  ],
+  "conclusion": "A는 알려진 예산 조건 충족. B는 비용 미확인으로 예산 적합성을 판정하지 않음."
+}

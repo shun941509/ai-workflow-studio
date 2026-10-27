@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-059",
+  "revision": 1,
+  "kind": "document",
+  "name": "근거 부족 사례집",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2406,
+      "sha256": "fba3eb4a9f5925e29de4696c7f878778c7f7465f6f0681e7f50f28375529a40e"
+    },
+    {
+      "path": "cases.json",
+      "bytes": 2302,
+      "sha256": "1693a28f5b2d4cde3d0e46d356ac039b41cf7d19a7f5754c277687baf84bb4e2"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1344,
+      "sha256": "db18d376185c05702511aed53d405365afa3d19347aae3ab4684d346a7b95f5a"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

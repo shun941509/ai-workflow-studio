@@ -1,0 +1,15 @@
+{
+  "fictional": true,
+  "request": "가상 한빛팀의 11월 준비 현황을 회의용 한 페이지 표로 정리해 줘. 담당자는 바꾸지 마.",
+  "known": {
+    "goal": "11월 준비 현황 파악",
+    "deliverable": "회의용 한 페이지 표",
+    "constraints": [
+      "담당자 유지"
+    ]
+  },
+  "blockingQuestions": [
+    "원본 업무 목록은 어디에 있나요?"
+  ],
+  "ready": false
+}

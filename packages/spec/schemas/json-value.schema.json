@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "title": "JsonValue",
+  "anyOf": [
+    {
+      "type": "null"
+    },
+    {
+      "type": "boolean"
+    },
+    {
+      "type": "number"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "type": "array",
+      "items": {
+        "$ref": "json-value.schema.json"
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "json-value.schema.json"
+      }
+    }
+  ]
+}

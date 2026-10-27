@@ -1,0 +1,47 @@
+{
+  "fictional": true,
+  "parentPermissions": [
+    "read:provided-files"
+  ],
+  "roles": [
+    {
+      "id": "extractor",
+      "inputs": [
+        "D1"
+      ],
+      "outputs": [
+        "records"
+      ],
+      "permissions": [
+        "read:provided-files"
+      ],
+      "completion": "원문 위치가 있는 레코드"
+    },
+    {
+      "id": "reviewer",
+      "inputs": [
+        "records",
+        "D1"
+      ],
+      "outputs": [
+        "review"
+      ],
+      "permissions": [
+        "read:provided-files"
+      ],
+      "completion": "필드별 대조"
+    }
+  ],
+  "assignments": [
+    {
+      "taskId": "T1",
+      "owner": "extractor",
+      "contributors": []
+    },
+    {
+      "taskId": "T2",
+      "owner": "reviewer",
+      "contributors": []
+    }
+  ]
+}

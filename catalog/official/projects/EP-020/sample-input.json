@@ -1,0 +1,46 @@
+{
+  "goal": "가상 보고 서비스의 파일 저장을 객체 저장 연결로 이전하는 계획 작성",
+  "current": [
+    {
+      "id": "web",
+      "role": "보고 요청 접수",
+      "dependsOn": [
+        "files"
+      ]
+    },
+    {
+      "id": "files",
+      "role": "로컬 보고 파일 보관",
+      "dependsOn": []
+    }
+  ],
+  "target": [
+    {
+      "id": "web",
+      "role": "보고 요청 접수",
+      "dependsOn": [
+        "objects"
+      ]
+    },
+    {
+      "id": "objects",
+      "role": "객체 저장 연결로 보고 파일 보관",
+      "dependsOn": []
+    }
+  ],
+  "constraints": [
+    {
+      "id": "C1",
+      "rule": "현재 사용자 파일을 삭제하지 않는다."
+    },
+    {
+      "id": "C2",
+      "rule": "이 작업에서는 실제 배포·업로드·인증 변경을 하지 않는다."
+    },
+    {
+      "id": "C3",
+      "rule": "새 경로의 읽기 결과를 확인하기 전 기존 읽기 경로를 제거하지 않는다."
+    }
+  ],
+  "backupState": null
+}

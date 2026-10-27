@@ -1,0 +1,39 @@
+{
+  "fictional": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "status",
+      "count"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": [
+          "complete",
+          "partial"
+        ]
+      },
+      "count": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "sources": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "uniqueItems": true
+      }
+    }
+  },
+  "value": {
+    "status": "complete",
+    "count": 3,
+    "sources": [
+      "D1",
+      "D2"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-049",
+  "revision": 1,
+  "kind": "document",
+  "name": "규칙 개정 자료집",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1909,
+      "sha256": "6759e8c8d5d29c681ac4120d3b1097b5baaf649bf3481315b68ef64d63680419"
+    },
+    {
+      "path": "revisions.json",
+      "bytes": 1043,
+      "sha256": "6085185f66c056bfb7af2a48163b589e634c1bf89a9184f89325a4c1c7ab8b59"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1342,
+      "sha256": "7636aa17fcd9dbf6748b9fc79f856636243bf881b054986639ec0e9da1e412fa"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

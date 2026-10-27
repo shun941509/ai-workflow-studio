@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-053",
+  "revision": 1,
+  "kind": "document",
+  "name": "역할·담당 범위표",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1906,
+      "sha256": "767774f0943c93c3762550ffde41bf9994bdebf9082ad1b23b8d1baecd5ef27d"
+    },
+    {
+      "path": "roles.json",
+      "bytes": 1253,
+      "sha256": "836559378fa7d59ccebde91fc7d41aaa14f96601990406a186bbd0b3db935acd"
+    },
+    {
+      "path": "assignments.json",
+      "bytes": 303,
+      "sha256": "61292c097a49bb5953ec19e0c4b1c0935b52d83fba75d5450f46cdf03c939c81"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1338,
+      "sha256": "2a59e6ff0d7dbf7185f884a0e528c51fd7c213a417a64c2e5059bf4ccb55b259"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

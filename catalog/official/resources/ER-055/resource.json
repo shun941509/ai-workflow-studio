@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-055",
+  "revision": 1,
+  "kind": "document",
+  "name": "개체 식별 사전†",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2004,
+      "sha256": "931f354f84889c00d80566d0bcfae12a67c8dc40d148c6fdff71c84466e5edde"
+    },
+    {
+      "path": "entities.json",
+      "bytes": 1671,
+      "sha256": "e8008119c80353dcc1c2ccd496846495b644d60582513966c5a18dad84398597"
+    },
+    {
+      "path": "resolution-cases.json",
+      "bytes": 517,
+      "sha256": "c832d71a41bf58430c59d6bf5bc2cd36223bd051ac37578ec52d61ea6a7340a9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1337,
+      "sha256": "dcaeb7f0abf912e05f398591cc9f1bbd758d594fdccc4b749dae13d7974ec8bb"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

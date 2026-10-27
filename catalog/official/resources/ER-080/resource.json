@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-080",
+  "revision": 1,
+  "kind": "skill",
+  "name": "재계획 비교 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3618,
+      "sha256": "626edabdf57437814daaa1e2addbcf533d559a18f9e3e6f78429c81a7a9d7d52"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1523,
+      "sha256": "da5b26f797d2448b9e2d84a9df25569ee8389ce385b9cf6d94e4a136247bb604"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 459,
+      "sha256": "662e462679c4a2c39f9cf3191e1e0be22f59ea218955eb74b6641849e1a5ca15"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 779,
+      "sha256": "f629abe4ac901ffc761354593e1215f25108f1baad26be1fd47bdc23d2bc25e7"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 833,
+      "sha256": "4830cd4e7162dc0742480cf9d7ea03a8980b2624f19b1a20529378b61036b27e"
+    },
+    {
+      "path": "scripts/compare-plans.mjs",
+      "bytes": 2782,
+      "sha256": "559f4d94167eb2608e0cbb6de33fc5b36ed68b6a8ad9ae48f2c91ed07c9d8f21"
+    }
+  ]
+}

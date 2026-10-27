@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-042",
+  "revision": 1,
+  "kind": "document",
+  "name": "API 계약 읽기 안내서",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2179,
+      "sha256": "374fe7e335f669d06adc66678fbf93be81e080fd1295daddcaffc56a69406b1b"
+    },
+    {
+      "path": "openapi.json",
+      "bytes": 3970,
+      "sha256": "50ff38be4c5edba1ec0d14b213d3991ce6ab169a41885e51465c8783529a09a6"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1347,
+      "sha256": "17f8e5104e704dd16577c24e85fe7d344635167de09c804945bb6540a65be793"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

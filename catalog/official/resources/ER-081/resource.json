@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-081",
+  "revision": 1,
+  "kind": "skill",
+  "name": "CSV 정리 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/clean_csv.py",
+      "bytes": 4459,
+      "sha256": "296b623bbae673747a24b00fb957b3816f3e98f6d8c7afb22c9b17fb3f27ab24"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 240,
+      "sha256": "e0fc918b6ae6a2aae588963fcfa77f5d1b4c77c67365588872c7fffdabe8cc52"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3266,
+      "sha256": "81bcebb065ff1a7fa6e7b743fc24c8796ff54f4d99f5d8ccf8b29804b7616a55"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1090,
+      "sha256": "6ea904bffdf882a1c2f7355a43a2665c9cc89d7ecc687e94dad4320bc4778ffa"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 415,
+      "sha256": "4ced484babf494772d351501b356b2230b2a8460225f265c046d3827b081d887"
+    },
+    {
+      "path": "references/source.csv",
+      "bytes": 74,
+      "sha256": "bbe5b5df62f8a3697c8c479c7e04870d66a38e8bd671f04637f46b1aa58bfba4"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "Q1",
+    "question": "Basic 구성원은 최대 몇 명인가?",
+    "answer": "5명",
+    "relevantIds": [
+      "D1"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q2",
+    "question": "Team 구성원은 최대 몇 명인가?",
+    "answer": "25명",
+    "relevantIds": [
+      "D2"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q3",
+    "question": "Basic 파일 한도는?",
+    "answer": "20 MiB",
+    "relevantIds": [
+      "D3"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q4",
+    "question": "Team 파일 한도는?",
+    "answer": "100 MiB",
+    "relevantIds": [
+      "D3"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q5",
+    "question": "CSV에 권한 없는 필드도 포함되나?",
+    "answer": "제외한다",
+    "relevantIds": [
+      "D4"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q6",
+    "question": "초대 링크 유효 시간은?",
+    "answer": "48시간",
+    "relevantIds": [
+      "D5"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q7",
+    "question": "초대 링크를 두 번 쓸 수 있나?",
+    "answer": "한 번 사용하면 만료된다",
+    "relevantIds": [
+      "D5"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q8",
+    "question": "새 프로젝트는 외부 공개 상태인가?",
+    "answer": "비공개",
+    "relevantIds": [
+      "D6"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q9",
+    "question": "Basic과 Team 구성원 한도를 비교해줘.",
+    "answer": "Basic 5명, Team 25명",
+    "relevantIds": [
+      "D1",
+      "D2"
+    ],
+    "answerable": true
+  },
+  {
+    "id": "Q10",
+    "question": "API를 사용한 가격은 얼마인가?",
+    "answer": null,
+    "relevantIds": [],
+    "answerable": false
+  },
+  {
+    "id": "Q11",
+    "question": "한국어 전화 상담은 몇 시까지 가능한가?",
+    "answer": null,
+    "relevantIds": [],
+    "answerable": false
+  }
+]

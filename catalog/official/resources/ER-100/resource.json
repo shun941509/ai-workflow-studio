@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-100",
+  "revision": 1,
+  "kind": "skill",
+  "name": "운영 패키지 검사 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/inspect_package.py",
+      "bytes": 7819,
+      "sha256": "fec435a563529b5950e98ff083b100f400cb6d19c57c03cef49d1977bc88b43d"
+    },
+    {
+      "path": "references/sample.zip",
+      "bytes": 7182,
+      "sha256": "79ce16375bd6b66c30b7e966cd7f7e458d864ca64c043c43d3d9947c5670b9a7"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 90,
+      "sha256": "d6f41d7e970b428eda44d1591201a9646b02ea6799d5ca22294a93a2267cfde5"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3409,
+      "sha256": "cd11f54d82d568cb3c189169985025af62f11d1bbad152ff4e169ec43576c5aa"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1011,
+      "sha256": "186e8148431486da1b3764193d3415c601681ef1e507775139f6c2a32dfb1d5e"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 587,
+      "sha256": "7a700ba3b8c5705f670bb2d32769eac7b1dd8550f87f149179f90da55f36de16"
+    }
+  ]
+}

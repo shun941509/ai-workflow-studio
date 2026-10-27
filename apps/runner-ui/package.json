@@ -1,0 +1,6 @@
+{
+  "name": "@studio/runner-ui", "version": "0.1.0", "private": true, "type": "module",
+  "scripts": { "typecheck": "tsc --noEmit", "build": "vite build", "dev": "vite --host 127.0.0.1" },
+  "dependencies": { "@studio/spec": "workspace:*", "@studio/ui": "workspace:*", "react": "19.3.1", "react-dom": "19.3.1", "lucide-react": "1.62.0" },
+  "devDependencies": { "@types/react": "^19", "@types/react-dom": "^19", "@vitejs/plugin-react": "6.1.2", "vite": "8.3.5" }
+}

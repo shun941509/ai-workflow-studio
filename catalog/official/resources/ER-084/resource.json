@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-084",
+  "revision": 1,
+  "kind": "skill",
+  "name": "PDF 표 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/extract_pdf_tables.py",
+      "bytes": 4594,
+      "sha256": "7492fb30b16d9b335688a8dd8a26a87d21f445d5a3314fcc0a90c9d3ec3d7b1b"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 169,
+      "sha256": "cb6f70d6c2d0dbc6a416bc13544d7f80083e8edefe4c5fdf75a80687ed71fcb1"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3251,
+      "sha256": "f92129f9197fe82c7b8ace03678c1faa9975775c495e8af90c766fc26e3d2f8c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1076,
+      "sha256": "6b033176e6eda03f93cf5acb76f49f6dca5fa15c329fec5599c48e7186bd4c1e"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 406,
+      "sha256": "e90407c17236ff4cbfb9627ca5a6f98c460ad7aff7da1fe15154f8d4f370aed3"
+    },
+    {
+      "path": "references/report.pdf",
+      "bytes": 7061,
+      "sha256": "891f62fbaf7b35ce2dcd9c70e37a1b8fa1d61a400d23ed590471fcfbde6fbcd1"
+    }
+  ]
+}

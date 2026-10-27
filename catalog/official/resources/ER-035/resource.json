@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-035",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "멀티 에이전트 역할 계약",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2299,
+      "sha256": "840962a2e9a5cc0bb9147893f9e686689bde4e495c8b1ada4e29d99199cad54e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1437,
+      "sha256": "f356d82cb6378284ffc3170cc9aef849ad2dd796c89b6c0ba84f547053fb6ffe"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 762,
+      "sha256": "7d1e261a8c3e69c7645a3a143b1c56337cb3733b6bd961cae30d98ae5eaf7f90"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1225,
+      "sha256": "34e5f7a6b5e11c98cabc664a8dd9dbc15d9efa7e6dda8d33cbf36e87543c9c90"
+    }
+  ]
+}

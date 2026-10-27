@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-094",
+  "revision": 1,
+  "kind": "skill",
+  "name": "산출물 완전성 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/check_completeness.py",
+      "bytes": 5573,
+      "sha256": "90c32d6c9170d3e04f77cae5d0c1f5e677fececaf12c6517a903d4b261c6d56b"
+    },
+    {
+      "path": "references/output/result.json",
+      "bytes": 56,
+      "sha256": "99ada713459901a9db24f018563cc2bb525a22bb577ab90c6f4d282760a6ae71"
+    },
+    {
+      "path": "references/output/summary.txt",
+      "bytes": 65,
+      "sha256": "eac883ed0440db2e17b7fe97c572beef1b7f59c2fa3fb0a77bd430c5ece86548"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 422,
+      "sha256": "4694026ede4e056f18e25ef48971a540ae0a7d4858c1d603c036505a8cc559a7"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3194,
+      "sha256": "d3db48af81a1d65de2479efd6cf439ab424fcbf65c5af2de6c951fcb2c7626b0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1020,
+      "sha256": "d56b94408487e17df3a12095c02337557eeb1e180b20be926514e244b55aef2e"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 511,
+      "sha256": "454ae61578a8cd293af90466525d57d420cfcf73cad099244951c8166e7e4865"
+    }
+  ]
+}

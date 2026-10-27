@@ -1,0 +1,13 @@
+{
+  "fictional": true,
+  "executables": [
+    "python"
+  ],
+  "pythonPackages": [],
+  "credentialNames": [
+    "HANBIT_DEMO_SERVICE_TOKEN"
+  ],
+  "requiredModes": [
+    "local-files"
+  ]
+}

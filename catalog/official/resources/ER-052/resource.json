@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-052",
+  "revision": 1,
+  "kind": "document",
+  "name": "스캔 문서 자료집",
+  "entrypoint": "scans.pdf",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1708,
+      "sha256": "cf8af7c47bf9d70f10f74547710dc87c2f9e0b36921e09ad22a7058dcd1866fa"
+    },
+    {
+      "path": "scans.pdf",
+      "bytes": 152581,
+      "sha256": "a4ec6446a59b08cd85eb6d8acf1b37c39a1bb6c7bf2432d3c0755f3e92ac62dd"
+    },
+    {
+      "path": "scan-01.jpg",
+      "bytes": 119360,
+      "sha256": "04bf2db6dcac8e163917720ee50fbcb95d5ddb20f89155c5ff99cdeee6a30c91"
+    },
+    {
+      "path": "scan-02.jpg",
+      "bytes": 121572,
+      "sha256": "5a77faf6555e261407818b6e6f8ba9abd9f8e3d9e7731a966962e1e6f228dc1b"
+    },
+    {
+      "path": "ocr-ground-truth.json",
+      "bytes": 3424,
+      "sha256": "183ab8bcd49b54faf781e74abb9352766f2c310bcd8c3f5138d68cac453937e1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1337,
+      "sha256": "05abe4d63bf43709d1825ae139fbc81bf69da9d4a1b74f63649f3dfca58abd0b"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

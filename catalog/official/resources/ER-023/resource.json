@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-023",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "성능 분석 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2340,
+      "sha256": "d32bfa15db9f1b6c733cf570fe22411dc17c0774029cd8d164e6f93ecacdc1e5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1422,
+      "sha256": "5b07f5b235cdddbe757e5b77ddc3ad94724aed6b6d231f42b7c56341e4e0a924"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 747,
+      "sha256": "a6ad48794b50c89da05029ec22e79d766d9e558d835f730446fbe5532402e9e8"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1090,
+      "sha256": "8cc78dba002689febee9844ed1f43d66b295b64c319edb8d772ed7c63d4b2f83"
+    }
+  ]
+}

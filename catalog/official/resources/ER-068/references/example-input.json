@@ -1,0 +1,7 @@
+{
+  "fictional": true,
+  "page": "references/screen.html",
+  "task": "이름 필드로 이동하고 빈 입력 제출 시 오류 안내 연결을 확인",
+  "findingState": "not-observed",
+  "evidence": null
+}

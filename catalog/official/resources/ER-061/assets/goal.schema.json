@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Goal structure. Semantic ambiguity, source support and permission checks remain required.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "goal",
+    "deliverable",
+    "audience",
+    "constraints",
+    "acceptance",
+    "blockingQuestions",
+    "ambiguous",
+    "ready"
+  ],
+  "properties": {
+    "goal": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deliverable": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "audience": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "text",
+          "sourceQuote"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "sourceQuote": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "acceptance": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockingQuestions": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      }
+    },
+    "ambiguous": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ready": {
+      "type": "boolean"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "ready": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "goal": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deliverable": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blockingQuestions": {
+            "type": "array",
+            "maxItems": 0
+          },
+          "acceptance": {
+            "type": "array",
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

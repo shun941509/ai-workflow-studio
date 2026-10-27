@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-071",
+  "revision": 1,
+  "kind": "skill",
+  "name": "레코드 추출 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3552,
+      "sha256": "2193e0e8b45dcd630a35f8e8474b56ec1ed7cee20abbf19f54425b00bcc4f9ea"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1522,
+      "sha256": "3e367c1270fc04c3876d041160e226d8c401d1c493aa6f81a563a49c1c24f06e"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 412,
+      "sha256": "18b151b070473b2fea29b3e8cedb203bb81e96a0b17b0a74948df285ace90a27"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 750,
+      "sha256": "2d79d167eff0e0657f9e34c27ffefca0cc30799270ded32a5716a82bc691d42e"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 697,
+      "sha256": "a08ac93d37fa4c533fbce52dec4350fe061e65610956238f08950e74c0676a95"
+    },
+    {
+      "path": "scripts/validate-records.mjs",
+      "bytes": 3039,
+      "sha256": "8ec50eecafe20f7be2ab5d9dde8ae19feaa059fd2c76e449a6554ccf30760b22"
+    }
+  ]
+}

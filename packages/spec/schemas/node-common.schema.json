@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "input",
+        "form",
+        "trigger",
+        "ai",
+        "agent",
+        "classify",
+        "output",
+        "tool",
+        "retrieval",
+        "knowledge",
+        "resource",
+        "skill",
+        "memory",
+        "compensate",
+        "transform",
+        "program",
+        "candidate_search",
+        "merge",
+        "condition",
+        "guardrail",
+        "evaluate",
+        "error",
+        "review",
+        "file_input",
+        "document_extract",
+        "file_output",
+        "parallel",
+        "agent_team",
+        "orchestrator",
+        "subworkflow",
+        "loop"
+      ]
+    },
+    "typeVersion": {
+      "const": 1
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "inputBindings": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "binding.schema.json"
+      }
+    },
+    "config": {
+      "type": "object"
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "$ref": "attachment.schema.json"
+      },
+      "minItems": 0
+    },
+    "execution": {
+      "$ref": "execution.schema.json"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "typeVersion",
+    "label",
+    "inputBindings",
+    "config",
+    "attachments",
+    "execution"
+  ],
+  "additionalProperties": false,
+  "title": "NodeCommon"
+}

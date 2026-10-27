@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Contract shape only; verify real resource hashes, budget subset and completion evidence independently.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request",
+    "response"
+  ],
+  "properties": {
+    "request": {
+      "type": "object",
+      "required": [
+        "taskId",
+        "objective",
+        "resources",
+        "permissions",
+        "budget",
+        "completion",
+        "allowSubdelegation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "revision",
+              "sha256"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "permissions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "budget": {
+          "type": "object",
+          "required": [
+            "maxCalls",
+            "maxSeconds"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "maxCalls": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxSeconds": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "completion": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allowSubdelegation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "required": [
+        "taskId",
+        "status",
+        "outputs",
+        "evidence",
+        "stopReason"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "partial",
+            "question",
+            "failed"
+          ]
+        },
+        "outputs": {
+          "type": "object"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "stopReason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "completed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "type": "array",
+                "minItems": 1
+              },
+              "stopReason": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "stopReason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

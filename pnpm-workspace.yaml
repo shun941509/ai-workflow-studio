@@ -1,0 +1,11 @@
+# Shared package boundaries keep the browser away from filesystem and ZIP execution code.
+packages:
+  - apps/*
+  - packages/*
+minimumReleaseAgeExclude:
+  - lucide-react@1.62.0
+# pnpm 12 uses explicit build permissions; unreviewed lifecycle scripts remain blocked.
+allowBuilds:
+  esbuild@0.28.2: true
+  sharp@0.35.5: true
+verifyDepsBeforeRun: error

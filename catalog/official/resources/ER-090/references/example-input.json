@@ -1,0 +1,5 @@
+{
+  "fictional": true,
+  "beforePath": "허용된 references/before.md 절대 경로",
+  "afterPath": "허용된 references/after.md 절대 경로"
+}

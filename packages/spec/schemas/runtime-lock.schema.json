@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RuntimeRequirementsLock",
+  "description": "Portable private-package requirements. Installed component, model and host identities are resolved locally into the immutable run plan; this is not a verified binary lock.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "kind": { "const": "requirements" },
+    "workflowSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "runner": {
+      "type": "object", "properties": { "version": { "const": "0.1.0" }, "node": { "const": "24.22.1" } },
+      "required": ["version", "node"], "additionalProperties": false
+    },
+    "requiredCapabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "host": {
+      "type": "object", "properties": {
+        "name": { "enum": ["codex", "claude-code", "opencode"] },
+        "verification": { "const": "unverified" },
+        "testedVersions": { "type": "array", "maxItems": 0, "items": { "type": "string" } }
+      }, "required": ["name", "verification", "testedVersions"], "additionalProperties": false
+    },
+    "modelProfiles": { "type": "object", "additionalProperties": true },
+    "modelVerification": { "const": "unverified" }
+  },
+  "required": ["schemaVersion", "kind", "workflowSha256", "runner", "requiredCapabilities", "host", "modelProfiles", "modelVerification"],
+  "additionalProperties": false
+}

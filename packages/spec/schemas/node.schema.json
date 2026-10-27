@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "title": "WorkflowNode",
+  "oneOf": [
+    {
+      "$ref": "nodes/input.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/form.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/trigger.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/ai.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/agent.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/classify.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/output.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/tool.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/retrieval.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/knowledge.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/resource.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/skill.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/memory.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/compensate.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/transform.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/program.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/candidate_search.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/merge.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/condition.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/guardrail.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/evaluate.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/error.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/review.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/file_input.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/document_extract.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/file_output.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/parallel.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/agent_team.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/orchestrator.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/subworkflow.v1.schema.json"
+    },
+    {
+      "$ref": "nodes/loop.v1.schema.json"
+    }
+  ]
+}

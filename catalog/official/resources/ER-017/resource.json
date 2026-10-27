@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-017",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "재시도 판단",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2355,
+      "sha256": "28532ed6183a7ff377f5bbfe339b83c9e0b3453b884dbf99ff232c7123e75e2e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1459,
+      "sha256": "50c37f1b6dbc5e427dd6f7bff0f0ac3e5c0567de39d168a9c0ed966d9e9b2702"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 756,
+      "sha256": "17e33609df9fca474fdbc375ad8f15698da689e142ad584748f6e6e0f698d930"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1171,
+      "sha256": "ce3502b14c7db402c13ae30fec6bafbb2817a469eaf1406ba07e88e103500372"
+    }
+  ]
+}

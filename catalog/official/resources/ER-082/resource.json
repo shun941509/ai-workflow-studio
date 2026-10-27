@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-082",
+  "revision": 1,
+  "kind": "skill",
+  "name": "날짜·단위 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/normalize_records.py",
+      "bytes": 4873,
+      "sha256": "29063ef09d2e2d030eeca982355fb8e86a6d47db03a2a890acb9144944b7c8b1"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 395,
+      "sha256": "8015e9a96ddacdd3193933f5b03235925b0f0a35f006fdacf6d2eb90f3dc9aeb"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3376,
+      "sha256": "663cf0c8c2b1c638307da773eb017de900ec28fc79f9a2cd3364a2d67e1c347d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1093,
+      "sha256": "1f1bb3f52233b963efe1afa894d5b30b34a4424e7704f0c84757ea6876e184da"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 425,
+      "sha256": "76556451f1923b5de24cc139ed8e13153d3196dfb664b965c1d17e46c0284826"
+    }
+  ]
+}

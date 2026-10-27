@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-077",
+  "revision": 1,
+  "kind": "skill",
+  "name": "병렬 통합 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3476,
+      "sha256": "51fe014faba63435eec1064448625b16cee7a0c734ad49d1c7d301444b9935ab"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1512,
+      "sha256": "d494ac3f6253147512477509ce2d0ed5b8e3aa867d93ead4dbc9afc47fdb61c8"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 416,
+      "sha256": "962ecd53cf653bdf81a118563993516d072e6c967b58255663367313d6177295"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 734,
+      "sha256": "db497cb3c1c8410d9838f5e092c3961bda6ce7f53f531cc5df547bcca563579c"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 587,
+      "sha256": "87b4dc82a18f783b3bd202a69e3063c63bd869f612351eb89156e766584b05c6"
+    },
+    {
+      "path": "scripts/merge-branches.mjs",
+      "bytes": 2534,
+      "sha256": "e951b24e288b1802324b3caf19d984465b059f6893439dbdc84856693e2e5d0f"
+    }
+  ]
+}

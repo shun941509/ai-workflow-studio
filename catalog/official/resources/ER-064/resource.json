@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-064",
+  "revision": 1,
+  "kind": "skill",
+  "name": "API 변경 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3692,
+      "sha256": "e3809db0a21935c2db731a43e596813b124c97c6898be9271683af02e3695937"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1508,
+      "sha256": "d726995c7b3a58dcba21bf29cfc00d613517f3e0bb7645ef1495ee2f3d935695"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 471,
+      "sha256": "8558824c37864054690fbc98a27f2aabfd730de014af257bac6e6cd5088f270f"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 754,
+      "sha256": "5d5cded87eef3a8cd116eaf0da01f52ed8f1fd3409cfb8b3460c95eca023fb93"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 795,
+      "sha256": "1c2deabc60e4e5dcbe3a7bc00f0ca4536055e8ea3e02ca07cbd6dd00f7bcfb66"
+    },
+    {
+      "path": "scripts/compare-api.mjs",
+      "bytes": 2681,
+      "sha256": "7e55c38ad83f169208273a7f62dc1b194a16fc4373b66264078c43bb430a0a65"
+    }
+  ]
+}

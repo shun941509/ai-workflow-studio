@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-034",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "정보 가림 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2334,
+      "sha256": "79cfc587b2574ee097222af9ddf3aec4c99d151bf31a74e5db66c5443f72ffc0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1438,
+      "sha256": "a1cdbb94597ec321f1d56e7d0d1a69430adfd8ba0d3bce639e072b66e18f9ecd"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 669,
+      "sha256": "d7dd55b6ee190202128da0c5ab1f0dc67b251bd5611df661df4e67e83d40fae9"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1137,
+      "sha256": "c1ec277af77253dee070945c83316fce46b530ae325b1bf55c58b2f36dfc7390"
+    }
+  ]
+}

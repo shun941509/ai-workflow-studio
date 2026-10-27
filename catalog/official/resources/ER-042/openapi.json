@@ -1,0 +1,169 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Raon fictional reporting API",
+    "version": "2.0.0",
+    "description": "Fictional contract for document-reading practice. No live service."
+  },
+  "servers": [
+    {
+      "url": "https://api.raon.example.invalid"
+    }
+  ],
+  "paths": {
+    "/reports": {
+      "get": {
+        "operationId": "listReports",
+        "security": [
+          {
+            "bearerAuth": [
+              "reports:read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A page; next_cursor=null means the last page.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "next_cursor"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Report"
+                      }
+                    },
+                    "next_cursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid authentication."
+          },
+          "403": {
+            "description": "No reports:read permission."
+          }
+        }
+      }
+    },
+    "/reports/{reportId}": {
+      "get": {
+        "operationId": "getReport",
+        "security": [
+          {
+            "bearerAuth": [
+              "reports:read"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^RPT-[0-9]{3}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Existing authorized report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Report"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Missing or inaccessible report; details are not disclosed."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Opaque example token; never put an actual secret in this document."
+      }
+    },
+    "schemas": {
+      "Report": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "status",
+          "created_at"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "review",
+              "approved"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

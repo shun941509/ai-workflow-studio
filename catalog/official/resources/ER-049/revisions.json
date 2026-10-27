@@ -1,0 +1,35 @@
+[
+  {
+    "id": "RULE-EXPORT-v1",
+    "version": 1,
+    "status": "approved",
+    "publishedAt": "2026-09-20",
+    "effectiveFrom": "2026-10-01",
+    "effectiveTo": "2026-10-31",
+    "scope": "fictional-standard-export",
+    "noticeDays": 2,
+    "text": "표준 자료 내보내기 변경은 적용 2일 전까지 범위 담당자에게 알린다."
+  },
+  {
+    "id": "RULE-EXPORT-v2",
+    "version": 2,
+    "status": "approved",
+    "publishedAt": "2026-10-20",
+    "effectiveFrom": "2026-11-01",
+    "effectiveTo": null,
+    "scope": "fictional-standard-export",
+    "noticeDays": 5,
+    "text": "표준 자료 내보내기 변경은 적용 5일 전까지 범위 담당자에게 알리고 검토 기록을 남긴다."
+  },
+  {
+    "id": "RULE-EXPORT-v3-draft",
+    "version": 3,
+    "status": "draft",
+    "publishedAt": "2026-10-25",
+    "effectiveFrom": null,
+    "effectiveTo": null,
+    "scope": "fictional-standard-export",
+    "noticeDays": 7,
+    "text": "검토 중인 제안: 7일 전 알림. 승인·시행되지 않았다."
+  }
+]

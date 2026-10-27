@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-036",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "병렬 결과 합의 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2323,
+      "sha256": "a4a094a77839c46986ce6a9a0db4e04015fbf1cc0f1ba690720811f2c1c266e6"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1459,
+      "sha256": "e31cdb68ca74e3d8f7dfad7b713fa5846f9b207f7461fd45c21e4544ded4b297"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 699,
+      "sha256": "6b8ecbb733b5c0abea73c2b48b3ab6a40c94fa259dd776223b51a450d11e7e6a"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1094,
+      "sha256": "3127ebac16af2914ebc9e027e2f887b41bbdf5d29f6114a5a81111b4d1d9d3f3"
+    }
+  ]
+}

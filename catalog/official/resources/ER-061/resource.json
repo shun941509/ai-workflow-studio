@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-061",
+  "revision": 1,
+  "kind": "skill",
+  "name": "목표 명세 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2611,
+      "sha256": "f9819fcd2ae105052de1a5497546f982c9300a99ed8dd61fac9b3392ff8ebc0c"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1408,
+      "sha256": "da813350f90ea5a23a671368c7245ec52966ab4201425500b8ea41073ea43ffa"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 450,
+      "sha256": "d872d74d6cc48a14f706458aa7c749d228752f3b647847b8e6006e8a1de59486"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 788,
+      "sha256": "8ec2b44cfc393dc44874dc16e7a739eda491943167b2c6152ba371de7b5234b4"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 418,
+      "sha256": "118e139e31d77f693e41719a4ae23e0662e2268c9768052fb68119646ce5891d"
+    },
+    {
+      "path": "assets/goal.schema.json",
+      "bytes": 1988,
+      "sha256": "73cb4aec79678f2e9410528c46ef003f7a7adb2dffa6cff27e972dde9ea10aba"
+    }
+  ]
+}

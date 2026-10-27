@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "timeoutMs": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600000
+    },
+    "retry": {
+      "type": "object",
+      "properties": {
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "backoffMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000
+        },
+        "retryOn": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "TRANSIENT_NETWORK",
+              "RATE_LIMITED",
+              "PROVIDER_UNAVAILABLE"
+            ]
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "maxAttempts",
+        "backoffMs",
+        "retryOn"
+      ],
+      "additionalProperties": false
+    },
+    "onError": {
+      "type": "string",
+      "enum": [
+        "fail",
+        "route"
+      ]
+    },
+    "waitTtlMs": {
+      "type": "integer",
+      "minimum": 1000,
+      "maximum": 2592000000
+    }
+  },
+  "required": [
+    "timeoutMs",
+    "retry",
+    "onError"
+  ],
+  "additionalProperties": false,
+  "title": "ExecutionPolicy"
+}

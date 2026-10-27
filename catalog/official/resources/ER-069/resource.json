@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-069",
+  "revision": 1,
+  "kind": "skill",
+  "name": "독자별 설명 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2538,
+      "sha256": "381c82eb23b55315ec51b47bb2cc4ffd2d1acb178f186f9da196102d52da4ad4"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1406,
+      "sha256": "1392964a623954d3b3eb3f3c9f9692c39c9ac95ee5cdb56bd92cff6b0d7789c2"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 435,
+      "sha256": "a77237cbf3ada8ef342b7815d0dd3edc0c9a5f55c88138bb544901cf4653bc3d"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 756,
+      "sha256": "f93c2d12f6f7dcb3598449c6ac52423686159f901c561cad752a57a4719fd11a"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 484,
+      "sha256": "4cc530b618562352c23aa945816f55f7e313ed07277876e09adf9fa29fe01917"
+    },
+    {
+      "path": "references/reader-cards.md",
+      "bytes": 558,
+      "sha256": "62630f5c2d190bcba01aa61300926b54233b219313f83e1563e5907940ef7667"
+    }
+  ]
+}

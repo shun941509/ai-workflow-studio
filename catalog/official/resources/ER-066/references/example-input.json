@@ -1,0 +1,5 @@
+{
+  "fictional": true,
+  "sourceId": "hanbit-demo-log-v1",
+  "text": "{\"timestamp\":\"2026-10-01T09:00:00Z\",\"level\":\"error\",\"code\":\"TIMEOUT\"}\n{\"timestamp\":\"2026-10-01T09:00:02Z\",\"level\":\"info\",\"code\":\"READY\"}\n{\"timestamp\":\"2026-10-01T09:00:04Z\",\"level\":\"error\",\"code\":\"TIMEOUT\"}\ninvalid-json"
+}

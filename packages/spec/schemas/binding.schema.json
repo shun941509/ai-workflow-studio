@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "title": "Binding",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "literal"
+        },
+        "value": {
+          "$ref": "json-value.schema.json"
+        }
+      },
+      "required": [
+        "from",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "workflowInput"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "error"
+        }
+      },
+      "required": [
+        "from",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "workflowInput"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "omit"
+        }
+      },
+      "required": [
+        "from",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "workflowInput"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "default"
+        },
+        "defaultValue": {
+          "$ref": "json-value.schema.json"
+        }
+      },
+      "required": [
+        "from",
+        "pointer",
+        "onMissing",
+        "defaultValue"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "node"
+        },
+        "nodeId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "error"
+        }
+      },
+      "required": [
+        "from",
+        "nodeId",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "node"
+        },
+        "nodeId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "omit"
+        }
+      },
+      "required": [
+        "from",
+        "nodeId",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "node"
+        },
+        "nodeId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "default"
+        },
+        "defaultValue": {
+          "$ref": "json-value.schema.json"
+        }
+      },
+      "required": [
+        "from",
+        "nodeId",
+        "pointer",
+        "onMissing",
+        "defaultValue"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "resource"
+        },
+        "resource": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "error"
+        }
+      },
+      "required": [
+        "from",
+        "resource",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "resource"
+        },
+        "resource": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "omit"
+        }
+      },
+      "required": [
+        "from",
+        "resource",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "resource"
+        },
+        "resource": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "default"
+        },
+        "defaultValue": {
+          "$ref": "json-value.schema.json"
+        }
+      },
+      "required": [
+        "from",
+        "resource",
+        "pointer",
+        "onMissing",
+        "defaultValue"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "error"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "error"
+        }
+      },
+      "required": [
+        "from",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "error"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "omit"
+        }
+      },
+      "required": [
+        "from",
+        "pointer",
+        "onMissing"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "from": {
+          "const": "error"
+        },
+        "pointer": {
+          "type": "string",
+          "pattern": "^(?:/(?:[^~]|~[01])*)*$"
+        },
+        "onMissing": {
+          "const": "default"
+        },
+        "defaultValue": {
+          "$ref": "json-value.schema.json"
+        }
+      },
+      "required": [
+        "from",
+        "pointer",
+        "onMissing",
+        "defaultValue"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

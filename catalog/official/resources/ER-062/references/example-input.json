@@ -1,0 +1,26 @@
+{
+  "fictional": true,
+  "sources": [
+    {
+      "id": "D1",
+      "revision": 1,
+      "location": "2절",
+      "text": "접수는 자동 처리되며 승인은 운영 담당 검토 후 진행한다."
+    }
+  ],
+  "claims": [
+    {
+      "id": "C1",
+      "text": "접수는 자동 처리된다.",
+      "state": "confirmed",
+      "sourceId": "D1",
+      "quote": "접수는 자동 처리"
+    },
+    {
+      "id": "C2",
+      "text": "승인은 즉시 완료된다.",
+      "state": "unverified",
+      "reason": "승인 소요 시간은 제시되지 않음"
+    }
+  ]
+}

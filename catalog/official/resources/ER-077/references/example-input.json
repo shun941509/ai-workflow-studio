@@ -1,0 +1,37 @@
+{
+  "fictional": true,
+  "expectedBranchIds": [
+    "A",
+    "B",
+    "C"
+  ],
+  "branches": [
+    {
+      "id": "B",
+      "status": "completed",
+      "items": [
+        {
+          "key": "deadline",
+          "value": "12일",
+          "evidence": "D2 v2"
+        }
+      ]
+    },
+    {
+      "id": "A",
+      "status": "completed",
+      "items": [
+        {
+          "key": "deadline",
+          "value": "10일",
+          "evidence": "D1 v1"
+        },
+        {
+          "key": "channel",
+          "value": "web",
+          "evidence": "D1 v1"
+        }
+      ]
+    }
+  ]
+}

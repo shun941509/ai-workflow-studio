@@ -1,0 +1,16 @@
+{
+  "fictional": true,
+  "text": "가상 담당 DEMO-PERSON-7의 내부코드는 DEMO-SECRET-42입니다. DEMO-PERSON-7 확인.",
+  "rules": [
+    {
+      "id": "person",
+      "type": "person-label",
+      "literal": "DEMO-PERSON-7"
+    },
+    {
+      "id": "internal",
+      "type": "internal-code",
+      "literal": "DEMO-SECRET-42"
+    }
+  ]
+}

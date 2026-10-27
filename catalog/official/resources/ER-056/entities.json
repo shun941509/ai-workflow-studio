@@ -1,0 +1,97 @@
+[
+  {
+    "id": "ORG-HANBIT",
+    "type": "organization",
+    "name": "한빛 업무연구소",
+    "aliases": [
+      "Hanbit Lab"
+    ],
+    "namespace": "org"
+  },
+  {
+    "id": "SVC-BOARD",
+    "type": "service",
+    "name": "라온 협업보드",
+    "aliases": [
+      "Raon Board",
+      "라온"
+    ],
+    "namespace": "service"
+  },
+  {
+    "id": "SVC-API",
+    "type": "service",
+    "name": "Atlas API",
+    "aliases": [
+      "Atlas"
+    ],
+    "namespace": "service"
+  },
+  {
+    "id": "PRJ-ATLAS",
+    "type": "project",
+    "name": "Atlas 문서 정리",
+    "aliases": [
+      "Atlas"
+    ],
+    "namespace": "project"
+  },
+  {
+    "id": "DATA-CARDS",
+    "type": "dataset",
+    "name": "업무 카드 저장소",
+    "aliases": [
+      "cards",
+      "카드 데이터"
+    ],
+    "namespace": "dataset"
+  },
+  {
+    "id": "DATA-REPORTS",
+    "type": "dataset",
+    "name": "보고서 저장소",
+    "aliases": [
+      "reports",
+      "보고서 데이터"
+    ],
+    "namespace": "dataset"
+  },
+  {
+    "id": "SVC-BACKUP",
+    "type": "service",
+    "name": "보관 서비스",
+    "aliases": [
+      "Archive Service"
+    ],
+    "namespace": "service"
+  },
+  {
+    "id": "ROLE-OPS",
+    "type": "role",
+    "name": "운영 역할",
+    "aliases": [
+      "R-OPS",
+      "Operations role"
+    ],
+    "namespace": "role"
+  },
+  {
+    "id": "ROLE-QA",
+    "type": "role",
+    "name": "검토 역할",
+    "aliases": [
+      "R-QA",
+      "Review role"
+    ],
+    "namespace": "role"
+  },
+  {
+    "id": "DOC-POLICY",
+    "type": "document",
+    "name": "접근 정책 v1",
+    "aliases": [
+      "Access policy"
+    ],
+    "namespace": "document"
+  }
+]

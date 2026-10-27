@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "entryNodeId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+    },
+    "inputs": {
+      "$ref": "user-schema.schema.json"
+    },
+    "outputs": {
+      "$ref": "user-schema.schema.json"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "node.schema.json"
+      },
+      "minItems": 2
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "edge.schema.json"
+      },
+      "minItems": 0
+    },
+    "modelProfiles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "chat",
+              "embedding",
+              "reranker"
+            ]
+          },
+          "requiredFeatures": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          }
+        },
+        "required": [
+          "kind",
+          "requiredFeatures"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "resource-ref.schema.json"
+      }
+    },
+    "subworkflows": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "flow.schema.json"
+      }
+    },
+    "policy": {
+      "$ref": "policy.schema.json"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "revision",
+    "name",
+    "entryNodeId",
+    "inputs",
+    "outputs",
+    "nodes",
+    "edges",
+    "modelProfiles",
+    "resources",
+    "subworkflows",
+    "policy"
+  ],
+  "additionalProperties": false,
+  "title": "Workflow"
+}

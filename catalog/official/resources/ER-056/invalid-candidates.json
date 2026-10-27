@@ -1,0 +1,18 @@
+[
+  {
+    "id": "BAD-1",
+    "type": "USES",
+    "from": "ROLE-OPS",
+    "to": "DATA-CARDS",
+    "sourceId": "SRC-1",
+    "reason": "출발 개체 유형 불일치"
+  },
+  {
+    "id": "BAD-2",
+    "type": "BACKED_UP_BY",
+    "from": "DATA-CARDS",
+    "to": "SVC-BACKUP",
+    "sourceId": null,
+    "reason": "원문 출처 누락"
+  }
+]

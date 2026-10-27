@@ -1,0 +1,37 @@
+{
+  "fictional": true,
+  "initialInputs": [
+    "source"
+  ],
+  "roles": [
+    "reader",
+    "reviewer"
+  ],
+  "tasks": [
+    {
+      "id": "read",
+      "role": "reader",
+      "dependsOn": [],
+      "inputs": [
+        "source"
+      ],
+      "outputs": [
+        "notes"
+      ]
+    },
+    {
+      "id": "review",
+      "role": "reviewer",
+      "dependsOn": [
+        "read"
+      ],
+      "inputs": [
+        "notes",
+        "source"
+      ],
+      "outputs": [
+        "report"
+      ]
+    }
+  ]
+}

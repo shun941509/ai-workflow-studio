@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-079",
+  "revision": 1,
+  "kind": "skill",
+  "name": "팀 실행 설계 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 3426,
+      "sha256": "e1568859f882678d127a690ea4ee6bf5d420efa1b85b3cf8d03ffff5a3525980"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1505,
+      "sha256": "87ad4adab9595c0e068cf4e9b5d3d52750fdcc2062d286a0cc688349b815aedd"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 439,
+      "sha256": "44d1ce0bc8345d11801500a63cfeb20c0f306ae44326a75721f4f0992c46e796"
+    },
+    {
+      "path": "references/method.md",
+      "bytes": 832,
+      "sha256": "9ce4b9267ba692a1c3786838050adff5c51fa8eee096e3d27db26b38faafc661"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 505,
+      "sha256": "81942e37fb7737a72bf0d691e7a968aa64fec5c02163d4bbb039539088b1bad2"
+    },
+    {
+      "path": "scripts/order-team.mjs",
+      "bytes": 2632,
+      "sha256": "891091bbf92365332a803f80818030dae32cc80adfe3958ef147d7e698568f3f"
+    }
+  ]
+}

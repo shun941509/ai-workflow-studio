@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:studio:official-example:1.0.0",
+  "title": "OfficialExample",
+  "$comment": "A planned catalogue entry is a production brief, never evidence of usable content. Release status is derived by the catalogue gate.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "kind", "name", "state", "source", "definition", "blocks", "requiredCapabilities", "externalDependencies", "targetHosts", "verificationRecords", "requiresExtension"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "id": { "type": "string", "pattern": "^E[PR]-(00[1-9]|0[1-9][0-9]|1[01][0-9]|120)$" },
+    "kind": { "enum": ["project", "resource"] },
+    "resourceKind": { "enum": ["mcp", "instruction", "document", "skill"] },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "state": { "enum": ["planned", "implemented", "verified", "published", "suspended"] },
+    "source": {
+      "type": "object", "additionalProperties": false, "required": ["path", "row"],
+      "properties": { "path": { "const": "docs/specifications/official-catalog-design.md" }, "row": { "type": "string", "minLength": 1 }, "referenceUrl": { "type": "string", "format": "uri" } }
+    },
+    "definition": {
+      "type": "object", "additionalProperties": false, "required": ["purpose", "blocksAndConnections", "inputOutput", "acceptanceCriteria"],
+      "properties": {
+        "purpose": { "type": "string", "minLength": 1 }, "blocksAndConnections": { "type": "string", "minLength": 1 },
+        "inputOutput": { "type": "string", "minLength": 1 }, "acceptanceCriteria": { "type": "string", "minLength": 1 }
+      }
+    },
+    "blocks": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z_]+$" } },
+    "requiredCapabilities": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "externalDependencies": {
+      "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["id", "kind", "requirement"],
+        "properties": { "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$" }, "kind": { "enum": ["model", "service", "embedding", "reranker", "graph", "browser", "database", "search"] }, "requirement": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "targetHosts": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["codex", "claude-code", "opencode"] } },
+    "requiresExtension": { "type": "boolean" },
+    "artifact": {
+      "type": "object", "additionalProperties": false, "required": ["rootPath", "entrypoint", "sha256", "files"],
+      "properties": {
+        "rootPath": { "type": "string", "minLength": 1 }, "entrypoint": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "files": { "type": "array", "minItems": 3, "maxItems": 1000, "items": { "type": "object", "additionalProperties": false, "required": ["path", "sha256", "role"], "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "role": { "enum": ["entrypoint", "readme", "license", "payload", "sample-input"] } } } }
+      }
+    },
+    "verificationRecords": { "type": "array", "uniqueItems": true, "items": { "type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } } },
+    "review": { "type": "object", "additionalProperties": false, "required": ["reviewerId", "reviewedAt", "artifactSha256", "distinctPurposeConfirmed"], "properties": { "reviewerId": { "type": "string", "minLength": 1 }, "reviewedAt": { "type": "string", "format": "date-time" }, "artifactSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "distinctPurposeConfirmed": { "const": true } } }
+  }
+}

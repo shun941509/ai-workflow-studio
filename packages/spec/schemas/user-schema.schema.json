@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
+  "title": "UserSchema",
+  "anyOf": [
+    {
+      "type": "boolean"
+    },
+    {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "json-value.schema.json"
+      }
+    }
+  ],
+  "description": "Untrusted user JSON Schema is additionally checked for supported keywords, safe references and complexity."
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-047",
+  "revision": 1,
+  "kind": "document",
+  "name": "기능 카탈로그",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 2109,
+      "sha256": "a954222596ace1ad66d6634eea637a45181909000728b090447029fffda9bfe9"
+    },
+    {
+      "path": "features.json",
+      "bytes": 2803,
+      "sha256": "2128422b19412aa884fda6da549ffa51429c93ea4ccbf69f97ef8fc0bc4441cb"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1322,
+      "sha256": "3ae7679e49273ec45aa594a0fdcf4e9508787c667ecd112dd1d99dd99edea8c2"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

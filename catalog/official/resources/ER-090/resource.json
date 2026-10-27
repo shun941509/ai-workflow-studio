@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-090",
+  "revision": 1,
+  "kind": "skill",
+  "name": "문서 개정 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "scripts/compare_documents.py",
+      "bytes": 3504,
+      "sha256": "320b3859e12e81714523a2024d3a465a71c20258d91185f72941865cd596de39"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 150,
+      "sha256": "4a652b9146293f9e2f226b92585944d84afbced81fd4e43fcdbf18bd5e86e50e"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3219,
+      "sha256": "7d7c695544b69320202840bd2d71e12333acacebf937137403fa47e61d130d87"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1098,
+      "sha256": "8177f18643e320de4b4cfb0e75f7311cddddb718daa4698519a8fdb50422ea4f"
+    },
+    {
+      "path": "assets/result.md",
+      "bytes": 418,
+      "sha256": "490f4f83bfb1d5f4ce4275ca3767abf140b62f5477c833e068090add9923ca8d"
+    },
+    {
+      "path": "references/before.md",
+      "bytes": 100,
+      "sha256": "fffab18c6eebd10d9ec66c643c4e183abf55b0c27f891dcd0c5de8bc68b981ef"
+    },
+    {
+      "path": "references/after.md",
+      "bytes": 132,
+      "sha256": "2aa85eaea61f2f0a1a4a8e3e8766d83d31b7de4933d12d15faab400e325763b2"
+    }
+  ]
+}

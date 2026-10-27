@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-043",
+  "revision": 1,
+  "kind": "document",
+  "name": "읽기 전용 데이터 사전",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1913,
+      "sha256": "202659ab64316a1493b8c7eaf2c934d1daf270aba90752caf8ce7c2ee8a4763e"
+    },
+    {
+      "path": "dictionary.json",
+      "bytes": 953,
+      "sha256": "e7085a1457835b107bdee389a4cf113a8231cd95ea48a2810c5dcba50d39de54"
+    },
+    {
+      "path": "schema.sql",
+      "bytes": 811,
+      "sha256": "cd13c1780d1dd7bb164c809edf0bab6699cbe6f1ddccf4db953c423ebdf8ff39"
+    },
+    {
+      "path": "seed.sql",
+      "bytes": 1304,
+      "sha256": "926c240685bda39bc8e6bf6d2495d44b9e9782386bc61683793b3f7ef67a60c0"
+    },
+    {
+      "path": "sample.sqlite",
+      "bytes": 36864,
+      "sha256": "c52af14ace0026f57f3099124bf3a69af1b3252430406424138db5629f55b499"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1352,
+      "sha256": "d0475cbfda252fccd3121e8ad9512fcee62e15da0a3142d2bb396f25b1f27da7"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}
