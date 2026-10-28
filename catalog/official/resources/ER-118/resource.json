@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-118",
+  "revision": 1,
+  "kind": "skill",
+  "name": "관계·별칭 Skill†",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/validate_relations.py",
+      "bytes": 2783,
+      "sha256": "4d30fbff9a4e0184e2e6ede6c5997794523d6adf4cabe996f5d3bc68e2c8c079"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 989,
+      "sha256": "d5a2e1510881caf7d53620d5b99c69b0783f6630e4e51bf6d645ce3481d119c7"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 203,
+      "sha256": "a2bc19cdf58cdabe5bd1c74921e3eb59d458f264fc474df75f7cf2fe8f0c513c"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3339,
+      "sha256": "8378da8dc8bc55c918623d09045c70a39b87b3c6d24feba7d2d5195e87946fbf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1027,
+      "sha256": "dc086cfdeedf3eb8a8bff714c3c82d9e4051e3ff2d09a65c14dea040e89dc655"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 569,
+      "sha256": "75f2f033321d8279e69a31eb472e0f5efc90e3e9ae481cdc9a25ce1b8640401c"
+    }
+  ]
+}

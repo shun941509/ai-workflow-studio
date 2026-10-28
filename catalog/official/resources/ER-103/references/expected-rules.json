@@ -1,0 +1,10 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "publishedAt": "2026-01-03T00:00:00Z",
+  "category": "operations",
+  "reject": [
+    "access 누락",
+    "시간대 누락",
+    "원문 변조"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "fictional": true,
+  "question": "반품 접수 규정을 찾아주세요.",
+  "allowedSourceIds": [
+    "policy"
+  ],
+  "sources": [
+    {
+      "id": "policy",
+      "terms": [
+        "반품",
+        "교환"
+      ]
+    },
+    {
+      "id": "private",
+      "terms": [
+        "반품",
+        "내부"
+      ]
+    },
+    {
+      "id": "engineering",
+      "terms": [
+        "API",
+        "배포"
+      ]
+    }
+  ]
+}

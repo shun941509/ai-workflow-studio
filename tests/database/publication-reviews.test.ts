@@ -26,7 +26,7 @@ describe('pinned candidate scan and human review separation', () => {
   }
   async function pin(value: Awaited<ReturnType<typeof candidate>>) { await database.exec('reset role; set role service_role'); return database.query('select public.register_publication_candidate($1,$2,$3,$4)', [value.id, value.report.artifactSha256, value.report.sourceSnapshotSha256, value.bytes.length]); }
   const record = (id: string, report: ScanReport) => database.query('select public.record_publication_scan($1,$2,$3,$4,$5,$6,$7,$8)', [id, report.artifactSha256, report.manifestSha256, report.status === 'passed', report.checks.rights === 'passed', report.checks.dependencies === 'passed', report.checks.secrets === 'passed', report]);
-  beforeAll(async () => { database = await createPolicyDatabase([owner, reviewer]); for (const name of ['002-publications.sql', '003-public-release-metadata.sql', '004-public-release-search.sql', '005-publication-candidates.sql']) await database.exec(await readFile(new URL(`../../infrastructure/supabase/migrations/${name}`, import.meta.url), 'utf8')); await database.query("insert into public.studio_roles values($1,'reviewer')", [reviewer]); await database.query("insert into public.publication_rights_authorities(key_id,public_key_sha256) values('rights',$1)", [rightsKeyFingerprint(trust.rights)]); }, 30000);
+  beforeAll(async () => { database = await createPolicyDatabase([owner, reviewer]); for (const name of ['002-publications.sql', '003-public-release-metadata.sql', '004-public-release-search.sql', '005-publication-candidates.sql', '006-review-readiness.sql']) await database.exec(await readFile(new URL(`../../infrastructure/supabase/migrations/${name}`, import.meta.url), 'utf8')); await database.query("insert into public.studio_roles values($1,'reviewer')", [reviewer]); await database.query("insert into public.publication_rights_authorities(key_id,public_key_sha256) values('rights',$1)", [rightsKeyFingerprint(trust.rights)]); }, 30000);
   afterAll(async () => { await database?.close(); });
 
   it('refuses unregistered/changed candidate bytes and reserves pin/scan authority for the service worker', async () => {
@@ -47,10 +47,14 @@ describe('pinned candidate scan and human review separation', () => {
 
   it('stores a complete actual scan, then permits only a reviewer decision on the exact scanned bytes', async () => {
     const item = await candidate(); expect(item.report.status).toBe('passed'); await pin(item); await record(item.id, item.report);
+    await asUser(database, owner); await expect(database.query('select public.publication_review_readiness($1)', [item.id])).rejects.toMatchObject({ code: '42501' });
+    await database.exec('reset role; set role anon'); await expect(database.query('select public.publication_review_readiness($1)', [item.id])).rejects.toMatchObject({ code: '42501' });
     await asUser(database, owner); await expect(database.query("select public.review_publication($1,$2,'approved','원본 소유자는 검수 권한이 없습니다')", [item.id, item.report.artifactSha256])).rejects.toMatchObject({ code: '42501' });
     await asUser(database, reviewer); await expect(database.query("select public.review_publication($1,$2,'approved','다른 바이트 승인 불가')", [item.id, 'a'.repeat(64)])).rejects.toThrow('REVIEW_HASH_MISMATCH');
+    const readiness = await database.query<{ value: Record<string, unknown> }>('select public.publication_review_readiness($1) as value', [item.id]); expect(readiness.rows[0]!.value).toMatchObject({ status: 'scanned', canApprove: true, canReject: true, artifactSha256: item.report.artifactSha256, rights: { state: 'active' }, blockedReasons: [] }); expect(JSON.stringify(readiness.rows[0]!.value)).not.toMatch(/storage_path|public_key|source_snapshot|owner_id/);
     await database.query("select public.review_publication($1,$2,'approved','고정 보고서와 실제 후보를 검토했습니다')", [item.id, item.report.artifactSha256]);
     expect((await database.query<{ status: string }>('select status from public.publication_submissions where id=$1', [item.id])).rows[0]!.status).toBe('approved'); expect((await database.query('select id from public.public_releases')).rows).toHaveLength(0);
+    expect((await database.query<{ value: Record<string, unknown> }>('select public.publication_review_readiness($1) as value', [item.id])).rows[0]!.value).toMatchObject({ canApprove: false, canReject: false, published: false });
     await expect(database.query('select public.publish_reviewed_release($1,$2,$3,$4,$5,false)', [item.id, item.report.artifactSha256, 'No automatic publish', '', 'releases/example/codex.zip'])).rejects.toMatchObject({ code: '42501' });
   });
 
@@ -58,6 +62,7 @@ describe('pinned candidate scan and human review separation', () => {
     for (const malformed of [false, true]) {
       const item = await candidate(false, malformed); await pin(item); await record(item.id, item.report); await asUser(database, reviewer);
       expect((await database.query<{ status: string }>('select status from public.publication_submissions where id=$1', [item.id])).rows[0]!.status).toBe('changes_requested');
+      expect((await database.query<{ value: Record<string, unknown> }>('select public.publication_review_readiness($1) as value', [item.id])).rows[0]!.value).toMatchObject({ canApprove: false, canReject: false, rights: { state: 'unverified' } });
       await expect(database.query("select public.review_publication($1,$2,'approved','검사 불능을 승인할 수 없습니다')", [item.id, item.report.artifactSha256])).rejects.toThrow('INVALID_PUBLICATION_STATE');
       if (malformed) expect((await database.query<{ manifest_sha256: string | null }>('select manifest_sha256 from public.publication_scans where submission_id=$1', [item.id])).rows[0]!.manifest_sha256).toBeNull();
     }
@@ -66,6 +71,7 @@ describe('pinned candidate scan and human review separation', () => {
   it('blocks stale rights evidence at approval even when it was valid at scan time', async () => {
     const item = await candidate(); await pin(item); const expired = { ...item.report, rightsEvidence: { ...item.report.rightsEvidence!, expiresAt: '2020-01-01T00:00:00.000Z' } }; await record(item.id, expired); await asUser(database, reviewer);
     await expect(database.query("select public.review_publication($1,$2,'approved','기간이 지난 근거입니다')", [item.id, item.report.artifactSha256])).rejects.toThrow('REVIEW_EVIDENCE_EXPIRED');
+    expect((await database.query<{ value: Record<string, unknown> }>('select public.publication_review_readiness($1) as value', [item.id])).rows[0]!.value).toMatchObject({ canApprove: false, canReject: true, rights: { state: 'expired' } });
   });
 
   it('rejects direct approval after verifier revocation and denies reviewers registry writes', async () => {
@@ -73,5 +79,6 @@ describe('pinned candidate scan and human review separation', () => {
     await expect(database.query("update public.publication_rights_authorities set revoked_at=null where key_id='rights'")).rejects.toMatchObject({ code: '42501' });
     await database.exec('reset role; set role service_role'); await database.query("update public.publication_rights_authorities set revoked_at=now() where key_id='rights'"); await asUser(database, reviewer);
     await expect(database.query("select public.review_publication($1,$2,'approved','취소된 검증 권한 우회 불가')", [item.id, item.report.artifactSha256])).rejects.toThrow('REVIEW_EVIDENCE_EXPIRED');
+    expect((await database.query<{ value: Record<string, unknown> }>('select public.publication_review_readiness($1) as value', [item.id])).rows[0]!.value).toMatchObject({ canApprove: false, canReject: true, rights: { state: 'revoked' } });
   });
 });

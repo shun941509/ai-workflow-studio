@@ -6,9 +6,9 @@ import { nextNodePosition } from '../../apps/studio-web/src/features/editor/loca
 
 /** These tests cover authoring/permission seams; model execution and private database ownership are tested separately. */
 describe('editor contract', () => {
-  it('exposes precisely the 20 tested block families with canonical input contracts', () => {
-    expect(editorDefinitions.map((item) => item.type)).toEqual(['input', 'form', 'ai', 'agent', 'classify', 'output', 'resource', 'transform', 'condition', 'merge', 'guardrail', 'evaluate', 'error', 'review', 'file_input', 'file_output', 'document_extract', 'memory', 'knowledge', 'retrieval']);
-    for (const item of editorDefinitions) expect(item).toBe(getNodeDefinition(item.type));
+  it('exposes precisely the 21 tested block families with canonical input contracts', () => {
+    expect(editorDefinitions.map((item) => item.type)).toEqual(['input', 'form', 'ai', 'agent', 'classify', 'output', 'resource', 'transform', 'condition', 'merge', 'guardrail', 'evaluate', 'error', 'review', 'file_input', 'file_output', 'document_extract', 'memory', 'knowledge', 'retrieval', 'subworkflow']);
+    for (const item of editorDefinitions) expect(item).toMatchObject({ type: item.type, inputSchema: getNodeDefinition(item.type)!.inputSchema });
     expect(bindingFields(createNode('condition'))).toEqual([{ key: 'value', required: true }]);
     const error = createNode('error'); if (error.type !== 'error') throw new Error('wrong node'); error.config.mode = 'recover';
     expect(bindingFields(error)).toContainEqual({ key: 'fallback', required: true });
@@ -21,9 +21,11 @@ describe('editor contract', () => {
   it('keeps index inputs mode-specific and blocks unsupported retrieval configuration', () => {
     const workflow = createBasicWorkflow(); const knowledge = createNode('knowledge'), retrieval = createNode('retrieval'); if (knowledge.type !== 'knowledge' || retrieval.type !== 'retrieval') throw new Error('Wrong factories');
     workflow.nodes.push(knowledge, retrieval); expect(bindingFields(knowledge)).toEqual([{ key: 'index', required: true }]);
+    // Opening a current-run index carries no new embedding profile or external transfer.
+    knowledge.config = { operation: 'open' }; expect(editorSupportIssues(workflow)).toEqual([]);
     knowledge.config = { operation: 'build', profile: 'local-run-keyword-v1', indexSettings: { kind: 'keyword', chunkSize: 2000, chunkOverlap: 200 } };
     expect(bindingFields(knowledge)).toEqual([{ key: 'documents', required: true }]); expect(bindingFields(retrieval)).toEqual([{ key: 'query', required: true }, { key: 'index', required: true }]);
-    expect(editorSupportIssues(workflow)).toEqual([]); retrieval.config.mode = 'vector';
+    expect(editorSupportIssues(workflow)).toEqual([]); retrieval.config.mode = 'graph_local';
     expect(editorSupportIssues(workflow)).toEqual([expect.objectContaining({ nodeId: retrieval.id, code: 'EDITOR_MODE_UNSUPPORTED' })]);
   });
   it('requires actual file/value inputs and blocks unsupported modes at the export boundary', () => {
@@ -53,7 +55,7 @@ describe('editor contract', () => {
     workflow.nodes.push(evaluation, createNode('parallel'));
     expect(editorSupportIssues(workflow).map((issue) => issue.nodeId)).toEqual([evaluation.id, workflow.nodes.at(-1)!.id]);
     workflow.subworkflows.child = { entryNodeId: 'start', inputs: true, outputs: true, nodes: createBasicWorkflow().nodes, edges: workflow.edges };
-    expect(editorSupportIssues(workflow).some((issue) => issue.instancePath === '/subworkflows')).toBe(true);
+    expect(editorSupportIssues(workflow).some((issue) => issue.instancePath === '/subworkflows')).toBe(false);
   });
   it('reads a pinned resource through config and retains a shared AI attachment', () => {
     const workflow = createBasicWorkflow(); const read = createNode('resource'); workflow.nodes.push(read);

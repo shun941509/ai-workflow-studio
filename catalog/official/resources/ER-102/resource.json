@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-102",
+  "revision": 1,
+  "kind": "skill",
+  "name": "절 구조 분할 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/section_chunks.py",
+      "bytes": 2743,
+      "sha256": "d5f6c743f64c360a8b8a70addb353ae7f84fc8e0bcfe226d6584ca3ab1c19212"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 318,
+      "sha256": "134c77df417a61583233bf6c556f1057d643406514c40c5fae1c4ddd70709fd3"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 304,
+      "sha256": "591920ed1785a7e7dc65d06c3f4414c184e8bd2febd22acffed6710544117a89"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3135,
+      "sha256": "9ae7b3c1720c0fdf57b0b30b61d181a8d8c6f373201a05ce3e75771836674bee"
+    },
+    {
+      "path": "README.md",
+      "bytes": 980,
+      "sha256": "b3f4ad58a36fe1940a9f000dfb4eca76744d9e35f66e59216aa3e544d81e5fc6"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 529,
+      "sha256": "d5de6ba580c457ac74444d05d73c15de4d908218dc988a52876253264d98e8a9"
+    }
+  ]
+}

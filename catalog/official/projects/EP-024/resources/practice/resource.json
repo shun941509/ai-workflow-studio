@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "EP-024-practice",
+  "revision": 1,
+  "kind": "document",
+  "name": "EP-024 가상 실습 자료",
+  "entrypoint": "guide.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "sample-input.json",
+      "bytes": 710,
+      "sha256": "ea5b585be2cd837fcd917f1b32fad71ee4c17f767dbf84de40be1f3567859627"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 778,
+      "sha256": "8cfefd91e07ed215fd2c76f3f2b708767c838791481a4b6aeb8a2eb1fea6acbc"
+    },
+    {
+      "path": "guide.md",
+      "bytes": 767,
+      "sha256": "33317181837a0bc58603f3dfc375300c3554717987cce716af8218f74e76c0c5"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__studio_atlassian__*"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__studio_atlassian__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node resources/ER-003/scripts/claude-read-guard.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

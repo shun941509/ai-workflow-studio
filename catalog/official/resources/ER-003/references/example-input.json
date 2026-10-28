@@ -1,0 +1,8 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "cloudId": "fictional-cloud",
+  "projectKey": "DEMO",
+  "issueKey": "DEMO-12",
+  "pageId": "123456"
+}

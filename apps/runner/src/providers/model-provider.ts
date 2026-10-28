@@ -5,6 +5,8 @@ export interface ModelRequest {
   content: unknown;
   maxOutputTokens: number;
   responseFormat: { mode: 'text' } | { mode: 'json'; schema: unknown };
+  /** Explicit fixed-protocol option; omitted legacy chat requests retain their existing wire representation. */
+  reasoning?: { effort: 'none' };
 }
 
 export interface ModelResponse {

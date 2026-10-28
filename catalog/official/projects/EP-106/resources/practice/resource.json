@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "EP-106-practice",
+  "revision": 1,
+  "kind": "document",
+  "name": "EP-106 가상 실습 자료",
+  "entrypoint": "guide.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "sample-input.json",
+      "bytes": 170,
+      "sha256": "5d4b59e77d2f5511689c60a6c2199798f570d8a3e0c3f2bd303d50f569fee318"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 778,
+      "sha256": "f71896094632558f7607a554ac95706b26454409680c967b358082f1dabc907c"
+    },
+    {
+      "path": "guide.md",
+      "bytes": 902,
+      "sha256": "5eb7b001a31a2c5f841901a60355fc2e01fd3892b0994f66bbf9d94cdf7d7897"
+    },
+    {
+      "path": "delivery-policy.md",
+      "bytes": 1283,
+      "sha256": "f8622f7e510b1cac77e078f4bf55b6036fa60350c766cdaf29a7ca89ddafbf33"
+    },
+    {
+      "path": "return-policy.md",
+      "bytes": 1211,
+      "sha256": "4e710467f4363cb6e4ddc9720ef7c6943f20462a5503eccb366dbaedc02d73ea"
+    }
+  ]
+}

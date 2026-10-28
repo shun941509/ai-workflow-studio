@@ -1,0 +1,21 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "browser_navigate",
+    "browser_snapshot",
+    "browser_take_screenshot"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "허용된 HTTPS origin과 관찰 대상 URL",
+    "검토할 화면 요소·스크린샷 기준",
+    "별도로 검증한 OS/파일/네트워크 격리 환경"
+  ],
+  "comparisonFields": [
+    "url",
+    "title",
+    "screenshotSha256"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

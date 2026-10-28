@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "figma",
+  "endpoint": "https://mcp.figma.com/mcp",
+  "transport": "streamable-http",
+  "auth": "host-oauth-approved-client",
+  "state": "implemented",
+  "blockers": [],
+  "readTools": [
+    "get_metadata",
+    "get_design_context",
+    "get_variable_defs",
+    "get_screenshot"
+  ],
+  "compareFields": [
+    "fileKey",
+    "nodeId",
+    "name",
+    "width",
+    "height"
+  ],
+  "sourceHosts": [
+    "figma.com",
+    "www.figma.com"
+  ],
+  "sourceHost": "figma.com",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

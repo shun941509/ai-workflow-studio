@@ -3,17 +3,25 @@ import { randomUUID } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { RunnerError } from '../errors.js';
-import { validateJsonValue, type WorkflowEdge, type FlowDefinition, type FileRef } from '@studio/spec';
+import { parseStrictJson, validateJsonValue, type WorkflowEdge, type FlowDefinition, type FileRef, type RunOutcome } from '@studio/spec';
 import { canonicalDigest } from '@studio/package-kit';
 import type { ControlEdgeState, ControlOutcome } from '@studio/workflow-core';
 import { applyRunMemory, MEMORY_MIGRATION, type MemoryRequest, type MemoryResult } from './run-memory.js';
+import { CandidateSearchStore, CANDIDATE_SEARCH_MIGRATION } from './candidate-search-state.js';
+import type { DisclosureSnapshot, DisclosureState } from '../provenance/run-disclosure.js';
+import { AgenticStore, AGENTIC_MIGRATION } from './agentic-state.js';
+import { RUN_OUTCOME_MIGRATION, initializeRunOutcome, readRunOutcome, finalizeRunOutcome } from './run-outcomes.js';
+import { WorkingContextStore, WORKING_CONTEXT_MIGRATION } from './working-context.js';
 
 export type RunStatus = 'created' | 'running' | 'waiting' | 'cancelling' | 'attention_required' | 'succeeded' | 'failed' | 'blocked' | 'cancelled';
-export interface ModelProfile { id: string; name: string; provider: 'openai'; model: string; credentialRef: string }
+export interface ModelProfile { id: string; name: string; provider: 'openai'; model: string; credentialRef: string; kind?: 'chat' | 'embedding' | 'reranker' }
 export interface ModelCountEvidence { countId: string; requestHash: string; inputTokens: number; maxOutputTokens: number }
+/** Embedding measurement is local/conservative evidence, never a remote Responses token count. */
+export interface EmbeddingReservationEvidence { requestHash: string; contractHash: string; localTokens: number; reservedTokens: number; inputCount: number; tokenizerFingerprint: string; reservationRule: string }
 export interface RunRecord {
   id: string; requestId: string; packageHandle: string; status: RunStatus; createdAt: string; updatedAt: string;
   cancelRequested: boolean; error: { code: string; message: string } | null; result: unknown;
+  outcome: RunOutcome | null;
   activeMs: number;
   usage: { modelCalls: number; consumedTokens: number; reservedTokens: number };
 }
@@ -60,7 +68,12 @@ CREATE INDEX IF NOT EXISTS node_claims_run ON node_claims(run_id);
 CREATE INDEX IF NOT EXISTS child_scopes_run ON child_scopes(run_id,created_at,id);
 CREATE TABLE IF NOT EXISTS artifact_metadata(artifact_id TEXT PRIMARY KEY REFERENCES artifacts(id),operation_id TEXT NOT NULL,reference_json TEXT NOT NULL,source TEXT NOT NULL,wait_id TEXT REFERENCES waits(id));
 ${MEMORY_MIGRATION}
+${CANDIDATE_SEARCH_MIGRATION}
+${AGENTIC_MIGRATION}
+${RUN_OUTCOME_MIGRATION}
+${WORKING_CONTEXT_MIGRATION}
 CREATE TABLE IF NOT EXISTS plan_proposals(node_instance_id TEXT PRIMARY KEY REFERENCES node_instances(id),run_id TEXT NOT NULL REFERENCES runs(id),plan_hash TEXT NOT NULL,body TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS run_disclosure(run_id TEXT PRIMARY KEY REFERENCES runs(id),version INTEGER NOT NULL CHECK(version=1),state TEXT NOT NULL CHECK(state IN ('unobserved','pinned','blocked')),snapshot TEXT,code TEXT);
 `;
 
 type Row = Record<string, string | number | bigint | Uint8Array | null>;
@@ -69,15 +82,29 @@ const now = () => new Date().toISOString();
 /** SQLite owns durable execution truth; transport and handler code never write SQL directly. */
 export class RunStore {
   private readonly db: DatabaseSync;
+  readonly candidateSearch: CandidateSearchStore;
+  readonly agentic: AgenticStore;
+  readonly workingContexts: WorkingContextStore;
   constructor(filename: string) {
     if (filename !== ':memory:') mkdirSync(dirname(filename), { recursive: true, mode: 0o700 });
     this.db = new DatabaseSync(filename);
     this.db.exec('PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;');
     const exists = this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='schema_migrations'").get();
     const future = exists ? this.db.prepare('SELECT MAX(version) AS version FROM schema_migrations').get() as Row : undefined;
-    if (Number(future?.version ?? 0) > 7) { this.db.close(); throw new RunnerError('STATE_VERSION_UNSUPPORTED', '이 실행 기록에는 더 새로운 Runner가 필요합니다.'); }
+    if (Number(future?.version ?? 0) > 14) { this.db.close(); throw new RunnerError('STATE_VERSION_UNSUPPORTED', '이 실행 기록에는 더 새로운 Runner가 필요합니다.'); }
     // Additive migrations are atomic, and an older binary checks the version before changing schema tables.
-    this.transaction(() => { this.db.exec(MIGRATION); this.db.prepare('INSERT OR IGNORE INTO schema_migrations(version,applied_at) VALUES(7,?)').run(now()); this.db.exec("INSERT OR IGNORE INTO run_timing(run_id) SELECT id FROM runs; INSERT OR IGNORE INTO node_claims(node_instance_id,run_id) SELECT id,run_id FROM node_instances WHERE status NOT IN ('pending','skipped')"); });
+    this.transaction(() => {
+      this.db.exec(MIGRATION);
+      // Existing profiles remain chat profiles; migrations never infer a new paid capability from a model name.
+      if (!(this.db.prepare('PRAGMA table_info(profiles)').all() as Row[]).some(column => column.name === 'kind')) this.db.exec("ALTER TABLE profiles ADD COLUMN kind TEXT NOT NULL DEFAULT 'chat' CHECK(kind IN ('chat','embedding'))");
+      // SQLite cannot widen an existing column CHECK in place. Copy known fields atomically, preserving IDs and DPAPI references.
+      if (Number(future?.version ?? 0) < 10) this.db.exec(`CREATE TABLE profiles_v10(id TEXT PRIMARY KEY,name TEXT NOT NULL,provider TEXT NOT NULL CHECK(provider='openai'),model TEXT NOT NULL,credential_ref TEXT NOT NULL,kind TEXT NOT NULL DEFAULT 'chat' CHECK(kind IN ('chat','embedding','reranker'))); INSERT INTO profiles_v10 SELECT id,name,provider,model,credential_ref,kind FROM profiles; DROP TABLE profiles; ALTER TABLE profiles_v10 RENAME TO profiles;`);
+      this.db.prepare('INSERT OR IGNORE INTO schema_migrations(version,applied_at) VALUES(14,?)').run(now());
+      this.db.exec("INSERT OR IGNORE INTO run_timing(run_id) SELECT id FROM runs; INSERT OR IGNORE INTO node_claims(node_instance_id,run_id) SELECT id,run_id FROM node_instances WHERE status NOT IN ('pending','skipped')");
+    });
+    this.candidateSearch = new CandidateSearchStore(this.db, work => this.transaction(work), (runId, type, payload) => this.event(runId, type, payload));
+    this.agentic = new AgenticStore(this.db, work => this.transaction(work), (runId, type, payload) => this.event(runId, type, payload));
+    this.workingContexts = new WorkingContextStore(this.db, work => this.transaction(work), (runId, type, payload) => this.event(runId, type, payload));
   }
 
   close(): void { this.db.close(); }
@@ -124,17 +151,68 @@ export class RunStore {
   }
 
   saveProfile(profile: ModelProfile): void {
-    this.db.prepare('INSERT INTO profiles(id,name,provider,model,credential_ref) VALUES(?,?,?,?,?)').run(profile.id, profile.name, profile.provider, profile.model, profile.credentialRef);
+    this.db.prepare('INSERT INTO profiles(id,name,provider,model,credential_ref,kind) VALUES(?,?,?,?,?,?)').run(profile.id, profile.name, profile.provider, profile.model, profile.credentialRef, profile.kind ?? 'chat');
   }
 
   getProfile(id: string): ModelProfile {
     const row = this.db.prepare('SELECT * FROM profiles WHERE id=?').get(id) as Row | undefined;
     if (!row) throw new RunnerError('MODEL_PROFILE_REQUIRED', '모델 연결을 선택하세요.');
-    return { id: String(row.id), name: String(row.name), provider: 'openai', model: String(row.model), credentialRef: String(row.credential_ref) };
+    return { id: String(row.id), name: String(row.name), provider: 'openai', model: String(row.model), credentialRef: String(row.credential_ref), ...(row.kind === 'embedding' || row.kind === 'reranker' ? { kind: row.kind } : {}) };
   }
 
   listProfiles(): ModelProfile[] {
     return (this.db.prepare('SELECT id FROM profiles ORDER BY name').all() as Row[]).map((row) => this.getProfile(String(row.id)));
+  }
+
+  /** Missing rows remain legacy; migration never invents an authorization history for an old RAG result. */
+  getDisclosureState(runId: string): DisclosureState {
+    this.getRun(runId); const row = this.db.prepare('SELECT version,state,snapshot,code FROM run_disclosure WHERE run_id=?').get(runId) as Row | undefined;
+    if (!row) return { state: 'legacy' };
+    if (row.version !== 1) throw new RunnerError('RAG_DISCLOSURE_UNAVAILABLE', '자료 공개 기록 버전을 확인할 수 없습니다.');
+    if (row.state === 'unobserved' && row.snapshot === null && row.code === null) return { state: 'unobserved' };
+    if (row.state === 'blocked' && typeof row.code === 'string' && row.code.startsWith('RAG_DISCLOSURE_')) return { state: 'blocked', code: row.code };
+    if (row.state === 'pinned' && typeof row.snapshot === 'string' && row.snapshot.length < 2000) {
+      try {
+        const snapshot = parseStrictJson(row.snapshot) as unknown as DisclosureSnapshot;
+        if (snapshot && snapshot.authority === 'run-rag-v1' && snapshot.scope?.projectId === runId && typeof snapshot.scope.tenantId === 'string' && typeof snapshot.subjectId === 'string' && Number.isSafeInteger(snapshot.epoch) && snapshot.epoch > 0 && /^[a-f0-9]{64}$/.test(snapshot.aclHash)) return { state: 'pinned', snapshot };
+      } catch { /* Corrupt persisted metadata is a denial, never a fresh unobserved run. */ }
+    }
+    throw new RunnerError('RAG_DISCLOSURE_UNAVAILABLE', '자료 공개 기록의 형식을 확인할 수 없습니다.');
+  }
+
+  requiresRagDisclosure(runId: string): boolean {
+    const plan = this.getExecution(runId).plan as { workflow?: { nodes?: { type?: string; config?: { strategy?: string } }[]; subworkflows?: Record<string, { nodes?: { type?: string; config?: { strategy?: string } }[] }> } };
+    return [plan.workflow, ...Object.values(plan.workflow?.subworkflows ?? {})].some(flow => flow?.nodes?.some(node => node.type === 'knowledge' || node.type === 'retrieval' || node.type === 'agent' && node.config?.strategy === 'agentic_rag'));
+  }
+
+  /** A first observation can only seal a newly created run. Concurrent first observers must agree exactly. */
+  pinDisclosure(runId: string, snapshot: DisclosureSnapshot): void {
+    this.transaction(() => {
+      const state = this.getDisclosureState(runId);
+      if (state.state === 'pinned' && canonicalDigest(state.snapshot) === canonicalDigest(snapshot)) return;
+      if (state.state !== 'unobserved' || snapshot.scope.projectId !== runId) throw new RunnerError('RAG_DISCLOSURE_STATE_REQUIRED', '자료 공개 기준을 새로 고정할 수 없습니다. 새 실행이 필요합니다.');
+      this.db.prepare("UPDATE run_disclosure SET state='pinned',snapshot=? WHERE run_id=? AND state='unobserved'").run(JSON.stringify(snapshot), runId);
+      this.event(runId, 'rag.disclosure_pinned', { epoch: snapshot.epoch, snapshotHash: canonicalDigest(snapshot) });
+    });
+  }
+
+  blockDisclosure(runId: string, code: string): void {
+    if (!/^RAG_DISCLOSURE_[A-Z_]+$/.test(code)) throw new RunnerError('RAG_DISCLOSURE_UNAVAILABLE', '자료 공개 오류가 올바르지 않습니다.');
+    this.transaction(() => {
+      this.getRun(runId); const old = this.db.prepare('SELECT state FROM run_disclosure WHERE run_id=?').get(runId);
+      if (old?.state === 'blocked') return;
+      this.db.prepare("INSERT INTO run_disclosure(run_id,version,state,code) VALUES(?,1,'blocked',?) ON CONFLICT(run_id) DO UPDATE SET state='blocked',code=excluded.code").run(runId, code);
+      this.event(runId, 'rag.disclosure_blocked', { code });
+    });
+  }
+
+  /** Rank audit contains IDs, hashes and numeric stages only; source text, query and credentials never enter these events. */
+  recordRerank(runId: string, nodeId: string, evidence: { status: 'reranked' | 'fallback' | 'skipped_empty' | 'failed'; fingerprint: string; inventoryHash: string; failureCode?: string; ranks: { id: string; before: number; after: number | null; score?: number }[] }): void {
+    if (evidence.ranks.length > 20 || !/^[a-f0-9]{64}$/.test(evidence.fingerprint) || !/^[a-f0-9]{64}$/.test(evidence.inventoryHash) || Buffer.byteLength(JSON.stringify(evidence)) > 32768) throw new RunnerError('RERANK_AUDIT_INVALID', '재순위 기록이 고정 한도를 벗어났습니다.');
+    this.transaction(() => {
+      if (!this.db.prepare('SELECT id FROM node_instances WHERE run_id=? AND node_id=?').get(runId, nodeId)) throw new RunnerError('NODE_NOT_FOUND', '재순위 실행 노드를 찾을 수 없습니다.');
+      this.event(runId, 'rag.rerank', { nodeId, ...evidence });
+    });
   }
 
   /** Request identity includes the complete normalized request; same ID/different content is rejected. */
@@ -143,6 +221,12 @@ export class RunStore {
     if (!row) return undefined;
     if (row.request_hash !== requestHash) throw new RunnerError('REQUEST_CONFLICT', '같은 요청 ID에 다른 실행 내용이 전달되었습니다.', 409);
     return this.getRun(String(row.id));
+  }
+
+  /** Recovery discloses only the accepted run ID. It must not load inputs, model bindings or RAG results. */
+  findRequestRunId(requestId: string): string | undefined {
+    const row = this.db.prepare('SELECT id FROM runs WHERE request_id=?').get(requestId) as Row | undefined;
+    return row ? String(row.id) : undefined;
   }
 
   createRun(input: { requestId: string; requestHash: string; packageHandle: string; planHash: string; plan: unknown; inputs: unknown; modelBindings: Record<string, string>; nodeIds: string[]; edges?: readonly WorkflowEdge[]; maxModelCalls: number; maxTotalTokens: number }): RunRecord {
@@ -160,6 +244,8 @@ export class RunStore {
       for (const edge of input.edges ?? []) insertEdge.run(id, edge.id, edge.from.nodeId, edge.to.nodeId, 'pending');
       this.db.prepare('INSERT INTO run_timing(run_id) VALUES(?)').run(id);
       this.event(id, 'run.created', { planHash: input.planHash });
+      this.db.prepare("INSERT INTO run_disclosure(run_id,version,state) VALUES(?,1,'unobserved')").run(id);
+      initializeRunOutcome(this.db, id, input.plan, input.planHash);
       return this.getRun(id);
     });
   }
@@ -171,6 +257,7 @@ export class RunStore {
       id: String(row.id), requestId: String(row.request_id), packageHandle: String(row.package_handle), status: row.status as RunStatus,
       createdAt: String(row.created_at), updatedAt: String(row.updated_at), cancelRequested: row.cancel_requested === 1,
       error: row.error ? JSON.parse(String(row.error)) : null, result: row.result ? JSON.parse(String(row.result)) : null,
+      outcome: readRunOutcome(this.db, id, { planHash: String(row.plan_hash), status: String(row.status), result: row.result ? JSON.parse(String(row.result)) : null }),
       activeMs: Number((this.db.prepare('SELECT active_ms FROM run_timing WHERE run_id=?').get(id) as Row | undefined)?.active_ms ?? 0),
       usage: { modelCalls: Number(row.model_calls), consumedTokens: Number(row.consumed_tokens), reservedTokens: Number(row.reserved_tokens) },
     };
@@ -200,6 +287,7 @@ export class RunStore {
       this.db.prepare('UPDATE runs SET status=?,updated_at=?,error=?,result=? WHERE id=?')
         .run(status, now(), detail?.error ? JSON.stringify(detail.error) : null, detail && 'result' in detail ? JSON.stringify(detail.result) : null, id);
       this.event(id, `run.${status}`, detail?.error ? { error: detail.error } : {});
+      finalizeRunOutcome(this.db, id, (type, payload) => this.event(id, type, payload));
     });
   }
 
@@ -369,7 +457,8 @@ export class RunStore {
         this.db.prepare("UPDATE waits SET state='cancelled' WHERE run_id=? AND state IN ('pending','responded')").run(id);
         this.db.prepare("UPDATE node_instances SET status='cancelled' WHERE run_id=? AND status IN ('pending','ready','waiting_input','waiting_review','waiting_files')").run(id);
         this.db.prepare("UPDATE attempts SET status='cancelled',ended_at=? WHERE status='waiting' AND node_instance_id IN (SELECT id FROM node_instances WHERE run_id=?)").run(now(), id);
-        this.db.prepare("UPDATE runs SET cancel_requested=1,status='cancelled',updated_at=? WHERE id=?").run(now(), id); this.event(id, 'run.cancelled', {}); return;
+        this.db.prepare("UPDATE runs SET cancel_requested=1,status='cancelled',updated_at=? WHERE id=?").run(now(), id); this.event(id, 'run.cancelled', {});
+        finalizeRunOutcome(this.db, id, (type, payload) => this.event(id, type, payload)); return;
       }
       this.db.prepare('UPDATE runs SET cancel_requested=1,status=?,updated_at=? WHERE id=?').run('cancelling', now(), id);
       this.event(id, 'run.cancel_requested', {});
@@ -438,31 +527,35 @@ export class RunStore {
       this.db.prepare("UPDATE runs SET status='failed',error=?,updated_at=? WHERE id=? AND status='waiting'").run(JSON.stringify(error), now(), wait.runId);
       this.db.prepare("UPDATE node_instances SET status=CASE WHEN node_id=? THEN 'failed' ELSE 'blocked' END WHERE run_id=? AND status IN ('pending','ready','waiting_input','waiting_review','waiting_files')").run(wait.nodeId, wait.runId);
       this.db.prepare("UPDATE attempts SET status='failed',ended_at=?,error=? WHERE id=(SELECT attempt_id FROM waits WHERE id=?) AND status='waiting'").run(now(), JSON.stringify(error), waitId);
-      this.event(wait.runId, 'wait.expired', { waitId }); this.event(wait.runId, 'run.failed', { error }); return true;
+      this.event(wait.runId, 'wait.expired', { waitId }); this.event(wait.runId, 'run.failed', { error });
+      finalizeRunOutcome(this.db, wait.runId, (type, payload) => this.event(wait.runId, type, payload)); return true;
     });
   }
 
   /** Counting also discloses the payload externally. Check known budgets/cancellation and journal that intent before sending. */
-  beginModelCount(runId: string, nodeId: string, requestHash: string, maxOutputTokens: number): string {
+  beginModelCount(runId: string, nodeId: string, requestHash: string, maxOutputTokens: number, workingContextId?: string): string {
     if (!/^[a-f0-9]{64}$/.test(requestHash) || !Number.isSafeInteger(maxOutputTokens) || maxOutputTokens < 1) throw new RunnerError('INVALID_BUDGET', '입력 토큰 확인 요청이 올바르지 않습니다.');
     return this.transaction(() => {
       const run = this.getRun(runId); const row = this.db.prepare('SELECT max_model_calls,max_total_tokens FROM runs WHERE id=?').get(runId) as Row;
       if (run.cancelRequested) throw new RunnerError('RUN_CANCELLED', '실행 취소가 요청되었습니다.');
       if (run.usage.modelCalls >= Number(row.max_model_calls) || run.usage.consumedTokens + run.usage.reservedTokens + maxOutputTokens > Number(row.max_total_tokens)) throw new RunnerError('BUDGET_EXCEEDED', '알려진 모델 호출·출력 토큰 한도가 부족해 입력을 전송하지 않았습니다.');
-      const countId = `count_${randomUUID()}`; this.event(runId, 'model.count_requested', { countId, nodeId, requestHash, maxOutputTokens }); return countId;
+      const countId = `count_${randomUUID()}`;
+      if (workingContextId) this.workingContexts.linkCount(runId, nodeId, workingContextId, countId, requestHash);
+      this.event(runId, 'model.count_requested', { countId, nodeId, requestHash, maxOutputTokens, ...(workingContextId ? { workingContextId } : {}) }); return countId;
     });
   }
 
   /** Counting outcomes contain only hashes/counts/error codes; submitted content and credentials are never journaled. */
   finishModelCount(runId: string, countId: string, outcome: { inputTokens: number } | { code: string }): void {
     if (!/^count_[a-f0-9-]{36}$/.test(countId) || 'inputTokens' in outcome && (!Number.isSafeInteger(outcome.inputTokens) || outcome.inputTokens < 0) || 'code' in outcome && !/^[A-Z][A-Z0-9_]{0,99}$/.test(outcome.code)) throw new RunnerError('INVALID_USAGE', '입력 토큰 확인 결과가 올바르지 않습니다.');
-    this.transaction(() => { this.getRun(runId); this.event(runId, 'inputTokens' in outcome ? 'model.counted' : 'model.count_failed', { countId, ...outcome }); });
+    this.transaction(() => { this.getRun(runId); this.workingContexts.finishCount(runId, countId, 'code' in outcome ? outcome.code : undefined); this.event(runId, 'inputTokens' in outcome ? 'model.counted' : 'model.count_failed', { countId, ...outcome }); });
   }
 
   /** BEGIN IMMEDIATE prevents concurrent reservations from spending the same counted input/output budget. */
-  reserveModel(runId: string, nodeId: string, tokens: number, evidence?: ModelCountEvidence): string {
+  reserveModel(runId: string, nodeId: string, tokens: number, evidence?: ModelCountEvidence, embedding?: EmbeddingReservationEvidence): string {
     if (!Number.isSafeInteger(tokens) || tokens < 1) throw new RunnerError('INVALID_BUDGET', '모델 사용량 예약이 올바르지 않습니다.');
     if (evidence && (!/^[a-f0-9]{64}$/.test(evidence.requestHash) || !/^count_[a-f0-9-]{36}$/.test(evidence.countId) || !Number.isSafeInteger(evidence.inputTokens) || evidence.inputTokens < 0 || !Number.isSafeInteger(evidence.maxOutputTokens) || evidence.maxOutputTokens < 1 || evidence.inputTokens + evidence.maxOutputTokens !== tokens)) throw new RunnerError('INVALID_BUDGET', '확인한 입력 토큰과 출력 한도가 예약량과 일치하지 않습니다.');
+    if (embedding && (evidence || embedding.reservedTokens !== tokens || [embedding.localTokens, embedding.inputCount].some(value => !Number.isSafeInteger(value) || value < 1) || [embedding.requestHash, embedding.contractHash, embedding.tokenizerFingerprint].some(value => !/^[a-f0-9]{64}$/.test(value)) || embedding.reservationRule !== 'max-local-bpe-utf8-bytes-plus64-per-input-v1')) throw new RunnerError('INVALID_BUDGET', '임베딩의 로컬 측정과 예약 증거가 일치하지 않습니다.');
     return this.transaction(() => {
       const row = this.db.prepare('SELECT * FROM runs WHERE id=?').get(runId) as Row | undefined;
       if (!row) throw new RunnerError('RUN_NOT_FOUND', '실행 기록을 찾을 수 없습니다.', 404);
@@ -473,7 +566,8 @@ export class RunStore {
       const id = `reservation_${randomUUID()}`;
       this.db.prepare('INSERT INTO reservations(id,run_id,node_instance_id,tokens,status) VALUES(?,?,?,?,?)').run(id, runId, `${runId}:${nodeId}`, tokens, 'reserved');
       this.db.prepare('UPDATE runs SET model_calls=model_calls+1,reserved_tokens=reserved_tokens+? WHERE id=?').run(tokens, runId);
-      this.event(runId, 'model.reserved', { reservationId: id, tokens, ...(evidence ? { count: evidence } : {}) });
+      if (evidence) this.workingContexts.linkReservation(runId, evidence.countId, id, evidence.requestHash);
+      this.event(runId, 'model.reserved', { reservationId: id, tokens, ...(evidence ? { count: evidence } : {}), ...(embedding ? { embedding } : {}) });
       return id;
     });
   }
@@ -515,6 +609,9 @@ export class RunStore {
       const error = { code: 'RUN_INTERRUPTED', message: 'Runner가 중단되었습니다. 중복 호출을 막기 위해 자동 재실행하지 않았습니다.' };
       for (const row of rows) {
         const runId = String(row.id);
+        this.candidateSearch.recoverInterrupted(runId);
+        this.agentic.recoverInterrupted(runId);
+        this.workingContexts.recover(runId);
         const timing = this.db.prepare('SELECT segment_started_at FROM run_timing WHERE run_id=?').get(runId) as Row | undefined;
         if (timing?.segment_started_at) this.checkpointActiveTime(runId, Math.max(0, Date.now() - Date.parse(String(timing.segment_started_at))), true);
         this.db.prepare('UPDATE runs SET status=?,error=?,updated_at=? WHERE id=?').run('attention_required', JSON.stringify(error), now(), runId);

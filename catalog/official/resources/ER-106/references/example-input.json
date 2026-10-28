@@ -1,0 +1,20 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "query": "가상 반품 기한은?",
+  "documents": [
+    {
+      "id": "policy",
+      "text": "가상 반품 접수 기한은 7일입니다."
+    },
+    {
+      "id": "delivery",
+      "text": "가상 배송 접수는 평일에 처리합니다."
+    }
+  ],
+  "allowedDocumentIds": [
+    "policy",
+    "delivery"
+  ],
+  "topK": 1
+}

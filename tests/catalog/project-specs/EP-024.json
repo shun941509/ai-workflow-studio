@@ -1,0 +1,29 @@
+{
+  "$comment": "Internal acceptance plan only; not a successful run, model answer or signed verification receipt. Keep outside operational ZIPs.",
+  "projectId": "EP-024",
+  "sourceContract": {
+    "purpose": "안내의 빈틈 확인",
+    "blocksAndConnections": "`agent·evaluate`",
+    "inputOutput": "시작 안내 → 혼동·누락 목록",
+    "acceptanceCriteria": "원문 위치 연결, 실제 사용자 조사와 구분"
+  },
+  "artifactSha256": "d518cbca3e754bfcbfc64e64dee8f4de0601245be98f1b411ac6da43fb1cd038",
+  "practiceInput": "catalog/official/projects/EP-024/sample-input.json",
+  "pureChecks": [
+    "Original workflow schema and approved core blocks",
+    "Immutable original resources and all three host ZIPs",
+    "Missing real model fails preflight",
+    "Actual input/resource/extraction or bounded loop prefix executes without a model"
+  ],
+  "actualModelAcceptance": [
+    "S1의 워크스페이스 의미·진입 위치와 보드 만들기 위치가 불충분함을 원문으로 설명해야 합니다.",
+    "S2의 명시된 저장 후 위치를 누락으로 잘못 지적하지 않아야 합니다.",
+    "S3의 관리자 찾기 미준비를 구체적으로 기록하고 실제 인터뷰·성공률을 만들지 않아야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

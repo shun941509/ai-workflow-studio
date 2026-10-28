@@ -1,0 +1,26 @@
+{
+  "$comment": "Internal acceptance plan, not actual-model/host evidence. Excluded from operational ZIPs.",
+  "projectId": "EP-106",
+  "sourceContract": {
+    "purpose": "복합 질문을 나눠 검색",
+    "blocksAndConnections": "`agent·tool·retrieval·merge` / 등록 검색",
+    "inputOutput": "복합 질문 → 통합 답변",
+    "acceptanceCriteria": "하위 질문 포함, 검색 한도 준수"
+  },
+  "artifactSha256": "105749039be1128537a2e70dd460e5341bc16f920fb8406a62afb1c3c99a9bfe",
+  "actualModelAcceptance": [
+    "복합 질문에서 배송·반품 하위 질문을 실제로 생성하고 최소 두 하위 질의를 실행합니다. 한 부분이 누락된 answer JSON은 결과 스키마에서 거부합니다.",
+    "배송 답변은 결제 확정 다음 영업일부터 2~4영업일, 반품 답변은 수령일부터 14일·미사용·원래 포장·구성품 조건을 각 원문과 대조합니다. 실제 정책이라고 표시하지 않습니다.",
+    "두 문서의 실제 UTF-8 범위·원본 hash·IndexRef를 citation에서 확인합니다. 답변에 필요한 서로 다른 문서 근거를 골랐는지 실제 모델 검수에서 확인합니다.",
+    "원문에 없는 비용·환급 일수·도착일 또는 어느 한 부분의 근거가 없으면 insufficient_evidence로 유보합니다. 관련 검색이 있다는 것과 필요한 사실이 있다는 것을 구분합니다.",
+    "최대 3라운드·회당 2질의·12단계·30청크·누적 검색 문맥 6000토큰과 root 4모델 호출·30000토큰 한도를 넘지 않습니다. 실제 모델 사용량과 로컬 문맥 토큰은 구별합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  },
+  "sourceProvenance": "New original fictional delivery/return documents; no third-party source or actual merchant policy asserted",
+  "scope": "Keyword Agentic decomposition; structured omission rejection and abstention, no clarification/web"
+}

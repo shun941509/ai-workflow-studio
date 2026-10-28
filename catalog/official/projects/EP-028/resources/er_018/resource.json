@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-018",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "불확실성 표현",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2202,
+      "sha256": "6514a6aae543d985148351c2857a46efa6f24ec08ce838d17bb879eb9ee4a982"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1425,
+      "sha256": "dc363311b44ccb99390a4f6d70fc514282f6b90aed8e788bc0e0744f784cfc82"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 679,
+      "sha256": "93ddf3fa66c26bc07f480da996119dafe5aa5d46477baccc354dbe02de609342"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1103,
+      "sha256": "c6192a58d4a3ef91e1055234ac6f8d56f88dd519f2383130f8d8de99617a493f"
+    }
+  ]
+}

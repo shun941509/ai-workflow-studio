@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "EP-009-practice",
+  "revision": 1,
+  "kind": "document",
+  "name": "EP-009 가상 원문과 초기 입력",
+  "entrypoint": "reading.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "reading.md",
+      "bytes": 1729,
+      "sha256": "2c2e68070cca55709a437cf34e1fb37e68237380cce230e3c08bdda02cb0404a"
+    },
+    {
+      "path": "sample-input.json",
+      "bytes": 489,
+      "sha256": "4727d4cfe0726b4dda7bd4c7b0c0586829b3fddc811767197f103f47b49ce5e9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 272,
+      "sha256": "b05566170b766b72275c15b064ae41f59ed6c3effd22f7af9ed30a0cd0da5a5d"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 788,
+      "sha256": "4374ece33a11a084ac33172598eb2847b4fe79dd50b1b6b2eee6fb23e3ef3134"
+    }
+  ]
+}

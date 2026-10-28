@@ -1,0 +1,13 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "queryContains": [
+    "2026-01",
+    "API-204",
+    "제외",
+    "서비스 수준 협약"
+  ],
+  "reject": [
+    "제안에서 숫자·제외 조건 누락",
+    "용어집 뜻 충돌"
+  ]
+}

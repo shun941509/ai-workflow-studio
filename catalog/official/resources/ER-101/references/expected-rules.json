@@ -1,0 +1,10 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "coveredText": "첫 BOM 제외·CRLF만 LF로 바뀐 본문 전체",
+  "ordering": "원문 순서",
+  "overlap": 0,
+  "reject": [
+    "overlap>0",
+    "제어문자"
+  ]
+}

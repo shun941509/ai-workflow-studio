@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-031",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "구조화 추출 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2285,
+      "sha256": "8b510ce2004656d1c282c316ad803654b9998b25485624bc283b63b6a0aaacc2"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1431,
+      "sha256": "babeda3a4da9e010b68656c6a2dc00ec4b81ba573a683e1976324be11ceec8d9"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 654,
+      "sha256": "12f181048e0d29cf6ff6f94687f3c333f54de6e7e7295ef48aaeb5f0c15c725b"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1108,
+      "sha256": "6ecc54c6f25ddbac3a29f3f87845585bc4058e0bade9ae8bf9f974380e9be979"
+    }
+  ]
+}

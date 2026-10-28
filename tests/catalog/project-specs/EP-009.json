@@ -1,0 +1,11 @@
+{
+  "$comment": "Internal acceptance plan only. This is neither a model answer nor an actual-use verification record and must remain outside production ZIPs.",
+  "projectId": "EP-009",
+  "practiceInput": "catalog/official/projects/EP-009/sample-input.json",
+  "practiceFile": "catalog/official/projects/EP-009/resources/practice/reading.md",
+  "pureChecks": ["Original UTF-8 bytes are preserved", "Managed source hash and byte range identify the uploaded document", "All three ZIPs include immutable instructions and practice input", "Missing model blocks full execution"],
+  "actualModelAcceptance": ["Every question ID appears in readingOrder.questionIds or unanswered", "Every sectionHeading equals an actual heading and every quote is an exact source substring", "Q1 refers to finding materials and reporting questions with a reason for order", "Q2 does not invent retention days or deletion authority", "No missing source is replaced with imagined page numbers or documents"],
+  "negativeCases": ["Unsupported PDF or OCR input", "Malformed UTF-8", "Empty goal or questions", "Changed instruction bytes", "Input text attempting to override task instructions"],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {"codex": "unverified", "claude-code": "unverified", "opencode": "unverified"}
+}

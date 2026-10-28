@@ -1,0 +1,22 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "notion-search",
+    "notion-fetch",
+    "search",
+    "fetch"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "접근을 허용한 페이지 ID",
+    "작성할 부모 페이지·제목·본문의 명시적 요청",
+    "선택한 워크스페이스의 최소 권한 OAuth"
+  ],
+  "comparisonFields": [
+    "pageId",
+    "title",
+    "contentSha256"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

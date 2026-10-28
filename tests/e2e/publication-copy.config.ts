@@ -1,0 +1,3 @@
+import { defineConfig } from '@playwright/test';
+/** Browser-only state tests use internal HTTP responses; actual SQL/ZIP/storage contracts have separate integration coverage. */
+export default defineConfig({ testDir: '.', testMatch: 'publication-copy.spec.ts', timeout: 60000, expect: { timeout: 15000 }, workers: 1, reporter: [['list']], outputDir: '../../test-results/publication-copy', use: { baseURL: process.env.STUDIO_PUBLICATIONS_TEST_URL ?? 'http://127.0.0.1:3101', browserName: 'chromium', channel: 'chrome', viewport: { width: 1440, height: 1000 }, locale: 'ko-KR', trace: 'retain-on-failure', screenshot: 'only-on-failure' } });

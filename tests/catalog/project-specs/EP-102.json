@@ -1,0 +1,33 @@
+{
+  "$comment": "Internal acceptance plan only. No actual model, host, review or publication proof; exclude from operational ZIPs.",
+  "projectId": "EP-102",
+  "sourceContract": {
+    "purpose": "제품 버전별 절차 안내",
+    "blocksAndConnections": "`knowledge·retrieval·ai·review`",
+    "inputOutput": "증상·버전 → 해결 안내",
+    "acceptanceCriteria": "다른 버전 절차 혼입 없음"
+  },
+  "artifactSha256": "cf551cecfbdb0136ff8e9923a7b3bc6d2a308c80d221e86cf702e5a9a683666c",
+  "practiceInput": "catalog/official/projects/EP-102/sample-input.json",
+  "sourceProvenance": "New original fictional operational corpus with explicit license; no external product/research provenance asserted",
+  "pureChecks": [
+    "Managed file creation or explicit upload preserves exact source bytes",
+    "Version selection and independent parallel IndexRefs preserve source isolation",
+    "Citation ranges map to original UTF-8 bytes",
+    "No-match results differ from related documents without the requested fact",
+    "All three ZIPs preserve payload and block absent actual model"
+  ],
+  "actualModelAcceptance": [
+    "1.0 선택은 BN-EXPORT-1.0 파일 하나만 생성·색인하고 2.0 분기는 skipped여야 합니다. 2.0 선택도 반대 방향으로 격리됩니다.",
+    "1.0 EXPORT-10은 보관함→자료 내보내기·500행·CSV 근거를 사용해야 하고 2.0의 자료→내보내기 작업·2000행·JSON 절차가 섞이면 거절합니다.",
+    "2.0 EXPORT-20과 EXPORT-21은 원문에 있는 서로 다른 절차를 구분합니다. EXPORT-21의 보장 대기 시간은 원문에 없으므로 답을 유보합니다.",
+    "없는 검색어는 no_search_results이며 모델·검토를 호출하지 않습니다. 관련 문서가 있어도 필요한 사실이 없으면 insufficient_evidence입니다.",
+    "검토자는 선택 버전·인용을 실제 확인하고 accepted/rejected를 기록합니다. 거절은 수락이나 문제 해결 완료로 바뀌지 않아야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

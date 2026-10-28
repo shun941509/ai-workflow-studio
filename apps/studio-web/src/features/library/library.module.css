@@ -18,6 +18,9 @@
 .back { display:inline-flex; align-items:center; gap:8px; font-size:13px; color:#6480a5; margin-bottom:28px; }
 .description { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.9; color:#63768f; font-size:15px; }
 .notice { padding:18px 22px; border:1px solid #dde7f7; border-radius:10px; background:#f3f7fe; color:#677e9f; font-size:13px; line-height:1.8; margin:24px 0; }
+.notice > p:first-child { margin-top:0; }
+.downloadError { color:#9d3542; overflow-wrap:anywhere; }
+.downloadError a { text-decoration:underline; text-underline-offset:3px; }
 .hashes { padding:20px 0; border-top:1px solid var(--border); margin:25px 0; }
 .hashes summary { cursor:pointer; font-size:13px; color:#6b7e97; }
 .hashes dt { font-size:12px; margin-top:15px; color:#7287a2; }

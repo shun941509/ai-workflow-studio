@@ -1,0 +1,27 @@
+{
+  "fictional": true,
+  "claims": [
+    {
+      "id": "deadline",
+      "text": "반품 접수 기한은 얼마인가?"
+    },
+    {
+      "id": "fee",
+      "text": "교환 비용은 얼마인가?"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "policy",
+      "text": "가상 접수 기한은 7일입니다.",
+      "source": {
+        "documentId": "policy-document",
+        "revision": 1,
+        "text": "가상 접수 기한은 7일입니다.",
+        "start": 0,
+        "end": 38
+      }
+    }
+  ],
+  "remainingSearches": 2
+}

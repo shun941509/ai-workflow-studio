@@ -1,0 +1,30 @@
+{
+  "$comment": "Internal acceptance plan only; not a successful run, model answer or signed verification receipt. Keep outside operational ZIPs.",
+  "projectId": "EP-021",
+  "sourceContract": {
+    "purpose": "답변 연습 지원",
+    "blocksAndConnections": "`agent·form·loop·evaluate`",
+    "inputOutput": "직무·답변 → 질문·피드백",
+    "acceptanceCriteria": "질문 수 준수, 채용 판정으로 표시하지 않음"
+  },
+  "artifactSha256": "61f2fa89bb7835e3e21870ab27d160c3cfed92108fa28a55b39c640f70104cb9",
+  "practiceInput": "catalog/official/projects/EP-021/sample-input.json",
+  "pureChecks": [
+    "Original workflow schema and approved core blocks",
+    "Immutable original resources and all three host ZIPs",
+    "Missing real model fails preflight",
+    "Actual input/resource/extraction or bounded loop prefix executes without a model"
+  ],
+  "actualModelAcceptance": [
+    "A1·A2가 입력 순서대로 각각 한 결과에 대응하고 후속 질문은 총 2개여야 합니다.",
+    "sourceQuote는 해당 답변 안의 연속 문자열이며 다른 답변·없는 경력을 근거로 사용하지 않아야 합니다.",
+    "모든 status=practice_only이고 합격/불합격·채용 점수·개인 신상 질문을 만들지 않아야 합니다.",
+    "평가가 0인 결과를 그대로 표시하고 정답이나 합격으로 바꾸지 않아야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

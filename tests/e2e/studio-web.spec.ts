@@ -5,6 +5,19 @@ import { unzipSync } from "fflate";
 import { createBasicWorkflow, createNode } from '@studio/spec';
 
 /** Browser acceptance checks use real authoring/storage/export code; they do not fake model execution. */
+test('guide separates block contracts, authoring and runtime modes without offering unavailable actions', async ({ page }) => {
+  await page.goto('/guide');
+  const support = page.locator('#support');
+  await expect(support.locator('[data-support-node]')).toHaveCount(31);
+  await support.locator('[data-support-node="agent"]').locator('summary').click();
+  await expect(support.locator('[data-support-node="agent"]')).toContainText('키워드');
+  await support.locator('[data-support-node="program"]').locator('summary').click();
+  await expect(support.locator('[data-support-node="program"] summary')).toContainText('Runner 준비 중');
+  await expect(support.locator('[data-support-node="program"]')).toContainText('격리');
+  await expect(support.locator('[data-support-node="program"] button')).toHaveCount(0);
+  await expect(support).toContainText('실제 사용 검증은 아직 완료되지 않았습니다');
+});
+
 test("eight menus and profile navigation preserve the product information architecture", async ({ page }, info) => {
   const crashes: string[] = []; page.on("pageerror", (error) => crashes.push(error.message));
   await page.goto("/");
@@ -107,8 +120,8 @@ test("export rejects cross-origin and ambiguous JSON requests before building an
 
 test("account and unpublished examples describe prerequisites without fake records", async ({ page }) => {
   await page.goto("/examples");
-  await expect(page.getByRole("heading", { name: "검증된 공식 예제를 준비하고 있습니다" })).toBeVisible();
-  await expect(page.getByText("아직 게시된 항목은 없습니다.", { exact: false })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "공개 자료실 연결을 준비하고 있습니다" })).toBeVisible();
+  await expect(page.getByText("공개 자료실 연결이 아직 설정되지 않았습니다. 게시된 항목을 확인할 수 없습니다.", { exact: true })).toBeVisible();
   await page.goto("/account"); await expect(page.getByRole("heading", { level: 1 })).toHaveText("프로필·설정");
   await expect(page.getByRole("heading", { name: "저장 위치 안내" })).toBeVisible();
 });
@@ -165,7 +178,7 @@ async function downloadedWorkflow(page: Page) {
 
 test('forms author a conditional diamond and active-branch merge without JSON editing', async ({ page }, info) => {
   const crashes: string[] = []; page.on('pageerror', (error) => crashes.push(error.message));
-  await page.goto('/projects/new'); await expect(page.locator('.palette-node')).toHaveCount(20);
+  await page.goto('/projects/new'); await expect(page.locator('.palette-node')).toHaveCount(21);
   await page.getByRole('button', { name: '선택한 블록 삭제', exact: true }).click();
   await addBlock(page, 'condition', '내용 확인');
   await page.getByRole('combobox', { name: '분기 조건 방식', exact: true }).selectOption('eq');
@@ -195,6 +208,8 @@ test('forms author a conditional diamond and active-branch merge without JSON ed
   expect(workflow.nodes.find((node: { type: string }) => node.type === 'condition').config.expression).toEqual({ op: 'eq', args: [{ var: '/value' }, { literal: 'yes' }] });
   expect(workflow.nodes.find((node: { type: string }) => node.type === 'merge').config).toEqual({ waitFor: 'all_active', combine: 'select', collision: 'error' });
   expect(workflow.edges).toHaveLength(6); expect(crashes).toEqual([]);
+  // Authoring preserves a readable camera. Fit the full graph only through the user's explicit overview action.
+  await page.getByRole('button', { name: '전체 보기', exact: true }).click();
   await expect.poll(async () => {
     const canvas = await page.locator('.canvas-area').boundingBox(); if (!canvas) return false;
     for (const node of await page.locator('.workflow-node').all()) { const box = await node.boundingBox(); if (!box || box.x < canvas.x || box.y < canvas.y || box.x + box.width > canvas.x + canvas.width || box.y + box.height > canvas.y + canvas.height) return false; }

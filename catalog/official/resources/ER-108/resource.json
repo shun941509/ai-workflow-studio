@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-108",
+  "revision": 1,
+  "kind": "skill",
+  "name": "질의 재작성 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/rewrite_queries.py",
+      "bytes": 2195,
+      "sha256": "353e29bcfcff7f04b6652a5f9ff5d1c3bee2b5f902d94bd2754fcb8666601e65"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 300,
+      "sha256": "1ea35ee2afbd7d4b97a506549ae0f2617b5fd68887437e9b743d8f544f7f4844"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 288,
+      "sha256": "1d3c841035a03b11d70e54b1f881e414efa048a9f8b6813d1752de1dada0cc77"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3261,
+      "sha256": "ca942095f4c94640d5a020ddc0d4ff54c11b5fcaae6f2f3bb2f998c4fe3d8f8e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 977,
+      "sha256": "b0cb925969bab6d29ee01c0b5ba6b8ff8a27bbabb9a1984befdb9b96d7f59e7b"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 533,
+      "sha256": "9ffc173acbb06553d4b8ab207381426c3cb7b6d63dba733c389704e677e3e21e"
+    }
+  ]
+}

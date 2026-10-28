@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "sentry",
+  "endpoint": "https://mcp.sentry.dev/mcp",
+  "transport": "streamable-http",
+  "auth": "host-oauth-project-scope",
+  "state": "implemented",
+  "blockers": [],
+  "readTools": [
+    "get_sentry_resource",
+    "search_issues",
+    "search_events"
+  ],
+  "compareFields": [
+    "project",
+    "issueId",
+    "count",
+    "firstSeen",
+    "lastSeen"
+  ],
+  "sourceHosts": [
+    "sentry.io",
+    "*.sentry.io"
+  ],
+  "sourceHost": "sentry.io",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

@@ -1,0 +1,17 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "model": "text-embedding-3-small",
+  "dimensions": 256,
+  "batchSize": 16,
+  "chunks": [
+    {
+      "id": "policy",
+      "text": "가상 반품 접수 기한은 7일입니다."
+    },
+    {
+      "id": "delivery",
+      "text": "가상 배송 접수는 평일에 처리합니다."
+    }
+  ]
+}

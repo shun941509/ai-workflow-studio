@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "atlassian",
+  "endpoint": "https://mcp.atlassian.com/v2/mcp?tools=all",
+  "transport": "streamable-http",
+  "auth": "host-oauth-2.1",
+  "state": "implemented",
+  "blockers": [],
+  "readTools": [
+    "getAccessibleAtlassianResources",
+    "getJiraIssue",
+    "searchJiraIssuesUsingJql",
+    "getConfluenceContent"
+  ],
+  "compareFields": [
+    "cloudId",
+    "projectKey",
+    "status",
+    "updatedAt"
+  ],
+  "sourceHosts": [
+    "*.atlassian.net"
+  ],
+  "sourceHost": "*.atlassian.net",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

@@ -1,5 +1,7 @@
 # AI Workflow Studio
 
+자체 서비스 코드와 Studio Runner는 [MIT 라이선스](LICENSE)로 제공합니다. 의존성과 자료에 별도로 포함된 라이선스·고지는 해당 파일의 원문을 따릅니다.
+
 비전문가가 AI 작업 순서를 블록으로 만들고 Codex·Claude Code·OpenCode용 운영 ZIP으로 활용하는 프로젝트입니다.
 
 ## 설계 문서
@@ -11,8 +13,18 @@
 - [P3·P4·240개 예제·출시 계획](docs/implementation/P3-P4-catalog-plan.md)
 - [진행 상태와 검증 증거](docs/implementation/status.md)
 - [Supabase·OpenAI 연결 준비](docs/implementation/connection-setup.md)
+- [공개 자료의 독립 복사·원본 보존 계약](docs/specifications/independent-publication-copy.md)
 - [관리 파일·출력 규격](docs/specifications/artifact-storage.md)
+- [UTF-8 문서 추출](docs/specifications/document-extraction.md)
+- [모델 입력 토큰 확인·실행 예산](docs/specifications/model-token-accounting.md)
+- [제한된 후보 탐색·등록 검증기](docs/specifications/candidate-search.md)
+- [하위 흐름 편집·한글 표시 이름](docs/specifications/editor-subflows.md)
+- [고정 읽기 전용 도구](docs/specifications/builtin-tools.md)
+- [배포 구성 목록·원본 라이선스 고지](docs/specifications/distribution-notices.md)
+- [공개 ZIP의 현재 권리·서명·원본 전달](docs/specifications/publication-delivery.md)
+- [한국어 키워드 검색 품질과 한계](docs/specifications/keyword-quality.md)
 - [Windows 격리 실증과 남은 제한](docs/specifications/windows-isolation.md)
+- [Wasmtime·제한된 표준 입출력 실증](docs/specifications/windows-wasmtime-isolation.md)
 - [제품 전체 출시 검사](docs/implementation/release-gates.md)
 
 ## 저장소 개발

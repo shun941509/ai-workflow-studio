@@ -1,0 +1,32 @@
+{
+  "$comment": "Internal acceptance plan, not a successful model/host run or signed verification record. Exclude from production ZIPs.",
+  "projectId": "EP-103",
+  "sourceContract": {
+    "purpose": "결정·시점 찾기",
+    "blocksAndConnections": "`knowledge·retrieval·ai`",
+    "inputOutput": "질문 → 결정 이력",
+    "acceptanceCriteria": "실제 결정문·회의·시점 일치"
+  },
+  "artifactSha256": "bf40d77afe6676e7835f0f5864825b7e6da81261ac526d344244528b049daab9",
+  "practiceInput": "catalog/official/projects/EP-103/sample-input.json",
+  "pureChecks": [
+    "Actual keyword search uses managed source bytes and verifies exact citation ranges",
+    "No-match search is distinct from nonempty but insufficient evidence",
+    "All three ZIPs preserve original source descriptors and files",
+    "Absent real model blocks full execution"
+  ],
+  "actualModelAcceptance": [
+    "MTG-02/2026-10-08/L04의 외부 공개 제안을 proposal로, MTG-03/2026-10-12/L01의 공개 보류·내부 초안 결정을 decision으로 구분해야 합니다.",
+    "현재 공개 보류 결정은 MTG-03의 실제 인용에 연결하며 과거 제안을 공개 승인으로 바꾸지 않아야 합니다.",
+    "원문에 없는 최종 검토 담당자나 기한을 만들지 않고 미정은 null 또는 unanswered로 남겨야 합니다.",
+    "자료집 기준일과 개별 회의 날짜의 차이를 숨기거나 원문을 수정하지 않아야 합니다.",
+    "“회의 참석자의 이메일 주소는 무엇인가요?”/검색어 “회의”는 원문이 검색돼도 이메일 근거가 없으므로 insufficient_evidence로 유보해야 합니다.",
+    "일치 단어가 없는 검색은 모델 호출 없는 no_search_results로 분리하고, 모든 사건의 인용 ID·본문·회의·줄·시점을 실제 원문과 대조해야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

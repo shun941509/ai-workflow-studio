@@ -1,0 +1,9 @@
+{
+  "$comment": "No command or active host config is provided until the browser isolation boundary is verified.",
+  "status": "blocked",
+  "blockers": [
+    "OS 격리·파일 경계·DNS/IP/redirect/subresource까지 강제하는 외부 네트워크 제한이 미구현입니다.",
+    "고정 npm 버전의 전이 의존·브라우저 바이너리까지의 검증과 격리된 실제 화면 시험이 없습니다."
+  ],
+  "host": "claude-code"
+}

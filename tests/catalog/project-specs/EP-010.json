@@ -1,0 +1,11 @@
+{
+  "$comment": "Internal acceptance plan only. No model result or host-use receipt is synthesized. Exclude this file from operational packages.",
+  "projectId": "EP-010",
+  "practiceInput": "catalog/official/projects/EP-010/sample-input.json",
+  "practiceFile": "catalog/official/projects/EP-010/resources/practice/policy.md",
+  "pureChecks": ["Actual managed policy bytes build a run-scoped keyword index", "Each returned citation equals the original byte range and source SHA-256", "No-match search propagates inactive model branches", "Changed resources fail checksum validation", "Missing model blocks full execution"],
+  "actualModelAcceptance": ["Classification preserves uncertainty and does not constitute policy evidence", "Every factual claim uses a returned citation ID and exact quotation", "Full refund, immediate deletion and completed actions are never promised", "Refund amount, real account state and retention period remain unconfirmed", "actionsPerformed is exactly [none]", "Rejected review remains rejected and no external send occurs"],
+  "negativeCases": ["Unrelated search term", "Policy does not answer a question", "Conflicting policy versions", "Question contains prompt injection", "Empty question", "Unsupported account-action status"],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {"codex": "unverified", "claude-code": "unverified", "opencode": "unverified"}
+}

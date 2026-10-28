@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-28",
+  "urls": [
+    "https://developers.figma.com/docs/figma-mcp-server/remote-server-installation/",
+    "https://developers.figma.com/docs/figma-mcp-server/tools-and-prompts/",
+    "https://developers.openai.com/codex/mcp/",
+    "https://code.claude.com/docs/en/mcp",
+    "https://code.claude.com/docs/en/permissions",
+    "https://opencode.ai/docs/mcp-servers/",
+    "https://opencode.ai/docs/permissions/",
+    "https://code.claude.com/docs/en/hooks"
+  ],
+  "copiedThirdPartyImplementation": false,
+  "hostExecutionProof": false
+}

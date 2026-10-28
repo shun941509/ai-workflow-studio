@@ -1,0 +1,6 @@
+{
+  "fictional": true,
+  "documentId": "hanbit-guide",
+  "maxCharacters": 200,
+  "text": "# 가상 업무 안내\n접수 흐름을 설명합니다.\n\n## 승인 기준\n| 금액 | 승인자 |\n| --- | --- |\n| 10만원 이하 | 팀장 |\n| 초과 | 담당 책임자 |\n\n## 기록\n승인 일시를 남깁니다.\n"
+}

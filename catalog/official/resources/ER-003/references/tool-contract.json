@@ -1,0 +1,23 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "getAccessibleAtlassianResources",
+    "getJiraIssue",
+    "searchJiraIssuesUsingJql",
+    "getConfluenceContent"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "접근 허용 cloudId·projectKey",
+    "실제 issueKey·Confluence pageId",
+    "조회 기준 시각과 승인된 읽기 권한 그룹"
+  ],
+  "comparisonFields": [
+    "cloudId",
+    "projectKey",
+    "status",
+    "updatedAt"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

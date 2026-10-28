@@ -1,0 +1,37 @@
+{
+  "goal": "가상 디자인팀과 운영팀의 협업 조건을 합의 가능·미합의로 구분",
+  "parties": [
+    {
+      "id": "design",
+      "name": "가상 디자인팀",
+      "conditions": [
+        {
+          "id": "D1",
+          "text": "시안은 공유 전에 디자인팀 내부 검토를 반드시 거친다.",
+          "priority": "must"
+        },
+        {
+          "id": "D2",
+          "text": "가능하면 수요일에 검토 의견을 모은다.",
+          "priority": "prefer"
+        }
+      ]
+    },
+    {
+      "id": "operations",
+      "name": "가상 운영팀",
+      "conditions": [
+        {
+          "id": "O1",
+          "text": "외부 게시 전 운영팀의 문구 확인이 반드시 필요하다.",
+          "priority": "must"
+        },
+        {
+          "id": "O2",
+          "text": "수요일 회의 참석은 불가능하다.",
+          "priority": "must"
+        }
+      ]
+    }
+  ]
+}

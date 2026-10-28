@@ -1,0 +1,12 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "returnedIds": [
+    "manual-a"
+  ],
+  "excludedId": "private",
+  "exactTerm": "api-204",
+  "reject": [
+    "문서 ID 중복",
+    "알 수 없는 허용 ID"
+  ]
+}

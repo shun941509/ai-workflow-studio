@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "linear",
+  "endpoint": "https://mcp.linear.app/mcp/readonly",
+  "transport": "streamable-http",
+  "auth": "host-oauth-2.1-read",
+  "state": "implemented",
+  "blockers": [],
+  "readTools": [
+    "list_issues",
+    "get_issue",
+    "list_teams"
+  ],
+  "compareFields": [
+    "teamId",
+    "assigneeId",
+    "dueDate",
+    "stateId"
+  ],
+  "sourceHosts": [
+    "linear.app"
+  ],
+  "sourceHost": "linear.app",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

@@ -21,7 +21,8 @@ export function assertSameOrigin(request: Request) {
 /** Bound actual streamed bytes, not merely the untrusted Content-Length header. */
 export async function readBody(request: Request, maxBytes = 2 * 1024 * 1024): Promise<Record<string, unknown>> {
   assertSameOrigin(request);
-  if (!request.headers.get("content-type")?.startsWith("application/json")) throw new HttpError(415, "JSON_REQUIRED", "JSON 형식의 요청이 필요합니다.");
+  // Parameters may accompany JSON; a prefix match must not admit application/jsonp or application/json-invalid.
+  if (request.headers.get("content-type")?.split(';', 1)[0]?.trim().toLowerCase() !== "application/json") throw new HttpError(415, "JSON_REQUIRED", "JSON 형식의 요청이 필요합니다.");
   const reader = request.body?.getReader();
   if (!reader) throw new HttpError(400, "BODY_REQUIRED", "요청 내용을 확인해 주세요.");
   let total = 0; const chunks: Uint8Array[] = [];

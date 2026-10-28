@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "studio_atlassian": {
+      "type": "http",
+      "url": "https://mcp.atlassian.com/v2/mcp?tools=all"
+    }
+  }
+}

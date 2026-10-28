@@ -1,12 +1,13 @@
 import { createHash } from 'node:crypto';
 import { canonicalize } from 'json-canonicalize';
-import { createSchemaValidator, parseStrictJson, type ResourceRef } from '@studio/spec';
+import { createSchemaValidator, parseStrictJson, type ResourceRef, type TextResourceLicense } from '@studio/spec';
 import schema from '../../spec/schemas/resource-descriptor.schema.json' with { type: 'json' };
 import referenceSchema from '../../spec/schemas/resource-ref.schema.json' with { type: 'json' };
 import type { ResourceDescriptor } from './generated/resource.js';
 import { PackageError } from './errors.js';
 import { pathKey, validatePackagePath } from './archive/safe-path.js';
 import { readSkillMetadata } from './skills.js';
+import { textResourceNotice } from './text-license.js';
 
 const validator = createSchemaValidator();
 validator.addSchema(referenceSchema, 'resource-ref.schema.json');
@@ -15,18 +16,19 @@ const validateReference = validator.compile<ResourceRef>(referenceSchema);
 const hash = (value: Uint8Array) => createHash('sha256').update(value).digest('hex');
 export type { ResourceDescriptor };
 
-/** Materialize a complete, portable text revision with explicit private-use terms and no hidden files. */
-export function createTextResource(input: { id: string; revision: number; name: string; kind: 'instruction' | 'document'; text: string }) {
+/** Materialize portable immutable content. Optional explicit terms affect only this new revision. */
+export function createTextResource(input: { id: string; revision: number; name: string; kind: 'instruction' | 'document'; text: string; license?: TextResourceLicense }) {
   const encode = (value: string) => new TextEncoder().encode(value);
   const entrypoint = input.kind === 'instruction' ? 'instructions.md' : 'document.txt';
+  const license = textResourceNotice(input.license);
   const payloads = new Map<string, Uint8Array>([
     [entrypoint, encode(input.text)],
-    ['LICENSE.txt', encode('LicenseRef-Proprietary\n개인 작업을 위한 자료입니다. 공개 재배포 권한을 부여하지 않습니다. 별도 허락 없이 다른 사용자에게 배포하지 마세요.\n')],
+    ['LICENSE.txt', encode(license.text)],
   ]);
   if (!input.name.trim() || !input.text.trim() || payloads.get(entrypoint)!.length > 256 * 1024) throw new PackageError('RESOURCE_TEXT_INVALID', '자료 이름과 256 KiB 이하의 본문이 필요합니다.');
   const descriptor: ResourceDescriptor = {
     schemaVersion: '1.0.0', id: input.id, revision: input.revision, name: input.name, kind: input.kind,
-    entrypoint, license: { id: 'LicenseRef-Proprietary', path: 'LICENSE.txt' }, dependencies: {}, requiredConnections: [],
+    entrypoint, license: { id: license.id, path: 'LICENSE.txt' }, dependencies: {}, requiredConnections: [],
     files: [...payloads].map(([path, bytes]) => ({ path, bytes: bytes.length, sha256: hash(bytes) })) as ResourceDescriptor['files'],
   };
   if (!validate(descriptor)) throw new PackageError('RESOURCE_INVALID', '자료 ID·버전·종류를 확인하세요.');

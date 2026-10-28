@@ -1,5 +1,5 @@
 {
-  "name": "@studio/web", "version": "0.1.0", "private": true, "type": "module",
+  "name": "@studio/web", "version": "0.1.0", "license": "MIT", "private": true, "type": "module",
   "scripts": { "dev": "next dev --webpack --hostname 127.0.0.1", "build": "next build --webpack", "start": "next start --hostname 127.0.0.1", "typecheck": "tsc --noEmit" },
   "dependencies": {
     "@studio/spec": "workspace:*", "@studio/workflow-core": "workspace:*", "@studio/package-kit": "workspace:*", "@studio/ui": "workspace:*",

@@ -1,0 +1,32 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "model": "rerank-v5.0-pro",
+  "query": "가상 반품 기한은?",
+  "maxTokensPerDocument": 4096,
+  "onFailure": "fail",
+  "candidates": [
+    {
+      "id": "policy",
+      "text": "가상 반품 접수 기한은 7일입니다.",
+      "source": {
+        "documentId": "policy",
+        "revision": 1,
+        "text": "가상 반품 접수 기한은 7일입니다.",
+        "start": 0,
+        "end": 45
+      }
+    },
+    {
+      "id": "delivery",
+      "text": "가상 배송 접수는 평일에 처리합니다.",
+      "source": {
+        "documentId": "delivery",
+        "revision": 1,
+        "text": "가상 배송 접수는 평일에 처리합니다.",
+        "start": 0,
+        "end": 50
+      }
+    }
+  ]
+}

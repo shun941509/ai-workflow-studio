@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-109",
+  "revision": 1,
+  "kind": "skill",
+  "name": "질문 분해 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/decompose_requirements.py",
+      "bytes": 2938,
+      "sha256": "9fd1074a5f434189df89da6ff5726871b1e827c423d7cf8c222db13649e65d48"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 312,
+      "sha256": "673a8f296aae8b31dba18cee0247cdb0801fefa9eb849be2d9dca61d706bf3b7"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 260,
+      "sha256": "66e115645d5a1a1ef514290d1536c5d69ee81c4f9e6667bd3eabe33908f9d73b"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3289,
+      "sha256": "ca8f200cf81c2ea88d7b5e16cc554b34ba65fb5680752f93d392f7d4b243a708"
+    },
+    {
+      "path": "README.md",
+      "bytes": 985,
+      "sha256": "904621c47a1143bd75d40ecc2f6f3c33a7a5e0d51e23828ef837b724c78c531c"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 534,
+      "sha256": "faaacbb275d5950a6549dfeaa4ca47a7d72c5a3842917ea92cede9dc33ccc718"
+    }
+  ]
+}

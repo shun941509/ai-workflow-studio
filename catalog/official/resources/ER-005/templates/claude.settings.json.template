@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__studio_figma__*"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__studio_figma__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node resources/ER-005/scripts/claude-read-guard.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

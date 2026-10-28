@@ -1,0 +1,6 @@
+{
+  "question": "목록 조회의 다음 페이지 처리와 응답 필드는 어떻게 달라졌나요?",
+  "fromVersion": "1.0",
+  "toVersion": "2.0",
+  "searchTerms": "목록 응답 페이지"
+}

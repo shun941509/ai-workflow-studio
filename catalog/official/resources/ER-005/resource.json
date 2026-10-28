@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-005",
+  "revision": 1,
+  "kind": "mcp",
+  "name": "Figma 읽기 연결",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "service"
+  ],
+  "files": [
+    {
+      "path": "scripts/connection-plan.mjs",
+      "bytes": 8370,
+      "sha256": "b8baf94e29a92b83013d6e3ffa364b4ab8b83c8a7376c6c4fa401193d33d1af8"
+    },
+    {
+      "path": "connection.json",
+      "bytes": 588,
+      "sha256": "5a8e051201c9a621ac6ed9ff44cc4ad0f40be3cbe6d0e2afde90bcfd84a9fe93"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 106,
+      "sha256": "7f3ca1f9585c0491ec0e731a6fda9e069b1cce18c10e6c6021c66357e54045c2"
+    },
+    {
+      "path": "references/tool-contract.json",
+      "bytes": 665,
+      "sha256": "928813865707bd52002d2ffdf05acccf5f0fd233e228da2d16c6153932091b58"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 562,
+      "sha256": "e99fb7a68e636ff9bf209d359214f2a798c796b95789bd3317198dcb277c6c9c"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "templates/codex.config.toml.template",
+      "bytes": 308,
+      "sha256": "96f947774eccb87346e748c1409defa643414810724baa95f40d10c5a5ae406b"
+    },
+    {
+      "path": "templates/claude.mcp.json.template",
+      "bytes": 117,
+      "sha256": "c13dddfd3f43627909e9e52d084b239bb91f02e4d391a3c1653675883a1a81eb"
+    },
+    {
+      "path": "templates/claude.settings.json.template",
+      "bytes": 340,
+      "sha256": "6a427214875c6d5060a7549f3b5fa6457980e5e08d2af1a23758b99b46600544"
+    },
+    {
+      "path": "templates/opencode.json.template",
+      "bytes": 409,
+      "sha256": "c881129a8968b0e7458e246e6b5513172df228bfb23c3f9e21a19b983702ec29"
+    },
+    {
+      "path": "scripts/claude-read-guard.mjs",
+      "bytes": 987,
+      "sha256": "ba7775ab428758e322862483568b505457f274ea4d4ae3a5794c93b387e0cba7"
+    },
+    {
+      "path": "instructions.md",
+      "bytes": 4093,
+      "sha256": "072197811596e90866bc6abafc31bb3889bb516ca967a3eb4650bf7065ead726"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1077,
+      "sha256": "fd508523f4bcb48700accadbd2ccd79d96c1d6c614698da6aabbb6deebb50ee4"
+    },
+    {
+      "path": "assets/observation-report.md",
+      "bytes": 575,
+      "sha256": "f507e9c75ff0b33551e2fa5e918703d8f26538cafe005ff22a07dcdba2b52c6c"
+    }
+  ]
+}

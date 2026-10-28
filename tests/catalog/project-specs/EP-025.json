@@ -1,0 +1,29 @@
+{
+  "$comment": "Internal acceptance plan only; not a successful run, model answer or signed verification receipt. Keep outside operational ZIPs.",
+  "projectId": "EP-025",
+  "sourceContract": {
+    "purpose": "목표별 문제 생성",
+    "blocksAndConnections": "`agent·evaluate·file_output`",
+    "inputOutput": "자료·목표 → 문제·해설",
+    "acceptanceCriteria": "정답 근거와 목표별 문항 연결"
+  },
+  "artifactSha256": "e8d3f9697a66ecc4adc63fee1ddcbb2c2b65f39ed61f5217a383e368f95d4c09",
+  "practiceInput": "catalog/official/projects/EP-025/sample-input.json",
+  "pureChecks": [
+    "Original workflow schema and approved core blocks",
+    "Immutable original resources and all three host ZIPs",
+    "Missing real model fails preflight",
+    "Actual input/resource/extraction or bounded loop prefix executes without a model"
+  ],
+  "actualModelAcceptance": [
+    "연습 입력은 문항 2개이며 G1/G2를 실제 P1/P2 근거와 연결해야 합니다.",
+    "정답·해설·선택지가 일관되고 “문의 접수=완료”를 정답으로 만들지 않아야 합니다.",
+    "세 평가 기준이 모두 1일 때만 quizzes.json을 저장하며 미충족 평가는 결과에 그대로 남겨야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

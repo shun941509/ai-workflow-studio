@@ -1,0 +1,22 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "get_file_contents",
+    "issue_read",
+    "search_issues"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "저장소 owner/repository와 고정 40자리 commit",
+    "조사할 파일 경로와 이슈 초안의 목적",
+    "읽기 최소 권한과 실제 호스트 OAuth/PAT 연결"
+  ],
+  "comparisonFields": [
+    "repository",
+    "commit",
+    "path",
+    "contentSha256"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

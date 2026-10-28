@@ -1,0 +1,8 @@
+/* Flow controls stay outside the canvas so switching scopes is usable with keyboard and narrow screens. */
+.navigation { display:flex; flex-wrap:wrap; gap:12px; align-items:center; padding:10px 18px; border-bottom:1px solid #e2e8f0; background:#fff; }
+.navigation label { display:flex; gap:10px; align-items:center; font-size:13px; font-weight:600; white-space:nowrap; }
+.navigation select { min-width:180px; max-width:300px; padding:7px 10px; border:1px solid #cbd5e1; border-radius:7px; background:#fff; }
+.navigation span { font-size:12px; color:#64748b; }
+.addSection,.deleteSection { margin-top:24px; padding-top:18px; border-top:1px solid #e2e8f0; }
+.deleteSection p { font-size:12px; overflow-wrap:anywhere; }
+@media(max-width:600px) { .navigation { padding:10px; gap:8px; } .navigation label { width:100%; } .navigation select { flex:1; min-width:0; } .navigation span { display:none; } }

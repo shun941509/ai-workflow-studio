@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-103",
+  "revision": 1,
+  "kind": "skill",
+  "name": "검색 메타데이터 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/map_metadata.py",
+      "bytes": 2774,
+      "sha256": "ae23e62cca7e95c1fd84aa8c2bf23867b31dceae2df8aa929f780153fff451a4"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 685,
+      "sha256": "12bcbf02c81f5da251c45008f728212e3cddb76ccba8f721ca06ec4bf1122d3e"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 246,
+      "sha256": "92861a1ee69f1f45653fcdae8d5a14dfe5e9a92d4a36c4a1f3a42b94d93b4849"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3142,
+      "sha256": "c41903e1a8c0048029ecec8c7077682ccb45f729711771db4f7cc36269e79cc7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 993,
+      "sha256": "9af7ed7ac9ea0bc94809ecdfb5283d63f050b6518657227bca3976545704f7e4"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 575,
+      "sha256": "f4016a33f86b3888851dccbb4b5b9741925842add2017d195b65d2504fe4e913"
+    }
+  ]
+}

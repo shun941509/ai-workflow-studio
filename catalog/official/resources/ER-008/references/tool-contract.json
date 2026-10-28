@@ -1,0 +1,18 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "search_cloudflare_documentation"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "Cloudflare 제품·기능에 관한 공개 질문",
+    "공식 문서 원문과 비교할 인용문",
+    "Node24 또는 HTTP MCP를 지원하는 호스트"
+  ],
+  "comparisonFields": [
+    "url",
+    "quote"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { extname } from 'node:path';
-import { assertJsonData, parseStrictJson, type ResourceRef } from '@studio/spec';
+import { assertJsonData, checkedTextResourceLicense, parseStrictJson, type ResourceRef } from '@studio/spec';
 import { canonicalDigest, createTextResource, inspectPackage, PackageError, verifyResources } from '@studio/package-kit';
 import { verifyRightsEvidence, rightsKeyFingerprint, type RightsTrust, type RightsEvidence } from './rights';
 
@@ -25,7 +25,39 @@ const EXECUTABLE_EXTENSIONS = new Set(['.js', '.mjs', '.cjs', '.ts', '.py', '.ps
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
 
 /** Rule identities and configured capability inventory belong to the policy hash, including retries of a stored report. */
-export function scanPolicyDigest(policy: ScanPolicy): string { return canonicalDigest({ ...policy, scannerVersion: '1.0.0', maxCandidateBytes: MAX_CANDIDATE_BYTES, maxTextBytes: 1024 * 1024, maxFiles: 2000, maxFileBytes: 8 * 1024 * 1024, maxTotalBytes: 64 * 1024 * 1024, secretRules: SECRET_PATTERNS.map(String), riskRules: RISK_PATTERNS.map(String), allowedTextExtensions: [...TEXT_EXTENSIONS], executableExtensions: [...EXECUTABLE_EXTENSIONS] }); }
+export function scanPolicyDigest(policy: ScanPolicy): string { return canonicalDigest({ ...policy, scannerVersion: '1.0.0', sourceIdentityRules: 'text-explicit-license-v1/archive-v1-closure-1', maxCandidateBytes: MAX_CANDIDATE_BYTES, maxTextBytes: 1024 * 1024, maxFiles: 2000, maxFileBytes: 8 * 1024 * 1024, maxTotalBytes: 64 * 1024 * 1024, secretRules: SECRET_PATTERNS.map(String), riskRules: RISK_PATTERNS.map(String), allowedTextExtensions: [...TEXT_EXTENSIONS], executableExtensions: [...EXECUTABLE_EXTENSIONS] }); }
+
+/** An immutable account version pins the original descriptor bytes. Each descriptor in turn pins
+ * its payload and dependent refs, so the root's exact transitive closure identifies one materials export.
+ * Matching source identity neither executes assets nor grants redistribution permission. */
+function archiveSourceMatches(snapshot: Record<string, unknown>, version: Record<string, unknown>, content: Record<string, unknown>, inspected: Awaited<ReturnType<typeof inspectPackage>>): boolean {
+  const uuid = (value: unknown): value is string => typeof value === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(value);
+  if (version.revision !== 1 || !uuid(version.resource_id) || !uuid(content.importId)
+    || Object.keys(content).sort().join(',') !== 'description,descriptorSha256,format,importId,kind,name,reference,sourceAlias'
+    || typeof content.sourceAlias !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(content.sourceAlias)
+    || !object(content.reference) || typeof content.descriptorSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(content.descriptorSha256)
+    || content.description !== '' || typeof content.name !== 'string' || !content.name.trim() || content.name.length > 200
+    || content.reference.sha256 !== content.descriptorSha256 || content.reference.kind !== content.kind) return false;
+  if (snapshot.resource !== undefined && (!object(snapshot.resource) || snapshot.resource.id !== version.resource_id || snapshot.resource.name !== content.name || snapshot.resource.kind !== content.kind)) return false;
+  const refs = inspected.manifest.resources as Record<string, ResourceRef>;
+  if (!Object.hasOwn(refs, content.sourceAlias) || canonicalDigest(refs[content.sourceAlias]) !== canonicalDigest(content.reference)) return false;
+  const definition = inspected.files.get(`resources/${content.sourceAlias}/resource.json`);
+  if (!definition || digestBytes(definition) !== content.descriptorSha256) return false;
+  // Reuse package-kit's real byte/dependency verification rather than trusting manifest inventory alone.
+  const descriptors = verifyResources(refs, inspected.files), root = descriptors.get(content.sourceAlias);
+  if (!root || root.name !== content.name || root.kind !== content.kind) return false;
+  const visited = new Set<string>(), pending = [content.sourceAlias];
+  while (pending.length) {
+    const alias = pending.pop()!; if (visited.has(alias)) continue;
+    const descriptor = descriptors.get(alias); if (!descriptor) return false;
+    visited.add(alias);
+    for (const [dependency, reference] of Object.entries(descriptor.dependencies)) {
+      if (!Object.hasOwn(refs, dependency) || canonicalDigest(refs[dependency]) !== canonicalDigest(reference)) return false;
+      pending.push(dependency);
+    }
+  }
+  return visited.size === Object.keys(refs).length;
+}
 
 /** Validate source identity from actual snapshot values; a caller-provided digest cannot substitute another package. */
 function sourceMatches(source: ScanInput['source'], inspected: Awaited<ReturnType<typeof inspectPackage>>): boolean {
@@ -34,9 +66,13 @@ function sourceMatches(source: ScanInput['source'], inspected: Awaited<ReturnTyp
   if (source.kind !== 'resource' || inspected.manifest.packageKind !== 'materials' || !object(snapshot.version)) return false;
   const version = snapshot.version; if (typeof version.resource_id !== 'string' || !Number.isSafeInteger(version.revision) || Number(version.revision) < 1 || !object(version.content) || canonicalDigest(version.content) !== version.sha256) return false;
   const content = version.content;
-  // Current private authoring stores text revisions. Other binary/code source formats need their own immutable materializer.
+  if (content.format === 'archive_v1') return archiveSourceMatches(snapshot, version, content, inspected);
+  // The immutable source must explicitly carry any new license. Old text sources retain private terms;
+  // a user's declaration still cannot replace the independent signed rights evidence checked below.
   if (content.format !== 'text' || content.kind !== 'instruction' && content.kind !== 'document' || typeof content.name !== 'string' || typeof content.text !== 'string') return false;
-  const material = createTextResource({ id: version.resource_id, revision: Number(version.revision), name: content.name, kind: content.kind, text: content.text });
+  if (Object.keys(content).some(key => !['format', 'kind', 'name', 'description', 'text', 'license'].includes(key))) return false;
+  const license = Object.hasOwn(content, 'license') ? checkedTextResourceLicense(content.license) : undefined;
+  const material = createTextResource({ id: version.resource_id, revision: Number(version.revision), name: content.name, kind: content.kind, text: content.text, ...(license ? { license } : {}) });
   const refs = inspected.manifest.resources; return Object.keys(refs).length === 1 && canonicalDigest(refs[version.resource_id]) === canonicalDigest(material.reference);
 }
 

@@ -1,4 +1,11 @@
 import { canonicalize } from 'json-canonicalize';
+import { validateCompletionSemantics } from './completion.js';
+import { validateWorkDefinitionSemantics } from './work-definition.js';
+import { validateWorkingContextSemantics } from './working-context.js';
+export { validateWorkingContextSemantics, applyWorkingContextPreset, removeWorkingContextPreset, workingTaskContext, workingContextAttachments } from './working-context.js';
+export { validateWorkDefinitionSemantics } from './work-definition.js';
+export { validateCompletionSemantics, evaluateCompletion } from './completion.js';
+export type { CompletionNodeEvidence, CompletionAssessment } from './completion.js';
 import {
   assertJsonData, FORBIDDEN_KEYS, getNodeDefinition, validateJsonValue, validateWorkflowShape,
   type Binding, type FileRef, type FlowDefinition, type FlowRef, type ValidationIssue, type Workflow, type WorkflowNode,
@@ -303,6 +310,9 @@ export function analyzeWorkflow(workflow: Workflow): ValidationIssue[] {
   }
   if (processed !== flows.size) issues.push(diagnostic('FLOW_RECURSION', 'Recursive child flows are not supported', '/subworkflows'));
   if ([...depths.values()].some(depth => depth > workflow.policy.limits.maxChildDepth)) issues.push(diagnostic('FLOW_DEPTH_EXCEEDED', 'Child flow nesting exceeds the declared limit', '/subworkflows'));
+  issues.push(...validateCompletionSemantics(workflow));
+  issues.push(...validateWorkDefinitionSemantics(workflow));
+  issues.push(...validateWorkingContextSemantics(workflow));
   return issues;
 }
 
@@ -313,6 +323,13 @@ export interface WorkflowRequirements { capabilities: string[]; modelProfiles: s
 /** Requirements are derived from all packaged definitions; a manifest cannot claim fewer capabilities. */
 export function collectRequirements(workflow: Workflow): WorkflowRequirements {
   const capabilities = new Set<string>(); const models = new Set<string>(); const resources = new Set<string>();
+  // Older Runners must reject an acceptance-aware package instead of silently dropping its business contract.
+  if (workflow.completion) capabilities.add('workflow.completion@1');
+  if (workflow.workDefinition) capabilities.add('workflow.work_definition@1');
+  if (workflow.workDefinition?.harness.workingContext) capabilities.add('workflow.working_context@1');
+  // Task references remain pinned even when excluded from this request's context. Selection controls disclosure,
+  // not package ownership; deleting a node attachment must not orphan the declared optional-asset provenance.
+  if (workflow.workDefinition) for (const asset of [...workflow.workDefinition.task.assets, ...workflow.workDefinition.task.skills]) resources.add(asset.alias);
   // Included Skill resources are validated and exposed as instruction bundles, even through generic bindings.
   if (Object.values(workflow.resources).some(resource => resource?.kind === 'skill')) capabilities.add('skill.instructions@1');
   const flows = [workflow, ...Object.values(workflow.subworkflows).filter((flow): flow is FlowDefinition => Boolean(flow))];
@@ -322,9 +339,12 @@ export function collectRequirements(workflow: Workflow): WorkflowRequirements {
     for (const alias of resourceReferences(node)) resources.add(alias);
     if (node.type === 'retrieval') {
       capabilities.add(`retrieval.${node.config.mode}@1`);
-      if (node.config.reranker) capabilities.add('retrieval.rerank@1');
+      if (node.config.reranker) { capabilities.add('retrieval.rerank@1'); capabilities.add('reranker.openai_responses_v1@1'); }
     }
-    if (node.type === 'agent' && node.config.strategy === 'agentic_rag') capabilities.add('agent.agentic_rag@1');
+    if (node.type === 'agent' && node.config.strategy === 'agentic_rag') {
+      capabilities.add('agent.agentic_rag@1'); capabilities.add('agentic_rag.keyword@1');
+      capabilities.add(`agentic_rag.${node.config.retrievalPolicy?.onInsufficient ?? 'invalid'}@1`);
+    }
     if (node.type === 'agent' && node.config.strategy === 'task') {
       // A single model response does not imply iterative planning or permission to invoke tools.
       capabilities.add('agent.task@1');
@@ -335,13 +355,18 @@ export function collectRequirements(workflow: Workflow): WorkflowRequirements {
       // Index operations and storage scope are separate contracts; build support does not grant deletion.
       capabilities.add(`knowledge.${node.config.operation}@1`);
       if (node.config.indexSettings) capabilities.add(`knowledge.${node.config.indexSettings.kind}@1`);
-      if (node.config.profile === 'local-run-keyword-v1') capabilities.add('rag.run_local@1');
+      if (['local-run-keyword-v1', 'local-run-embedding-v1'].includes(node.config.profile ?? '')) capabilities.add('rag.run_local@1');
+      if (node.config.profile === 'local-run-embedding-v1') capabilities.add('embedding.openai_small_256@1');
     }
     if (node.type === 'skill') capabilities.add(`skill.${node.config.mode}@1`);
     if (node.type === 'ai' && node.attachments.some(attachment => attachment.role === 'skill')) capabilities.add('skill.instructions@1');
     // Mode requirements prevent a rules-only evaluator from claiming model evaluation support.
     if (node.type === 'evaluate') capabilities.add(`evaluate.${node.config.mode}@1`);
     if (node.type === 'program') capabilities.add(`worker.${node.config.workerProfile}@1`);
+    // A fixed verifier and tree support never imply graph traversal or arbitrary verifier execution.
+    if (node.type === 'candidate_search') { capabilities.add(`candidate_search.${node.config.mode}@1`); capabilities.add(`verifier.${node.config.verifierId}@1`); }
+    // Trusted builtin identities are versioned independently; node.tool alone never enables an external MCP server.
+    if (node.type === 'tool') capabilities.add(node.config.tool.kind === 'builtin' ? `tool.builtin.${node.config.tool.id}@${node.config.tool.version}` : 'tool.mcp@1');
     if (node.type === 'parallel') capabilities.add(`parallel.${node.config.mode}@1`);
     // Child modes are explicit so supporting local bounded flows cannot imply arbitrary packaged recursion.
     for (const ref of flowReferences(node)) capabilities.add(`flow.${ref.kind}@1`);
@@ -410,6 +435,6 @@ export { applyTransform, validateTransformSteps } from './transform/operations.j
 export type { TransformStep } from './transform/operations.js';
 export { CoreOperationError } from './transform/json.js';
 export { validateGuardrail } from './guardrail.js';
-export { validateArtifactFilename, validateManagedOutput, validateTaskAgent, validateTextExtraction, validateRunRagNode } from './operational-modes.js';
+export { validateArtifactFilename, validateManagedOutput, validateTaskAgent, validateAgenticRag, validateTextExtraction, validateRunRagNode } from './operational-modes.js';
 export { resolveNodeActivation, selectControlEdges, propagateInactiveEdges, mergeValues } from './control-flow.js';
 export type { ControlEdgeState, ControlOutcome, IncomingControl, NodeActivationInput, NodeActivation, MergeConfig } from './control-flow.js';

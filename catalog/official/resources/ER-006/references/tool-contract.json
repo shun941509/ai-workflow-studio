@@ -1,0 +1,21 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "list_tables",
+    "execute_sql"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "정확한 20자리 projectRef",
+    "허용된 schema.table 목록과 조회할 열",
+    "최대100행, 실제 프로젝트 읽기 권한"
+  ],
+  "comparisonFields": [
+    "projectRef",
+    "table",
+    "rowCount",
+    "dataSha256"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

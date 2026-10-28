@@ -1,0 +1,30 @@
+{
+  "$comment": "Internal acceptance plan only; not a successful run, model answer or signed verification receipt. Keep outside operational ZIPs.",
+  "projectId": "EP-038",
+  "sourceContract": {
+    "purpose": "배포 요건 확인",
+    "blocksAndConnections": "`document_extract·evaluate·review`",
+    "inputOutput": "보고서·기준 → 누락 목록",
+    "acceptanceCriteria": "지정 필수 항목의 누락을 검출"
+  },
+  "artifactSha256": "1a12a674ab5715748660052f90256f2ae1c6a217dc0979a735c28f85e99364fb",
+  "practiceInput": "catalog/official/projects/EP-038/sample-input.json",
+  "pureChecks": [
+    "Original workflow schema and approved core blocks",
+    "Immutable original resources and all three host ZIPs",
+    "Missing real model fails preflight",
+    "Actual input/resource/extraction or bounded loop prefix executes without a model"
+  ],
+  "actualModelAcceptance": [
+    "summary·metrics·risks·owner가 빠짐없이 평가되어야 합니다.",
+    "연습 보고서의 담당 역할 미기재를 owner=0으로 검출하고 없던 담당자를 만들지 않아야 합니다.",
+    "집계 기간 2026-10-05~2026-10-09와 확인 6/대기 2를 원문 그대로 인용해야 합니다.",
+    "한 항목이 0이면 passed=false이며 검토 수락이 이 점수를 바꾸거나 배포를 실행하지 않아야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

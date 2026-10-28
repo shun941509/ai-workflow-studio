@@ -1,0 +1,8 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "owner": "fictional-hanbit",
+  "repository": "handbook",
+  "commit": "1111111111111111111111111111111111111111",
+  "path": "README.md"
+}

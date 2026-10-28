@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-101",
+  "revision": 1,
+  "kind": "skill",
+  "name": "문서 정제·분할 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/clean_split.py",
+      "bytes": 2739,
+      "sha256": "8741d985f6b7081ea6041c6c6925a205ddb69180aabd5f5c5016d4ddfea7d129"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 259,
+      "sha256": "5f926b55a71b4283de3a20db9c86aa165b7d231b314efcbabbfd4b9dc829b37f"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 266,
+      "sha256": "70e89d1467ae25dde59103196d3b1b741f88c4e6bf14bdf849a4b97af38ccf41"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3232,
+      "sha256": "ca65f9253d6807271da213c07f9a6b517be4edc46ee3db9c3e8a4083c700e254"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1000,
+      "sha256": "6e1ad3ebb550008114ca64d39be5c9422db5781b163e9735a3290935198f0a80"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 601,
+      "sha256": "a824f8ffc9e511de65f37a56e49b4bd5f3457ea3ec56ca5be43d67cf6aa25bfa"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "studio_notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
+      "enabled": false
+    }
+  },
+  "permission": {
+    "studio_notion_*": "deny",
+    "studio_notion_notion-search": "ask",
+    "studio_notion_notion-fetch": "ask",
+    "studio_notion_search": "ask",
+    "studio_notion_fetch": "ask"
+  }
+}

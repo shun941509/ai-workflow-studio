@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-106",
+  "revision": 1,
+  "kind": "skill",
+  "name": "벡터 검색 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "embedding"
+  ],
+  "files": [
+    {
+      "path": "scripts/vector_search.py",
+      "bytes": 5578,
+      "sha256": "430048183612a32882eeb8ad3c297b95bc3165dfbfb6fcf2038970b1c64807e3"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 384,
+      "sha256": "b5c2429f18559f321b3091dab9b532f25c083be29ded25f2294150f17b7c3089"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 310,
+      "sha256": "9d5c8d3b8479acfbca4e289d0e403b6f6b5fa2745e797b8f58b08bb68eefd4d8"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3535,
+      "sha256": "36d25174f21ec76fa2a64d9f1d0b46060885a158d14b5f4c92eda539ab589263"
+    },
+    {
+      "path": "README.md",
+      "bytes": 976,
+      "sha256": "c05f071bd3ccdb4cffd74e1fb7aba211148d629188c3d7ec0efcc18f1c58acd4"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 740,
+      "sha256": "3e667a67d21a4506198b0cd472f138d56e475eeb6b8a7e9a5c4a2915f2a949ea"
+    }
+  ]
+}

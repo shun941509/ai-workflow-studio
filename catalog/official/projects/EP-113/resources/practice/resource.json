@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "EP-113-practice",
+  "revision": 1,
+  "kind": "document",
+  "name": "EP-113 가상 실습 자료",
+  "entrypoint": "guide.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "sample-input.json",
+      "bytes": 145,
+      "sha256": "96d749d088ed528de9498f2fb8d6329aac7091e776ebdcd50b45c38cb96c6aa3"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 778,
+      "sha256": "8285a7071104144ca6a20ccd0a995ec1ab3f3d9ca02aa5a4cb60d33c73e30131"
+    },
+    {
+      "path": "guide.md",
+      "bytes": 980,
+      "sha256": "2ca7c182f4fd37531bd0e289670141d38b00737b6060e225da352a22f3770829"
+    },
+    {
+      "path": "corpus/EN-RESUME-17.md",
+      "bytes": 847,
+      "sha256": "85191d56087784b597e77850f7d18df8458dd666776afe6d83efe68a527d3456"
+    },
+    {
+      "path": "corpus/KO-EXPORT-42.md",
+      "bytes": 725,
+      "sha256": "f64280cbdae24fa872f6676b77a53e2065d8746c89585f23c03f314495915400"
+    },
+    {
+      "path": "corpus/EN-RETRY-71.md",
+      "bytes": 589,
+      "sha256": "0013a959e2cab2dcca3d4e2752e6c990cb3a770d28417520109bd108dbd39b13"
+    },
+    {
+      "path": "corpus/KO-REVISION-24.md",
+      "bytes": 602,
+      "sha256": "cdad0e06198f1abda823a2000aa845b8f91b0d6712824d6fc3911881c91c02a5"
+    }
+  ]
+}

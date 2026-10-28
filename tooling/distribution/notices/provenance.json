@@ -1,0 +1,20 @@
+{
+  "$comment": "Only exact package/version/package.json fingerprints may use these original upstream notice bytes. No notice is fabricated from a license label.",
+  "packages": [
+    {
+      "name": "js-tiktoken",
+      "version": "1.0.21",
+      "packageJsonSha256": "5040ae37366971233fd53ef33360bc8d94159fa55c0c541f5663980b53b6b3b3",
+      "gitHead": "4c8b748e07992c00386f3180af5c574b27b65139",
+      "registrySource": "https://registry.npmjs.org/js-tiktoken/1.0.21",
+      "sourcePackage": "https://raw.githubusercontent.com/dqbd/tiktoken/4c8b748e07992c00386f3180af5c574b27b65139/js/package.json",
+      "notices": [
+        {
+          "path": "js-tiktoken-1.0.21/LICENSE",
+          "sha256": "418cb499b436128d653d79941333a5437b7be2ea9213dcc2f04d15d5d2c51d86",
+          "source": "https://raw.githubusercontent.com/dqbd/tiktoken/4c8b748e07992c00386f3180af5c574b27b65139/LICENSE"
+        }
+      ]
+    }
+  ]
+}

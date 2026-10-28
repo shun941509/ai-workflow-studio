@@ -1,0 +1,12 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "initialStatus": "connection_required",
+  "initialCandidates": null,
+  "requiredConnection": "reranker",
+  "reject": [
+    "후보 밖 index",
+    "중복 index",
+    "누락 응답",
+    "위조 원문"
+  ]
+}

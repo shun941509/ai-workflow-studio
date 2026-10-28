@@ -1,0 +1,33 @@
+{
+  "$comment": "Internal acceptance plan only. No actual model, host, review or publication proof; exclude from operational ZIPs.",
+  "projectId": "EP-104",
+  "sourceContract": {
+    "purpose": "버전 차이 설명",
+    "blocksAndConnections": "`parallel·retrieval·ai·merge`",
+    "inputOutput": "질문·두 버전 → 차이·근거",
+    "acceptanceCriteria": "버전별 출처 구분"
+  },
+  "artifactSha256": "9e9fbc4dc528fe54cfbb7d7c4fa376512d33ec914f8311e21760d51ed8b2cbb8",
+  "practiceInput": "catalog/official/projects/EP-104/sample-input.json",
+  "sourceProvenance": "New original fictional operational corpus with explicit license; no external product/research provenance asserted",
+  "pureChecks": [
+    "Managed file creation or explicit upload preserves exact source bytes",
+    "Version selection and independent parallel IndexRefs preserve source isolation",
+    "Citation ranges map to original UTF-8 bytes",
+    "No-match results differ from related documents without the requested fact",
+    "All three ZIPs preserve payload and block absent actual model"
+  ],
+  "actualModelAcceptance": [
+    "before/after는 입력한 fromVersion/toVersion과 같고, 각각 별도 managed FileRef와 독립 IndexRef·generationId로 검색합니다. 반대 방향 비교도 같은 분리 규칙을 지켜야 합니다.",
+    "1.0의 page/page_size·documents/updated_at·total_pages와 2.0의 cursor/limit·items/modified_at·next_cursor 차이는 각 버전의 실제 인용으로 확인합니다.",
+    "한쪽에서만 검색되는 EXPIRED_CURSOR는 다른 버전에서 그 기능이 존재하지 않았다는 증거가 아닙니다. 해당 쪽의 빈 검색을 not_found_in_search로 드러냅니다.",
+    "목록 문서를 검색해도 스냅샷 만료 시간의 수치는 없으므로 임의 숫자를 쓰지 않습니다. 양쪽 빈 검색은 모델 호출 없는 no_search_results입니다.",
+    "각 비교의 인용 ID와 원문 UTF-8 위치가 올바른 버전 파일에 속해야 하며 다른 버전의 근거를 섞으면 실패입니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

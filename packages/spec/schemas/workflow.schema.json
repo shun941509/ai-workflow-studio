@@ -33,6 +33,12 @@
     "outputs": {
       "$ref": "user-schema.schema.json"
     },
+    "completion": {
+      "$ref": "completion.schema.json"
+    },
+    "workDefinition": {
+      "$ref": "work-definition.schema.json"
+    },
     "nodes": {
       "type": "array",
       "items": {
@@ -83,6 +89,11 @@
     },
     "subworkflows": {
       "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "description": "Local flow names use the same stable identifier contract as FlowRef.flowId; JSON Pointer separators are not valid identifiers.",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+      },
       "additionalProperties": {
         "$ref": "flow.schema.json"
       }

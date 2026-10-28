@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-033",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "출처 위치 지침",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2195,
+      "sha256": "b9caf391674628157ae07a8b6ca8593652d178ade9a584b717b8ae7a16aa72d8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1433,
+      "sha256": "0da5e40ce64d3cf32d5ae0a69c8435a0692a538cecf703e7b07e632b6f9ed6bf"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 654,
+      "sha256": "8388e90605c3e0d4ddb4e2907e25fada746f08a5cf2c0cf174df7ba01e28288a"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1084,
+      "sha256": "90b46b08a7ebc3bc6330519d9529f350c50aa7640294d17e304509fbf59a73b5"
+    }
+  ]
+}

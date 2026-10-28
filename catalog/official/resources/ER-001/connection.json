@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "github",
+  "endpoint": "https://api.githubcopilot.com/mcp/readonly",
+  "transport": "streamable-http",
+  "auth": "host-oauth-or-repository-scoped-token",
+  "state": "planned",
+  "blockers": [
+    "승인한 저장소·제목·본문 해시에 묶인 이슈 쓰기 실행기와 중복 방지·작성 후 재조회 경계가 아직 없습니다."
+  ],
+  "readTools": [
+    "get_file_contents",
+    "issue_read",
+    "search_issues"
+  ],
+  "compareFields": [
+    "repository",
+    "commit",
+    "path",
+    "contentSha256"
+  ],
+  "sourceHosts": [
+    "github.com"
+  ],
+  "sourceHost": "github.com",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

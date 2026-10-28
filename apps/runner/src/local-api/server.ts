@@ -5,6 +5,7 @@ import { extname, join, relative, isAbsolute, resolve } from 'node:path';
 import { parseStrictJson } from '@studio/spec';
 import { RunnerService, type StartRequest } from '../service.js';
 import { RunnerError, objectValue, publicError, publicStatus, stringValue } from '../errors.js';
+import { listenBrowserLoopback } from './listen-loopback.js';
 
 interface BrowserSession { csrf: string; expires: number }
 interface ServerOptions { bearerToken: string; uiDirectory?: string }
@@ -27,8 +28,9 @@ async function body(request: IncomingMessage, maxBytes: number): Promise<Buffer>
 }
 
 async function jsonBody(request: IncomingMessage): Promise<Record<string, unknown>> {
-  if (!request.headers['content-type']?.startsWith('application/json')) throw new RunnerError('CONTENT_TYPE_REQUIRED', 'JSON 요청이 필요합니다.', 415);
-  try { return objectValue(parseStrictJson((await body(request, 8 * 1024 * 1024)).toString('utf8'))); }
+  if (request.headers['content-type']?.split(';', 1)[0]?.trim().toLowerCase() !== 'application/json') throw new RunnerError('CONTENT_TYPE_REQUIRED', 'JSON 요청이 필요합니다.', 415);
+  // Invalid UTF-8 must fail before parsing/hashing rather than become an unnoticed replacement character.
+  try { return objectValue(parseStrictJson(new TextDecoder('utf-8', { fatal: true }).decode(await body(request, 8 * 1024 * 1024)))); }
   catch (error) { if (error instanceof RunnerError) throw error; throw new RunnerError('INVALID_JSON', '요청 JSON이 올바르지 않습니다.'); }
 }
 
@@ -127,7 +129,10 @@ export function createLocalServer(service: RunnerService, options: ServerOptions
     }
     if (url.pathname === '/api/profiles' && method === 'GET') { reply(response, 200, service.listProfiles()); return; }
     if (url.pathname === '/api/profiles' && method === 'POST') { reply(response, 201, await service.createProfile(await jsonBody(request))); return; }
-    if (url.pathname === '/api/runs' && method === 'GET') { reply(response, 200, service.store.listRuns()); return; }
+    if (url.pathname === '/api/runs' && method === 'GET') { reply(response, 200, service.listRuns()); return; }
+    // Recovery uses the indexed request identity, never a bounded recent-runs page or the private request body.
+    const requestLookup = /^\/api\/run-requests\/([^/]+)$/.exec(url.pathname);
+    if (requestLookup && method === 'GET') { reply(response, 200, service.lookupRunRequest(requestLookup[1]!)); return; }
     if (url.pathname === '/api/runs' && method === 'POST') {
       const value = await jsonBody(request);
       const start: StartRequest = { packageHandle: stringValue(value.packageHandle, '패키지 ID', 100), requestId: stringValue(value.requestId, '요청 ID', 128), inputs: value.inputs ?? {}, modelBindings: bindings(value.modelBindings) };
@@ -183,11 +188,9 @@ export function createLocalServer(service: RunnerService, options: ServerOptions
   return {
     server,
     async listen(port = 0): Promise<{ port: number; origin: string }> {
-      await new Promise<void>((resolveListen, reject) => { server.once('error', reject); server.listen(port, '127.0.0.1', () => { server.removeListener('error', reject); resolveListen(); }); });
-      const address = server.address();
-      if (!address || typeof address === 'string') throw new RunnerError('LISTEN_FAILED', 'Runner 주소를 만들지 못했습니다.');
-      origin = `http://127.0.0.1:${address.port}`;
-      return { port: address.port, origin };
+      const selectedPort = await listenBrowserLoopback(server, port);
+      origin = `http://127.0.0.1:${selectedPort}`;
+      return { port: selectedPort, origin };
     },
     async close(): Promise<void> { server.closeAllConnections(); await new Promise<void>((resolveClose) => server.close(() => resolveClose())); },
   };

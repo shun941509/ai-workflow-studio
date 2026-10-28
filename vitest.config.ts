@@ -6,6 +6,8 @@ export default defineConfig({
     include: ['tests/**/*.test.ts', 'packages/**/*.test.ts', 'apps/**/*.test.ts'],
     exclude: ['**/node_modules/**', '**/dist/**', 'tests/e2e/**', 'tests/hosts/**'],
     testTimeout: 15000,
-    maxWorkers: 3,
+    // Catalog checks process complete archives and SQLite suites allocate independent PostgreSQL engines.
+    // Two workers keep the measured Windows suite within its deadlines without relaxing security assertions.
+    maxWorkers: 2,
   },
 });

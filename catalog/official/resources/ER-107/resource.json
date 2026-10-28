@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-107",
+  "revision": 1,
+  "kind": "skill",
+  "name": "인용 답변 조립 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/assemble_citations.py",
+      "bytes": 2265,
+      "sha256": "6787d0faaaad65d796b43a9169b99f7f0669f2e9c5b3146ba504caf8a00b2f08"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 606,
+      "sha256": "7493f23b84e3d076ddde402248fd914c5842b7f4325d11e81fab4e2aafe9d5a5"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 212,
+      "sha256": "6881e94b5e747985e44c5162e084d96869c2952a0ec40f628a1091f280351b41"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3278,
+      "sha256": "6b485e86d1ddc31b196fd5fd374a28e64de7b9b45c671ab4ffa7d2107ce8d8f1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 984,
+      "sha256": "c35733a709c2a986b02665b2e9e09c60f2844f224c3eb99fa23805ce650173be"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 584,
+      "sha256": "700e8e0d6ade36648c6a75ee5b2c94f83181a9707e1dd5b43787575abba0864c"
+    }
+  ]
+}

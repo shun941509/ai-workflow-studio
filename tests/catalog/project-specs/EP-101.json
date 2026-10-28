@@ -1,0 +1,30 @@
+{
+  "$comment": "Internal acceptance plan, not a successful model/host run or signed verification record. Exclude from production ZIPs.",
+  "projectId": "EP-101",
+  "sourceContract": {
+    "purpose": "지정 자료에서 답변",
+    "blocksAndConnections": "`knowledge·retrieval·ai`",
+    "inputOutput": "안내서·질문 → 인용 답변",
+    "acceptanceCriteria": "정답 구간 인용, 근거 없는 질문 유보"
+  },
+  "artifactSha256": "9f086931242dc75903fca1925188f626d67c1150157b962149d4c496eb9fa48c",
+  "practiceInput": "catalog/official/projects/EP-101/sample-input.json",
+  "pureChecks": [
+    "Actual keyword search uses managed source bytes and verifies exact citation ranges",
+    "No-match search is distinct from nonempty but insufficient evidence",
+    "All three ZIPs preserve original source descriptors and files",
+    "Absent real model blocks full execution"
+  ],
+  "actualModelAcceptance": [
+    "연습 질문은 OPS-03과 적용 사례의 실제 인용을 사용해 초안 승인이 발송 승인을 포함하지 않음을 설명해야 합니다.",
+    "모든 claims.citations의 ID는 이번 검색 결과에 존재하고 quote는 그 원문 인용의 연속 문자열이어야 합니다.",
+    "“R-OPS의 연락 전화번호는 무엇인가요?”/검색어 “R-OPS”는 관련 안내서가 검색돼도 전화번호 근거가 없으므로 insufficient_evidence이며 answer와 claims가 비어야 합니다.",
+    "일치하는 검색 단어가 없으면 no_search_results로 끝나며 모델을 호출하지 않고 사실이 존재하지 않는다고 단정하지 않아야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

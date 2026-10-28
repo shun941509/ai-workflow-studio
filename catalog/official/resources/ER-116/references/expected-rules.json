@@ -1,0 +1,9 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "evaluatedQueries": 2,
+  "excludedQueries": 1,
+  "meanRecall": 0.75,
+  "meanReciprocalRank": 0.75,
+  "q1Ndcg": "(1+7/log2(3))/(7+1/log2(3))",
+  "q2Ndcg": "(3/log2(3))/(3+1/log2(3))"
+}

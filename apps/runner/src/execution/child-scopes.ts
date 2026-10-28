@@ -1,34 +1,71 @@
 import { setImmediate as yieldTurn } from 'node:timers/promises';
 import { validateJsonValue, type Workflow, type WorkflowNode, type FlowDefinition, type FlowRef } from '@studio/spec';
 import { evaluateCondition, resolveBindings, type NodeOutput } from '@studio/workflow-core';
-import { RunStore, scopedKey } from '../state/store.js';
+import { RunStore, scopedKey, type ChildScopeRecord } from '../state/store.js';
 import { RunnerError, publicError } from '../errors.js';
 import { ModelError } from '../providers/model-provider.js';
 import { isRecoverableFailure, type RecoverableFailure } from '../handlers/pure.js';
 import { DurableGraph } from './durable-graph.js';
 import { LeafConcurrency, interruption } from './concurrency.js';
 import { validateFixedTeam } from '../handlers/bounded-agents.js';
+import { executeCandidateSearch } from './candidate-search.js';
+import { scopeWaitKind } from './scope-waits.js';
 
-export interface ExecutionScope { id: string; flowId: string; depth: number; lineage: readonly string[] }
+export interface ExecutionScope { id: string; flowId: string; depth: number; lineage: readonly string[]; waitsAllowed?: boolean }
 export const ROOT_SCOPE: ExecutionScope = { id: 'main', flowId: 'main', depth: 0, lineage: ['main'] };
+export interface ScopeSuspension { state: 'suspended'; waitIds: readonly string[] }
+export type ScopeProgress = { state: 'completed'; output: NodeOutput } | ScopeSuspension;
+export type ChildNodeProgress = { output: NodeOutput; port: string } | ScopeSuspension;
+/** Trusted service hooks must persist/verify the checkpoint before returning. Workflow data cannot supply this authority. */
+export interface ChildWaitLifecycle {
+  restore(record: ChildScopeRecord, scope: ExecutionScope): { state: 'ready' } | ScopeSuspension;
+  create(node: WorkflowNode, inputs: Record<string, unknown>, scope: ExecutionScope): ScopeSuspension;
+  suspend(scope: ExecutionScope, waitIds: readonly string[]): void;
+  canResumeOwner(scope: ExecutionScope, node: WorkflowNode): boolean;
+}
 export interface ChildExecutorOptions {
   runId: string; workflow: Workflow; store: RunStore; resources: Record<string, unknown>; expiresAt: number;
-  runNode: (node: WorkflowNode, inputs: Record<string, unknown>, flow: FlowDefinition, flowInput: unknown, scope: ExecutionScope, signal: AbortSignal, failure?: RecoverableFailure) => Promise<{ output: NodeOutput; port: string }>;
+  runNode: (node: WorkflowNode, inputs: Record<string, unknown>, flow: FlowDefinition, flowInput: unknown, scope: ExecutionScope, signal: AbortSignal, failure?: RecoverableFailure) => Promise<ChildNodeProgress>;
+  waits?: ChildWaitLifecycle;
 }
 
-export function compositeNode(node: WorkflowNode): boolean { return ['subworkflow', 'loop', 'parallel', 'agent_team'].includes(node.type); }
+export function compositeNode(node: WorkflowNode): boolean { return ['subworkflow', 'loop', 'parallel', 'agent_team', 'candidate_search'].includes(node.type); }
 interface ChildJob { id: string; key: string; flowRef: FlowRef; input: unknown }
 interface ChildJobResult { id: string; status: 'succeeded' | 'failed'; result?: unknown; error?: { code: string; message: string } }
 const detailOf = (error: unknown) => error instanceof ModelError ? { code: error.code, message: error.message } : publicError(error);
-const collectible = (error: unknown) => !(error instanceof ModelError && error.outcome === 'unknown') && (isRecoverableFailure(detailOf(error).code) || detailOf(error).code === 'CHILD_INPUT_INVALID');
+// A durable journal uncertainty is protected just like an unknown paid response, including across composite scopes.
+const uncertain = (error: unknown) => error instanceof ModelError && error.outcome === 'unknown' || ['RAG_RECONCILIATION_REQUIRED', 'AGENTIC_RECONCILIATION_REQUIRED'].includes(detailOf(error).code);
+const collectible = (error: unknown) => !uncertain(error) && (isRecoverableFailure(detailOf(error).code) || detailOf(error).code === 'CHILD_INPUT_INVALID');
+
+/** Suspension is a nonempty bounded list of saved waits, not a fabricated successful output or a retry request. */
+function checkedSuspension(value: ScopeSuspension): ScopeSuspension {
+  if (value.state !== 'suspended' || !Array.isArray(value.waitIds) || value.waitIds.length < 1 || value.waitIds.length > 32 || new Set(value.waitIds).size !== value.waitIds.length || value.waitIds.some(id => !/^wait_[a-f0-9-]{36}$/.test(id))) throw new RunnerError('CHILD_WAIT_STATE_INVALID', '저장된 하위 대기 정보를 확인하지 못했습니다.');
+  return { state: 'suspended', waitIds: Object.freeze([...value.waitIds]) };
+}
+
+function completedOutput(value: unknown): NodeOutput {
+  if (!value || typeof value !== 'object' || Array.isArray(value) || !Object.hasOwn(value, 'data')) throw new RunnerError('CHILD_STATE_INVALID', '저장된 하위 작업의 완료 결과를 확인하지 못했습니다.');
+  return value as NodeOutput;
+}
 
 /** Every child is a durable namespace inside one root budget, never a fresh independently funded run. */
 export class ChildScopeExecutor {
   readonly concurrency: LeafConcurrency;
   constructor(private readonly options: ChildExecutorOptions) { this.concurrency = new LeafConcurrency(options.workflow.policy.limits.maxConcurrentNodes); }
 
+  /** Only this explicit progress API may suspend a fixed single-child call; the old output API keeps its strict contract. */
+  async advance(node: WorkflowNode, inputs: Record<string, unknown>, scope: ExecutionScope, signal: AbortSignal): Promise<ScopeProgress> {
+    if (node.type === 'subworkflow') return this.childProgress(node, scope, 'call', node.config.flowRef, inputs.input, signal, true);
+    return { state: 'completed', output: await this.execute(node, inputs, scope, signal) };
+  }
+
   async execute(node: WorkflowNode, inputs: Record<string, unknown>, scope: ExecutionScope, signal: AbortSignal): Promise<NodeOutput> {
     this.check(signal);
+    if (node.type === 'candidate_search') return executeCandidateSearch(node, inputs, {
+      runId: this.options.runId, nodeId: scopedKey(scope.id, node.id), store: this.options.store.candidateSearch, signal, checkpoint: () => this.check(signal),
+      // Candidate depth is logical search depth, while each fixed generator call is a sibling child scope.
+      generate: (key, input, childSignal) => this.child(node, scope, key, node.config.generatorFlowRef, input, childSignal),
+    });
     if (node.type === 'subworkflow') return this.child(node, scope, 'call', node.config.flowRef, inputs.input, signal);
     if (node.type === 'agent_team') {
       validateFixedTeam(node);
@@ -89,7 +126,7 @@ export class ChildScopeExecutor {
     };
     // Drain every started branch before returning; a winner or failure cannot hide an uncertain sibling call.
     await Promise.all(Array.from({ length: Math.min(jobs.length, maximum) }, worker));
-    const unknown = failures.find((error) => error instanceof ModelError && error.outcome === 'unknown');
+    const unknown = failures.find(uncertain);
     if (unknown) throw unknown;
     if (signal.aborted) throw interruption(signal);
     if (failures.length) throw failures.find((error) => !['CHILD_CANCELLED', 'RUN_CANCELLED'].includes(detailOf(error).code)) ?? failures[0];
@@ -104,6 +141,12 @@ export class ChildScopeExecutor {
   private bounded(value: unknown): void { if (Buffer.byteLength(JSON.stringify(value), 'utf8') > 8 * 1024 * 1024) throw new RunnerError('CHILD_RESULT_LIMIT', '하위 작업의 합산 결과가 8 MiB를 초과했습니다.'); }
 
   private async child(owner: WorkflowNode, parent: ExecutionScope, key: string, reference: FlowRef, input: unknown, signal: AbortSignal): Promise<NodeOutput> {
+    const progress = await this.childProgress(owner, parent, key, reference, input, signal, false);
+    if (progress.state !== 'completed') throw new RunnerError('CHILD_WAIT_UNSUPPORTED', '이 호출 경로의 하위 사용자 대기는 아직 지원하지 않습니다.');
+    return progress.output;
+  }
+
+  private async childProgress(owner: WorkflowNode, parent: ExecutionScope, key: string, reference: FlowRef, input: unknown, signal: AbortSignal, allowSuspension: boolean): Promise<ScopeProgress> {
     this.check(signal);
     if (reference.kind !== 'local') throw new RunnerError('CAPABILITY_MISSING', '외부 패키지 하위 흐름은 아직 지원하지 않습니다.');
     const { workflow, store, runId } = this.options; const flow = workflow.subworkflows[reference.flowId];
@@ -113,20 +156,48 @@ export class ChildScopeExecutor {
     if (!validateJsonValue(flow.inputs, input).valid) throw new RunnerError('CHILD_INPUT_INVALID', '하위 흐름의 입력 형식과 전달한 값이 일치하지 않습니다.');
     input = structuredClone(input);
     const record = store.createChildScope({ runId, parentScopeId: parent.id, ownerNodeId: scopedKey(parent.id, owner.id), key, flowId: reference.flowId, depth: parent.depth + 1, flow, input });
-    if (!record.fresh) { if (record.status === 'succeeded') return record.result as NodeOutput; throw new RunnerError('CHILD_NOT_REPLAYABLE', '미완료 또는 실패한 하위 실행을 자동 재실행할 수 없습니다.'); }
-    const scope: ExecutionScope = { id: record.id, flowId: reference.flowId, depth: record.depth, lineage: [...parent.lineage, reference.flowId] };
-    const graph = new DurableGraph(runId, flow, store, scope.id); const outputs: Record<string, NodeOutput> = Object.create(null) as Record<string, NodeOutput>; const errors = new Map<string, RecoverableFailure>();
+    const waits = allowSuspension && parent.waitsAllowed !== false && owner.type === 'subworkflow' && key === 'call' ? this.options.waits : undefined;
+    // A nested call cannot escape a loop/team/parallel ancestor by switching to the progress API farther down the tree.
+    const scope: ExecutionScope = { id: record.id, flowId: reference.flowId, depth: record.depth, lineage: [...parent.lineage, reference.flowId], waitsAllowed: !!waits };
+    if (!record.fresh) {
+      if (record.status === 'succeeded') return { state: 'completed', output: completedOutput(record.result) };
+      if (!waits || !['waiting', 'running'].includes(record.status)) throw new RunnerError('CHILD_NOT_REPLAYABLE', '미완료 또는 실패한 하위 실행을 자동 재실행할 수 없습니다.');
+      const state = waits.restore(record, scope);
+      if (state.state === 'suspended') return checkedSuspension(state);
+      if (state.state !== 'ready') throw new RunnerError('CHILD_WAIT_STATE_INVALID', '안전한 하위 작업 재개 지점을 확인하지 못했습니다.');
+    }
+    const graph = new DurableGraph(runId, flow, store, scope.id, waits ? { canResumeOwner: node => waits.canResumeOwner(scope, node) } : undefined);
+    const outputs: Record<string, NodeOutput> = Object.create(null) as Record<string, NodeOutput>; const errors = new Map<string, RecoverableFailure>();
+    // A known wait resumes bindings from committed outputs. Running leaves and unknown results are never inferred as complete.
+    const persisted = store.graphState(runId, scope.id);
+    for (const node of persisted.nodes) {
+      if (node.status === 'succeeded') outputs[node.nodeId] = completedOutput(node.result);
+      if (!record.fresh && ['running', 'ready', 'retry_wait', 'reconciling', 'failed', 'blocked', 'cancelled'].includes(node.status)) throw new RunnerError('CHILD_NOT_REPLAYABLE', '하위 작업에 결과가 확인되지 않은 실행이 남아 있습니다.');
+    }
+    const suspend = (value: ScopeSuspension): ScopeSuspension => {
+      if (!waits) throw new RunnerError('CHILD_WAIT_UNSUPPORTED', '이 호출 경로의 하위 사용자 대기는 아직 지원하지 않습니다.');
+      const progress = checkedSuspension(value); waits.suspend(scope, progress.waitIds); return progress;
+    };
     let current: WorkflowNode | undefined;
     try {
+      // A crash after durable output completion can reuse that exact output only after restore() authorizes the checkpoint.
+      const final = flow.nodes.find(node => node.type === 'output' && Object.hasOwn(outputs, node.id));
+      if (final) { const output = outputs[final.id]!; store.finishChildScope(scope.id, 'succeeded', output); return { state: 'completed', output }; }
       while ((current = graph.next())) {
         this.check(signal); const node = current; const storedId = scopedKey(scope.id, node.id);
         store.claimNode(runId, storedId, workflow.policy.limits.maxNodeInstances); store.transitionNode(runId, storedId, 'ready');
         try {
-          if (node.type === 'review' || node.type === 'form' && node.config.mode === 'request') throw new RunnerError('CHILD_WAIT_UNSUPPORTED', '하위 흐름 안의 사용자 대기는 아직 지원하지 않습니다.');
+          if (!waits && (node.type === 'review' || node.type === 'form' && node.config.mode === 'request')) throw new RunnerError('CHILD_WAIT_UNSUPPORTED', '하위 흐름 안의 사용자 대기는 아직 지원하지 않습니다.');
           const inputs = resolveBindings(node, { workflowInput: input, nodeOutputs: outputs, resources: this.options.resources, ...(errors.has(node.id) ? { error: errors.get(node.id) } : {}) });
-          const { output, port } = await this.options.runNode(node, inputs, flow, input, scope, signal, errors.get(node.id));
+          if (scopeWaitKind(node, inputs) && waits) return suspend(waits.create(node, inputs, scope));
+          const result = await this.options.runNode(node, inputs, flow, input, scope, signal, errors.get(node.id));
+          if ('state' in result) {
+            if (node.type !== 'subworkflow') throw new RunnerError('CHILD_WAIT_UNSUPPORTED', '이 호출 경로의 하위 사용자 대기는 아직 지원하지 않습니다.');
+            return suspend(result);
+          }
+          const { output, port } = result;
           outputs[node.id] = output; graph.complete(node, node.type === 'output' ? undefined : port, output); current = undefined;
-          if (node.type === 'output') { store.finishChildScope(scope.id, 'succeeded', output); return output; }
+          if (node.type === 'output') { store.finishChildScope(scope.id, 'succeeded', output); return { state: 'completed', output }; }
         } catch (error) {
           const detail = detailOf(error);
           if (node.execution.onError !== 'route' || !collectible(error) || signal.aborted) throw error;
@@ -137,7 +208,7 @@ export class ChildScopeExecutor {
       }
       throw new RunnerError('CHILD_OUTPUT_MISSING', '하위 흐름이 최종 결과에 도달하지 못했습니다.');
     } catch (error) {
-      const detail = detailOf(error); const unknown = error instanceof ModelError && error.outcome === 'unknown';
+      const detail = detailOf(error); const unknown = uncertain(error);
       const cancelled = !unknown && signal.aborted && ['CHILD_CANCELLED', 'RUN_CANCELLED'].includes(detailOf(interruption(signal)).code);
       const blocked = !unknown && !cancelled && !collectible(error);
       if (current) store.transitionNode(runId, scopedKey(scope.id, current.id), unknown ? 'reconciling' : cancelled ? 'cancelled' : blocked ? 'blocked' : 'failed');

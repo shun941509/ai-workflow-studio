@@ -1,0 +1,14 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "path": [
+    "hanbit",
+    "blue",
+    "spring"
+  ],
+  "edgeIds": [
+    "develops",
+    "belongs"
+  ],
+  "omittedUnauthorizedEdges": 1,
+  "reversePathCount": 0
+}

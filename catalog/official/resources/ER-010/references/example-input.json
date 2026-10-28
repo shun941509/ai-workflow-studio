@@ -1,0 +1,5 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "query": "Azure Functions HTTP trigger의 인증 수준은 무엇인가요?"
+}

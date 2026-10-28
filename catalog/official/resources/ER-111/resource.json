@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-111",
+  "revision": 1,
+  "kind": "skill",
+  "name": "근거 충분성 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/check_evidence.py",
+      "bytes": 3370,
+      "sha256": "67d941b0ec6693e97a3ba26e084eadd78410e85fa465d047ddd68a6e00db6b4e"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 537,
+      "sha256": "6c376fe822586dbbc03e196848af3af3e9af13ac386f6690207f5c9314c81664"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 211,
+      "sha256": "8ba7589b6b3302841092f6085b6a5fb206df9d5a5610d3228e5d9e3bc828c4b1"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3320,
+      "sha256": "b0ceb93b5f6e099a128529bc3e4760a318ad199d0527a3c39d14e419c4c98a36"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1002,
+      "sha256": "7385f0f0619644573317156b5fd8bbe768e45fe28f97ec81e7a50ec4faa169e6"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 587,
+      "sha256": "7fcfc7146445b48bfe355cc3c84bb59ea6a28af98dd886833dfe7d8a32c77067"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "EP-114-practice",
+  "revision": 1,
+  "kind": "document",
+  "name": "EP-114 가상 실습 자료",
+  "entrypoint": "guide.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "sample-input.json",
+      "bytes": 739,
+      "sha256": "fd663404819f5920bc68b3eba7924121068cdd91459de6c779401d883945b69b"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 778,
+      "sha256": "2d80c193906a7089c347c24280023bab048860f5efa88d73d0ca57ca5c628cc9"
+    },
+    {
+      "path": "guide.md",
+      "bytes": 991,
+      "sha256": "79a413fe4e5cb3e05f00bcd6732dd3819c100c06e94f799da058482eeaba3802"
+    },
+    {
+      "path": "corpus/RQ-RET-01.md",
+      "bytes": 953,
+      "sha256": "300cc1cd071140efa80c42b1ce2a2a6b659990490053cc4084b6057ddef9d875"
+    },
+    {
+      "path": "corpus/RQ-DEL-02.md",
+      "bytes": 881,
+      "sha256": "974fd14ce930c882797329c9a7ad2ff77a6548247c3e7a6fbde3a6bc045364da"
+    },
+    {
+      "path": "corpus/RQ-ACL-03.md",
+      "bytes": 763,
+      "sha256": "a955f478917026dfe6d373e872350a92b1942245fc67c4ef6094b0dfb2358f91"
+    },
+    {
+      "path": "corpus/RQ-AUDIT-04.md",
+      "bytes": 823,
+      "sha256": "bb8087bf27e821846e72d5a0fa37219892f3868536f55872b2004a9096cbf0ae"
+    },
+    {
+      "path": "corpus/RQ-EXPORT-05.md",
+      "bytes": 617,
+      "sha256": "d84caafcad3ee1ba0c62ad074b177a0e03e1ee2c4615e2b9e7a9b385173209fc"
+    },
+    {
+      "path": "corpus/RQ-OLD-06.md",
+      "bytes": 565,
+      "sha256": "85adf55049c187db31c8c93a95863b554f8f3a46ace00d57b71638494842e520"
+    }
+  ]
+}

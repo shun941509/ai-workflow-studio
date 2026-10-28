@@ -1,0 +1,18 @@
+{
+  "fictional": true,
+  "question": "반품 기한은? 교환 비용은?",
+  "requirements": [
+    {
+      "id": "deadline",
+      "start": 0,
+      "end": 17,
+      "quote": "반품 기한은?"
+    },
+    {
+      "id": "cost",
+      "start": 18,
+      "end": 35,
+      "quote": "교환 비용은?"
+    }
+  ]
+}

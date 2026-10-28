@@ -1,0 +1,41 @@
+{
+  "fictional": true,
+  "k": 2,
+  "queries": [
+    {
+      "id": "q1",
+      "judgments": {
+        "A": 3,
+        "B": 1,
+        "C": 0
+      },
+      "ranking": [
+        "B",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "id": "q2",
+      "judgments": {
+        "D": 2,
+        "E": 1,
+        "F": 0
+      },
+      "ranking": [
+        "F",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "id": "q3",
+      "judgments": {
+        "G": 0
+      },
+      "ranking": [
+        "G"
+      ]
+    }
+  ]
+}

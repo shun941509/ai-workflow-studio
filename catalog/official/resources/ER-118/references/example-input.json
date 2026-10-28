@@ -1,0 +1,54 @@
+{
+  "fictional": true,
+  "handAuthoredPractice": true,
+  "entities": [
+    {
+      "id": "hanbit",
+      "type": "organization",
+      "names": [
+        "한빛 연구소",
+        "한빛"
+      ]
+    },
+    {
+      "id": "other",
+      "type": "organization",
+      "names": [
+        "한빛"
+      ]
+    },
+    {
+      "id": "spring",
+      "type": "project",
+      "names": [
+        "새봄 프로젝트"
+      ]
+    }
+  ],
+  "relationTypes": {
+    "manages": {
+      "fromTypes": [
+        "organization"
+      ],
+      "toTypes": [
+        "project"
+      ]
+    }
+  },
+  "relations": [
+    {
+      "id": "r1",
+      "type": "manages",
+      "from": "hanbit",
+      "to": "spring",
+      "quote": "한빛 연구소가 새봄 프로젝트를 담당합니다.",
+      "source": {
+        "documentId": "relation-document",
+        "revision": 1,
+        "text": "한빛 연구소가 새봄 프로젝트를 담당합니다.",
+        "start": 0,
+        "end": 59
+      }
+    }
+  ]
+}

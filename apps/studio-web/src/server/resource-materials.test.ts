@@ -3,46 +3,54 @@ import { createHash } from 'node:crypto';
 import { unzipSync } from 'fflate';
 import { canonicalDigest, createTextResource } from '@studio/package-kit';
 import { createBasicWorkflow, createNode } from '@studio/spec';
+import { createClient } from '@supabase/supabase-js';
 
 // Only authentication/database I/O is replaced in these internal tests; materialization and ZIP bytes are real.
 vi.mock('server-only', () => ({}));
 const boundary = vi.hoisted(() => ({ authenticatedClient: vi.fn() }));
 vi.mock('./auth', () => boundary);
 import { materializeStoredResource, normalizeTextResource } from './resource-materials';
-import { createResource, listResources, loadPinnedResourceFiles } from './resources';
+import { createResource, loadPinnedResourceFiles } from './resources';
+import { getResourceDetail, listResourcePage } from './resource-library';
 import { POST as exportWorkflow } from '../app/api/exports/route';
 import { POST as exportMaterials } from '../app/api/resources/export/route';
 import { withResourceAttachment, withoutResourceAttachment } from '../features/editor/resource-links';
 
 const id = '4fa55d1b-a602-4d74-8cdc-c3020e09bfe9';
+const versionId = '5fa55d1b-a602-4d74-8cdc-c3020e09bfe9', ownerId = '6fa55d1b-a602-4d74-8cdc-c3020e09bfe9';
 const content = normalizeTextResource({ name: '출처 보존 지침', kind: 'instruction', description: '확인한 원문만 사용합니다.', text: '원문의 수치와 출처를 보존하고, 없는 정보는 미확인으로 표시하세요.' });
-const row = { resource_id: id, revision: 2, content, sha256: canonicalDigest(content) };
+const row = { id: versionId, resource_id: id, revision: 2, content, sha256: canonicalDigest(content) };
 const materialized = createTextResource({ id, revision: row.revision, name: content.name, kind: content.kind, text: content.text });
 let ownerRows: { id: string }[];
 let versionRows: typeof row[];
-let resourceRows: unknown[];
+let resourceRows: { id: string; name: string; kind: string; description: string; created_at: string }[];
 let queries: [string, string, unknown][];
 let rpc: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
   ownerRows = [{ id }]; versionRows = [structuredClone(row)]; queries = [];
-  resourceRows = [{ id, name: content.name, kind: content.kind, description: content.description, resource_versions: [{ revision: row.revision, content, sha256: row.sha256 }] }];
+  resourceRows = [{ id, name: content.name, kind: content.kind, description: content.description, created_at: '2026-10-28T00:00:00.123456Z' }];
   rpc = vi.fn(async () => ({ data: { id }, error: null }));
-  boundary.authenticatedClient.mockReset().mockResolvedValue({ user: { id: 'actual-session-user' }, client: {
-    rpc,
-    from(table: string) {
-      let selection = '';
-      const response = () => ({ data: table === 'resource_versions' ? versionRows : selection.includes('resource_versions') ? resourceRows : ownerRows, error: null });
-      const query = {
-        select(columns: string) { selection = columns; return query; },
-        eq(column: string, value: unknown) { queries.push([table, column, value]); return query; },
-        order() { return query; },
-        in(_column: string, _values: unknown[]) { return Promise.resolve(response()); },
-        limit() { return Promise.resolve(response()); },
-      };
-      return query;
-    },
-  } });
+  // Exercise the real SDK's chain/thenable behavior. Only HTTP rows and authentication are fixtures.
+  const database = createClient('https://resource-fixture.example', 'test-anonymous-key', { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }, global: { fetch: async input => {
+    const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input : input.url), table = url.pathname.split('/').at(-1)!;
+    const select = url.searchParams.get('select') ?? '', equals = (column: string) => url.searchParams.get(column)?.match(/^eq\.(.*)$/)?.[1];
+    const ids = url.searchParams.get('id')?.match(/^in\.\((.*)\)$/)?.[1]?.split(',');
+    for (const [column, value] of url.searchParams) if (value.startsWith('eq.')) queries.push([table, column, value.slice(3)]);
+    let result: unknown[] = [];
+    if (table === 'resource_versions') {
+      const pairs = [...(url.searchParams.get('or') ?? '').matchAll(/and\(resource_id\.eq\.([a-f0-9-]{36}),revision\.eq\.(\d+)\)/g)];
+      result = versionRows.filter(version => (!equals('id') || version.id === equals('id')) && (!equals('resource_id') || version.resource_id === equals('resource_id'))
+        && (!ids || ids.includes(version.id)) && (!pairs.length || pairs.some(pair => pair[1] === version.resource_id && Number(pair[2]) === version.revision)));
+    } else if (table === 'resources') {
+      const owned = resourceRows.filter(resource => ownerRows.some(owner => owner.id === resource.id) && (!ids || ids.includes(resource.id)) && (!equals('id') || resource.id === equals('id')));
+      result = select === 'id' ? owned.map(resource => ({ id: resource.id })) : select.includes('resource_versions(') ? owned.map(resource => ({ id: resource.id,
+        resource_versions: versionRows.filter(version => version.resource_id === resource.id).sort((left, right) => right.revision - left.revision).slice(0, Number(url.searchParams.get('resource_versions.limit') ?? 101)).map(version => ({ id: version.id, revision: version.revision, format: version.content.format, name: version.content.name, kind: version.content.kind, description: version.content.description })),
+      })) : owned;
+    }
+    return Response.json(result);
+  } } });
+  boundary.authenticatedClient.mockReset().mockResolvedValue({ user: { id: ownerId }, client: { rpc, from: database.from.bind(database) } });
 });
 
 const request = (url: string, body: unknown) => new Request(`http://studio.local${url}`, { method: 'POST', headers: { Origin: 'http://studio.local', 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -52,10 +60,14 @@ describe('private immutable resource materialization', () => {
   test('stores immutable metadata and exposes the descriptor byte hash instead of the DB canonical hash', async () => {
     await createResource({ ...content });
     expect(rpc).toHaveBeenCalledWith('create_private_resource', expect.objectContaining({ p_content: content, p_sha256: row.sha256 }));
-    const items = await listResources();
-    expect(items[0]?.resource_versions[0]?.reference.sha256).toBe(materialized.reference.sha256);
+    const page = await listResourcePage(null);
+    expect(page.resources[0]?.resource_versions[0]?.content).toEqual({ format: 'text', name: content.name, kind: content.kind, description: content.description });
+    expect(page.resources[0]).toHaveProperty('versionsTruncated', false);
+    const detail = await getResourceDetail(id, versionId);
+    expect(detail.version.reference.sha256).toBe(materialized.reference.sha256);
+    expect(detail.resourceBindings).toEqual({ [id]: versionId }); expect(detail.resourceDependencies).toEqual({ [id]: [] }); expect(detail.version.content).toEqual(content);
     expect(materialized.reference.sha256).not.toBe(row.sha256);
-    expect(queries).toContainEqual(['resources', 'owner_id', 'actual-session-user']);
+    expect(queries).toContainEqual(['resources', 'owner_id', ownerId]);
   });
 
   test('rejects canonical content tampering and limits UTF-8 bytes rather than character count', () => {
@@ -65,6 +77,14 @@ describe('private immutable resource materialization', () => {
 
   test('refuses foreign ownership even when a version row is returned by a broken boundary', async () => {
     ownerRows = []; await expect(loadPinnedResourceFiles(refs())).rejects.toMatchObject({ code: 'RESOURCE_NOT_FOUND' });
+    await expect(getResourceDetail(id, versionId)).rejects.toMatchObject({ code: 'RESOURCE_NOT_FOUND' });
+  });
+
+  test('opens only the requested immutable detail version and returns its exact export binding', async () => {
+    const pinned = await loadPinnedResourceFiles(refs(), { [id]: versionId }); expect(pinned.bindings).toEqual({ [id]: versionId });
+    await expect(getResourceDetail(id, '7fa55d1b-a602-4d74-8cdc-c3020e09bfe9')).rejects.toMatchObject({ code: 'RESOURCE_NOT_FOUND' });
+    versionRows[0]!.sha256 = '0'.repeat(64);
+    await expect(getResourceDetail(id, versionId)).rejects.toMatchObject({ code: 'RESOURCE_INTEGRITY' });
   });
 
   test.each(['revision', 'descriptor-hash', 'database-hash', 'identity-alias'] as const)('rejects a changed %s instead of upgrading or trusting browser material', async (change) => {

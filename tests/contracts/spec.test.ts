@@ -9,6 +9,15 @@ describe('canonical Studio contracts', () => {
     expect(parseWorkflowJson(JSON.stringify(workflow)).valid).toBe(true);
   });
 
+  it('rejects local flow names that cannot be referenced or located unambiguously', () => {
+    const workflow = createBasicWorkflow();
+    const child = { entryNodeId: workflow.entryNodeId, inputs: workflow.inputs, outputs: workflow.outputs, nodes: workflow.nodes, edges: workflow.edges };
+    for (const name of ['', 'a/b', 'a~b', '_hidden', 'a'.repeat(65)]) {
+      expect(validateWorkflowShape({ ...workflow, subworkflows: { [name]: child } }).valid, name).toBe(false);
+    }
+    expect(validateWorkflowShape({ ...workflow, subworkflows: { chapter_2: child } }).valid).toBe(true);
+  });
+
   it('defines exactly 31 distinct closed node configs without claiming handler availability', () => {
     expect(new Set(NODE_DEFINITIONS.map(node => node.type)).size).toBe(31);
     expect(NODE_DEFINITIONS.filter(node => node.availableInP2).map(node => node.type).sort()).toEqual(['ai', 'input', 'output']);

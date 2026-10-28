@@ -1,0 +1,33 @@
+{
+  "$comment": "Internal acceptance plan only. No actual model, host, review or publication proof; exclude from operational ZIPs.",
+  "projectId": "EP-105",
+  "sourceContract": {
+    "purpose": "문헌 구간 정리",
+    "blocksAndConnections": "`knowledge·retrieval·ai`",
+    "inputOutput": "연구 질문 → 근거 목록",
+    "acceptanceCriteria": "주장·해석 구분, 인용 위치 확인"
+  },
+  "artifactSha256": "c62eca86176f2ce2910f4aa3c1be27647ff20f0e06362e245e2b674fb2b4b79c",
+  "practiceInput": "catalog/official/projects/EP-105/sample-input.json",
+  "sourceProvenance": "New original fictional operational corpus with explicit license; no external product/research provenance asserted",
+  "pureChecks": [
+    "Managed file creation or explicit upload preserves exact source bytes",
+    "Version selection and independent parallel IndexRefs preserve source isolation",
+    "Citation ranges map to original UTF-8 bytes",
+    "No-match results differ from related documents without the requested fact",
+    "All three ZIPs preserve payload and block absent actual model"
+  ],
+  "actualModelAcceptance": [
+    "SYN-R-A의 집단 중앙 시간과 SYN-R-B의 합계 평균을 각각 원문 관측으로 구분하고 지표·방법·한계를 함께 기록합니다. 가상 자료임을 숨기지 않습니다.",
+    "원문 주장과 관측은 evidence.kind로 구별하고, 새로운 해석은 interpretations에 evidenceIds와 불확실성을 붙입니다. 없는 evidence ID 참조는 실패입니다.",
+    "모든 citationId·quote는 실제 검색 목록과 원문 UTF-8 범위에 존재해야 합니다. 메타데이터가 없는 R-B 기록일·DOI는 null이고 가짜 출판·저자·페이지를 만들지 않습니다.",
+    "관련 정렬 원문이 검색돼도 유의성 p값·모바일 결과·장기 효과가 없으면 insufficient_evidence로 유보합니다. 원문이 없다는 사실과 검색어가 맞지 않은 빈 결과를 구분합니다.",
+    "분산·원시 값 없이 유의성이나 통합 효과를 만들지 않습니다. 실제 문헌 품질 판정·연구 재현·실제 모델 평가 통과를 주장하지 않습니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

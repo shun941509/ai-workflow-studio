@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-030",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "다국어 독자 관점",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2181,
+      "sha256": "dc6e55b41bbb3ccffb317b721a19e1d5018df36a7afc4828cea4ceedac96eaec"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1455,
+      "sha256": "18decc3c7636c5b668f43ab3e86714caa3bd2ab9870200b89d31405b72a9684c"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 652,
+      "sha256": "ae5c6b29436c4a17daf3236484d490307c824b5ec43fc76f3c5470d488535d0e"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1098,
+      "sha256": "073d5dcc9f0c5b90ae2cca7ad1072b34238294ac023982f3c76f080462593235"
+    }
+  ]
+}

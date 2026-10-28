@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "studio_figma": {
+      "type": "remote",
+      "url": "https://mcp.figma.com/mcp",
+      "enabled": false
+    }
+  },
+  "permission": {
+    "studio_figma_*": "deny",
+    "studio_figma_get_metadata": "ask",
+    "studio_figma_get_design_context": "ask",
+    "studio_figma_get_variable_defs": "ask",
+    "studio_figma_get_screenshot": "ask"
+  }
+}

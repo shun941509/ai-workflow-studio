@@ -1,0 +1,16 @@
+{
+  "fictional": true,
+  "question": "2026-01 이후 API-204 반품에서 훼손품은 제외한 SLA 기준은?",
+  "requiredTerms": [
+    "2026-01",
+    "API-204",
+    "훼손품",
+    "제외"
+  ],
+  "glossary": [
+    {
+      "term": "SLA",
+      "canonical": "서비스 수준 협약"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "get_metadata",
+    "get_design_context",
+    "get_variable_defs",
+    "get_screenshot"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "실제 파일 fileKey와 nodeId",
+    "검사할 크기·이름·변수 속성",
+    "Figma가 허용한 클라이언트와 파일 읽기 권한"
+  ],
+  "comparisonFields": [
+    "fileKey",
+    "nodeId",
+    "name",
+    "width",
+    "height"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

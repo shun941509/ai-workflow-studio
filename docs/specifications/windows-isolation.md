@@ -2,11 +2,13 @@
 
 상태: **부분 구현·부분 검증**. LPAC/Job Object의 네이티브 경계 시험은 통과했다. **Node 24 zero-capability Worker는 시작 실패하며 운영 지원 대상이 아니다.** 이 helper는 Runner capability나 ZIP 배포 목록에 연결하지 않는다. 진단 프로필 성공으로 P3-01 완료를 표시하지 않는다.
 
+별도 [Wasmtime 실증](windows-wasmtime-isolation.md)에서 zero-capability 시작과 WASI 파일 경계·bounded stdio·실행량/메모리/대기시간을 확인했다. 운영 Worker 등록·설치·전체 OS 검증은 남아 있으며 Node/Python 지원 실패를 바꾸지 않는다.
+
 ## 구성과 실행
 
 프로젝트의 주 언어는 TypeScript다. Windows 보안 호출만 `native/windows-sandbox/SandboxHost.cs`의 C# P/Invoke helper가 담당한다. 테스트 전용 C probe는 Windows API 호출의 실제 결과를 확인하고, 별도 JS fixture는 고정 Node 24.22.1의 호환성을 검사한다.
 
-`tooling/verify-windows-sandbox.mjs`는 Windows에서 helper 두 종류와 C probe를 빌드한다. 필요한 도구는 .NET Framework C# compiler, 로컬 MSVC 14.40.33807, Windows SDK 10.0.22000.0, `.tools/node/node-v24.22.1-win-x64/node.exe`다. 다른 기계에서 같은 도구가 없으면 명시적으로 실패하며 통과로 처리하지 않는다.
+`tooling/verify-windows-sandbox.mjs`는 Windows에서 helper 두 종류와 C probe를 빌드한다. 필요한 도구는 .NET Framework C# compiler, MSVC x64, Windows SDK, Node24.22.1이다. `windows-probe-build.mjs`가 Microsoft vswhere의 설치 위치·기본 toolset과 완전한 SDK를 확인하며 전역 PATH를 바꾸지 않는다. 실제 compiler 해시·toolset/SDK 버전은 결과에 기록한다. 이 기계에서는 MSVC14.40.33807/SDK10.0.22000.0을 사용했다. 도구가 없으면 명시적으로 실패하며 통과로 처리하지 않는다. [Microsoft의 도구 탐색 방식](https://github.com/microsoft/vswhere/wiki/Find-VC)을 따른다.
 
 ```powershell
 & '.tools/node/node-v24.22.1-win-x64/node.exe' tooling/verify-windows-sandbox.mjs

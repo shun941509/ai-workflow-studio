@@ -1,0 +1,11 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "communityCount": 2,
+  "initialSummaries": null,
+  "profile": "connected-components-two-level-v1",
+  "reject": [
+    "그룹 밖 간선 인용",
+    "없는 하위 요약 참조",
+    "요약 누락"
+  ]
+}

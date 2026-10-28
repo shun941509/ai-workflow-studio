@@ -1,0 +1,18 @@
+{
+  "$comment": "Scope audit of the original catalogue, not implementation or verification evidence. Planned rows have no artifact until their original required capabilities exist.",
+  "alreadyImplemented": ["EP-007", "EP-015", "EP-020"],
+  "newlyMaterialized": ["EP-009", "EP-010"],
+  "planned": [
+    {"id": "EP-008", "required": "program comparison worker and version tracing", "blocker": "No operational isolated program worker; run-memory alone cannot satisfy the promised comparator."},
+    {"id": "EP-011", "required": "program API specification comparator", "blocker": "No operational isolated program worker or verified path/field compatibility comparator."},
+    {"id": "EP-012", "required": "program with restricted database credentials", "blocker": "No operational worker and no connected database proving read-only permissions."},
+    {"id": "EP-013", "required": "GitHub MCP tool reading pinned repository revision", "blocker": "Runner tool support is limited to local builtins; GitHub MCP account/tool execution and revision evidence are absent."},
+    {"id": "EP-014", "required": "program log parser", "blocker": "No operational isolated program worker; replacing parsing with model assertions would not verify exact times and codes."},
+    {"id": "EP-016", "required": "program lockfile comparator and retrieval of official announcements", "blocker": "No operational isolated comparator or verified official-announcement fetch pipeline."},
+    {"id": "EP-017", "required": "program static HTML accessibility checker", "blocker": "No operational isolated program worker; an AI review cannot replace reproducible static violation locations."},
+    {"id": "EP-018", "required": "program performance metrics calculator", "blocker": "No operational isolated program worker; AI arithmetic cannot satisfy the exact reproducible calculation criterion."},
+    {"id": "EP-019", "required": "program setting diff and secret-safe guardrail", "blocker": "No operational isolated program worker or verified source-value redaction pipeline; do not place sensitive settings in model context."}
+  ],
+  "usableProjects": 0,
+  "publishedProjects": 0
+}

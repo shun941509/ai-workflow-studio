@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__studio_linear__*"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__studio_linear__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node resources/ER-004/scripts/claude-read-guard.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

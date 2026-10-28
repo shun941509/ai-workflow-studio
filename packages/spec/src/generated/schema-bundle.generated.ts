@@ -35,6 +35,12 @@ export const schemaBundle: Record<string, unknown> = {
     "outputs": {
       "$ref": "#/$defs/user_schema"
     },
+    "completion": {
+      "$ref": "#/$defs/completion"
+    },
+    "workDefinition": {
+      "$ref": "#/$defs/work_definition"
+    },
     "nodes": {
       "type": "array",
       "items": {
@@ -85,6 +91,11 @@ export const schemaBundle: Record<string, unknown> = {
     },
     "subworkflows": {
       "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "description": "Local flow names use the same stable identifier contract as FlowRef.flowId; JSON Pointer separators are not valid identifiers.",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+      },
       "additionalProperties": {
         "$ref": "#/$defs/flow"
       }
@@ -457,6 +468,92 @@ export const schemaBundle: Record<string, unknown> = {
           "additionalProperties": false
         }
       ]
+    },
+    "completion": {
+      "$comment": "Optional business acceptance checks. Every declared criterion is required; an execution status or an output-format schema alone never creates this declaration.",
+      "title": "CompletionContract",
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "criteria": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "title": "CompletionCriterion",
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "kind": {
+                    "const": "result_schema"
+                  },
+                  "schema": {
+                    "$ref": "#/$defs/user_schema"
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "kind",
+                  "schema"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "kind": {
+                    "enum": [
+                      "review_accepted",
+                      "evaluate_passed",
+                      "agentic_answered",
+                      "loop_condition_met"
+                    ]
+                  },
+                  "nodeId": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$",
+                    "description": "Exact root-flow node identity selected as the final acceptance evidence; child scope guesses and historical vetoes are forbidden."
+                  }
+                },
+                "required": [
+                  "id",
+                  "label",
+                  "kind",
+                  "nodeId"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "version",
+        "criteria"
+      ],
+      "additionalProperties": false
     },
     "edge": {
       "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
@@ -4517,6 +4614,171 @@ export const schemaBundle: Record<string, unknown> = {
       "additionalProperties": false,
       "title": "ResourceRef"
     },
+    "run_outcome": {
+      "$comment": "Runner-authored business assessment beside engine status and unchanged NodeOutput. Model-generated fields with these names are ordinary data.",
+      "title": "RunOutcome",
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "status": {
+          "enum": [
+            "unassessed",
+            "complete",
+            "incomplete"
+          ]
+        },
+        "reason": {
+          "enum": [
+            "criteria_missing",
+            "not_assessed",
+            "criteria_satisfied",
+            "criteria_not_satisfied",
+            "execution_incomplete",
+            "outcome_record_invalid"
+          ]
+        },
+        "planHash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Null only for legacy or invalid records whose pinned plan identity cannot be established; never valid for a complete assessment."
+        },
+        "criteriaHash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "resultHash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "assessedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 32,
+          "items": {
+            "title": "CompletionCheck",
+            "type": "object",
+            "properties": {
+              "criterionId": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "kind": {
+                "enum": [
+                  "result_schema",
+                  "review_accepted",
+                  "evaluate_passed",
+                  "agentic_answered",
+                  "loop_condition_met"
+                ]
+              },
+              "method": {
+                "enum": [
+                  "json_schema",
+                  "human_review",
+                  "rule_evaluation",
+                  "model_evaluation",
+                  "agentic_protocol",
+                  "loop_control"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "failed",
+                  "unavailable"
+                ]
+              },
+              "reason": {
+                "enum": [
+                  "satisfied",
+                  "schema_mismatch",
+                  "criterion_not_executed",
+                  "evidence_unavailable",
+                  "review_rejected",
+                  "evaluation_failed",
+                  "insufficient_evidence",
+                  "conflicting_evidence",
+                  "iteration_limit"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+                  },
+                  "nodeInstanceId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 512
+                  },
+                  "resultHash": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "nodeId",
+                  "nodeInstanceId",
+                  "resultHash"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "criterionId",
+              "label",
+              "kind",
+              "method",
+              "status",
+              "reason",
+              "source"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "version",
+        "status",
+        "reason",
+        "planHash",
+        "criteriaHash",
+        "resultHash",
+        "assessedAt",
+        "checks"
+      ],
+      "additionalProperties": false
+    },
     "runtime_lock": {
       "title": "RuntimeRequirementsLock",
       "description": "Portable private-package requirements. Installed component, model and host identities are resolved locally into the immutable run plan; this is not a verified binary lock.",
@@ -4602,6 +4864,39 @@ export const schemaBundle: Record<string, unknown> = {
         "modelVerification"
       ],
       "additionalProperties": false
+    },
+    "text_resource_license": {
+      "$comment": "Optional author-supplied terms for a newly created text revision. Absence keeps the legacy private-use notice. This declaration is not reviewed redistribution or private-copy evidence.",
+      "title": "TextResourceLicense",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "copyrightHolder",
+        "copyrightYear",
+        "confirmedAuthority"
+      ],
+      "properties": {
+        "id": {
+          "const": "MIT",
+          "description": "The original MIT permission and disclaimer text is included with the resource."
+        },
+        "copyrightHolder": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "pattern": "^[^\\u0000-\\u001f\\u007f]+$"
+        },
+        "copyrightYear": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 9999
+        },
+        "confirmedAuthority": {
+          "const": true,
+          "description": "The author explicitly declares authority to offer these terms; publication still requires separate review and signed rights evidence."
+        }
+      }
     },
     "tool_ref": {
       "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
@@ -4869,6 +5164,309 @@ export const schemaBundle: Record<string, unknown> = {
         }
       }
     },
+    "work_definition": {
+      "title": "WorkDefinition",
+      "$comment": "One selected Card -> Role -> Task business definition. Inputs, outputs, completion criteria, policy, models and pinned resource bytes remain canonical on Workflow. This contract grants no permission and is not an execution context manifest.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "id",
+        "revision",
+        "card",
+        "role",
+        "task",
+        "harness"
+      ],
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "card": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "title",
+            "purpose"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "purpose": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          }
+        },
+        "role": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "title",
+            "responsibility"
+          ],
+          "description": "The selected role belongs to the selected card. Its responsibility is business context, not a permission grant or professional credential.",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "responsibility": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            }
+          }
+        },
+        "task": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "title",
+            "goal",
+            "criterionIds",
+            "assets",
+            "skills"
+          ],
+          "description": "Exactly one selected task belongs to the selected role. Every completion criterion must be referenced; subsets cannot redefine business success.",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "goal": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            "criterionIds": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              }
+            },
+            "assets": {
+              "type": "array",
+              "maxItems": 64,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "alias",
+                  "kind",
+                  "usage",
+                  "purpose",
+                  "required"
+                ],
+                "properties": {
+                  "alias": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$",
+                    "description": "Exact alias in workflow.resources; never an account resource ID, copied bytes or an external URL."
+                  },
+                  "kind": {
+                    "enum": [
+                      "instruction",
+                      "document"
+                    ]
+                  },
+                  "usage": {
+                    "enum": [
+                      "instructions",
+                      "reference",
+                      "template"
+                    ]
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "skills": {
+              "type": "array",
+              "maxItems": 16,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "alias",
+                  "kind",
+                  "usage",
+                  "purpose",
+                  "required"
+                ],
+                "properties": {
+                  "alias": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+                  },
+                  "kind": {
+                    "const": "skill"
+                  },
+                  "usage": {
+                    "const": "instructions",
+                    "description": "Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link."
+                  },
+                  "purpose": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  },
+                  "required": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "harness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "context",
+            "perform",
+            "accept",
+            "deliver",
+            "selectedContext"
+          ],
+          "description": "Roles of actual root-flow nodes. These mappings do not introduce edges or duplicate execution policy. selectedContext is design-time selection, not a claim that runtime content was consumed.",
+          "properties": {
+            "workingContext": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "version",
+                "maxBytes",
+                "bindings"
+              ],
+              "description": "Explicit bounded context preset. The Runner verifies actual prepared model requests; this declaration never proves a provider call or grants permission.",
+              "properties": {
+                "version": {
+                  "const": 1
+                },
+                "maxBytes": {
+                  "type": "integer",
+                  "minimum": 1024,
+                  "maximum": 1048576,
+                  "description": "Maximum UTF-8 bytes of the final canonical ModelRequest, including model, instructions, content and response format, before any count or generation disclosure."
+                },
+                "bindings": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 16,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "nodeId",
+                      "contextNodeId"
+                    ],
+                    "properties": {
+                      "nodeId": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+                      },
+                      "contextNodeId": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "context": {
+              "type": "array",
+              "maxItems": 32,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              }
+            },
+            "perform": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 16,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              }
+            },
+            "accept": {
+              "type": "array",
+              "maxItems": 32,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              }
+            },
+            "deliver": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              }
+            },
+            "selectedContext": {
+              "type": "array",
+              "maxItems": 80,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+              },
+              "description": "Selected task asset/Skill aliases only. All required links must be selected; unselected optional links remain explicitly excluded."
+            }
+          }
+        }
+      }
+    },
     "workflow": {
       "$comment": "Canonical Studio v1 contract; generated TypeScript must not be edited independently.",
       "type": "object",
@@ -4902,6 +5500,12 @@ export const schemaBundle: Record<string, unknown> = {
         },
         "outputs": {
           "$ref": "#/$defs/user_schema"
+        },
+        "completion": {
+          "$ref": "#/$defs/completion"
+        },
+        "workDefinition": {
+          "$ref": "#/$defs/work_definition"
         },
         "nodes": {
           "type": "array",
@@ -4953,6 +5557,11 @@ export const schemaBundle: Record<string, unknown> = {
         },
         "subworkflows": {
           "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "description": "Local flow names use the same stable identifier contract as FlowRef.flowId; JSON Pointer separators are not valid identifiers.",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+          },
           "additionalProperties": {
             "$ref": "#/$defs/flow"
           }

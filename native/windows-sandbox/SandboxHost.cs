@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 internal static class SandboxHost
 {
@@ -24,10 +26,11 @@ internal static class SandboxHost
     {
         try
         {
-            if (args.Length != 6 || (args[4] != "node" && args[4] != "native-probe" && args[4] != "python-embed") || (args[5] != "none" && args[5] != "registry-read-diagnostic")) throw new ArgumentException("Expected task directory, wall milliseconds, memory MiB, CPU milliseconds, fixed worker profile, explicit diagnostic capability policy");
+            if (args.Length != 6 || (args[4] != "node" && args[4] != "native-probe" && args[4] != "python-embed" && args[4] != "wasmtime" && args[4] != "wasmtime-stdio") || (args[5] != "none" && args[5] != "registry-read-diagnostic")) throw new ArgumentException("Expected task directory, wall milliseconds, memory MiB, CPU milliseconds, fixed worker profile, explicit diagnostic capability policy");
             // Python is evaluated only with zero capabilities; it cannot silently inherit the
             // Node-only registry diagnostic workaround through this fixed profile selection.
             if (args[4] == "python-embed" && args[5] != "none") throw new ArgumentException("Python embedded profile requires zero capabilities");
+            if (args[4].StartsWith("wasmtime", StringComparison.Ordinal) && args[5] != "none") throw new ArgumentException("Wasmtime profile requires zero capabilities");
 #if !STUDIO_SANDBOX_DIAGNOSTICS
             // The normal binary cannot enable registryRead through CLI input. Only a separately
             // compiled internal diagnostic binary contains the capability derivation code.
@@ -72,9 +75,12 @@ internal static class SandboxHost
             if (!Directory.Exists(Path.Combine(root, part))) throw new IOException("Missing staging directory: " + part);
         string[] required = workerProfile == "python-embed"
             ? new[] { "bin/python.exe", "bin/python314.dll", "bin/python314.zip", "bin/python314._pth", "bin/LICENSE.txt", "input/worker.py", "input/request.json" }
+            : workerProfile == "wasmtime-stdio" ? new[] { "bin/wasmtime.exe", "bin/LICENSE", "input/worker.wat", "input/request.json" }
+            : workerProfile == "wasmtime" ? new[] { "bin/wasmtime.exe", "bin/LICENSE", "input/worker.wat" }
             : workerProfile == "node" ? new[] { "bin/node.exe", "input/worker.mjs", "input/request.json" }
             : new[] { "bin/native-probe.exe", "input/native-mode.txt" };
         foreach (string file in required) if (!File.Exists(Path.Combine(root, file.Replace('/', Path.DirectorySeparatorChar)))) throw new IOException("Incomplete worker staging: " + file);
+        if (workerProfile == "wasmtime-stdio" && new FileInfo(Path.Combine(root, "input", "request.json")).Length > 1024 * 1024) throw new IOException("Worker input exceeds fixed byte limit");
         if (Directory.GetFileSystemEntries(Path.Combine(root, "output")).Length != 0) throw new IOException("Output must be fresh and empty");
         return root;
     }
@@ -145,13 +151,16 @@ internal static class SandboxHost
     {
         string profile = "StudioIsolationTest." + Guid.NewGuid().ToString("N");
         IntPtr sid = IntPtr.Zero, job = IntPtr.Zero, token = IntPtr.Zero, attributes = IntPtr.Zero, environment = IntPtr.Zero, registryCapability = IntPtr.Zero;
-        IntPtr privateDesktop = IntPtr.Zero, uiDescriptor = IntPtr.Zero;
+        IntPtr privateDesktop = IntPtr.Zero, uiDescriptor = IntPtr.Zero, outputDirectoryGuard = IntPtr.Zero;
         List<IntPtr> allocations = new List<IntPtr>();
         PROCESS_INFORMATION process = new PROCESS_INFORMATION();
-        bool profileCreated = false, attributesInitialized = false, assigned = false, timedOut = false;
+        bool profileCreated = false, attributesInitialized = false, assigned = false, timedOut = false, outputLimitExceeded = false, jobClosedOnOutputLimit = false;
+        bool boundedStdio = workerProfile == "wasmtime-stdio";
         uint exitCode = 0, processId = 0;
         long peakMemory = 0;
         FileStream workerOut = null, workerError = null;
+        FileStream workerInput = null;
+        BoundedCapture stdoutCapture = null, stderrCapture = null;
         Stopwatch elapsed = Stopwatch.StartNew();
         try
         {
@@ -215,18 +224,44 @@ internal static class SandboxHost
 
             // Only these two newly created output-file handles are inheritable. No credential,
             // job, token, process, input-file or unrelated parent handle crosses this boundary.
-            workerOut = new FileStream(Path.Combine(root, "output", "stdout.txt"), FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
-            workerError = new FileStream(Path.Combine(root, "output", "stderr.txt"), FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
-            IntPtr outHandle = workerOut.SafeFileHandle.DangerousGetHandle(), errorHandle = workerError.SafeFileHandle.DangerousGetHandle();
-            Check(SetHandleInformation(outHandle, 1, 1), "Set stdout inherit flag"); Check(SetHandleInformation(errorHandle, 1, 1), "Set stderr inherit flag");
-            IntPtr inherited = Marshal.AllocHGlobal(IntPtr.Size * 2); allocations.Add(inherited);
+            IntPtr outHandle, errorHandle, inputHandle = IntPtr.Zero;
+            if (boundedStdio)
+            {
+                // Anonymous pipes apply backpressure. The guest receives no writable disk handle;
+                // only bounded bytes retained by the parent are written after the child exits.
+                // Pin the output directory and two CreateNew files before untrusted execution.
+                // No FILE_SHARE_DELETE or FILE_SHARE_WRITE is granted on the result files, and
+                // the parent never reopens a guest-controlled path when persisting captured bytes.
+                outputDirectoryGuard = CreateFile(Path.Combine(root, "output"), 0x80, 3, IntPtr.Zero, 3, 0x02200000, IntPtr.Zero);
+                Check(outputDirectoryGuard != new IntPtr(-1), "Pin output directory");
+                BY_HANDLE_FILE_INFORMATION outputDirectoryInfo;
+                Check(GetFileInformationByHandle(outputDirectoryGuard, out outputDirectoryInfo), "Inspect pinned output directory");
+                if ((outputDirectoryInfo.Attributes & 0x400) != 0) throw new IOException("Output directory is a reparse point");
+                workerOut = new FileStream(Path.Combine(root, "output", "stdout.txt"), FileMode.CreateNew, FileAccess.Write, FileShare.Read);
+                workerError = new FileStream(Path.Combine(root, "output", "stderr.txt"), FileMode.CreateNew, FileAccess.Write, FileShare.Read);
+                stdoutCapture = new BoundedCapture(1024 * 1024); stderrCapture = new BoundedCapture(64 * 1024);
+                outHandle = stdoutCapture.ClientHandle; errorHandle = stderrCapture.ClientHandle;
+                workerInput = new FileStream(Path.Combine(root, "input", "request.json"), FileMode.Open, FileAccess.Read, FileShare.Read);
+                inputHandle = workerInput.SafeFileHandle.DangerousGetHandle(); Check(SetHandleInformation(inputHandle, 1, 1), "Set input inherit flag");
+            }
+            else
+            {
+                workerOut = new FileStream(Path.Combine(root, "output", "stdout.txt"), FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
+                workerError = new FileStream(Path.Combine(root, "output", "stderr.txt"), FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
+                outHandle = workerOut.SafeFileHandle.DangerousGetHandle(); errorHandle = workerError.SafeFileHandle.DangerousGetHandle();
+                Check(SetHandleInformation(outHandle, 1, 1), "Set stdout inherit flag"); Check(SetHandleInformation(errorHandle, 1, 1), "Set stderr inherit flag");
+            }
+            int handleCount = boundedStdio ? 3 : 2;
+            IntPtr inherited = Marshal.AllocHGlobal(IntPtr.Size * handleCount); allocations.Add(inherited);
             Marshal.WriteIntPtr(inherited, 0, outHandle); Marshal.WriteIntPtr(inherited, IntPtr.Size, errorHandle);
-            AddAttribute(attributes, 0x20002, inherited, IntPtr.Size * 2);
+            if (boundedStdio) Marshal.WriteIntPtr(inherited, IntPtr.Size * 2, inputHandle);
+            AddAttribute(attributes, 0x20002, inherited, IntPtr.Size * handleCount);
 
             STARTUPINFOEX startup = new STARTUPINFOEX(); startup.StartupInfo.cb = Marshal.SizeOf(typeof(STARTUPINFOEX)); startup.lpAttributeList = attributes;
             startup.StartupInfo.lpDesktop = stationName + "\\" + desktopName;
             startup.StartupInfo.dwFlags = 0x100; startup.StartupInfo.hStdOutput = outHandle; startup.StartupInfo.hStdError = errorHandle;
-            string executable = Path.Combine(root, "bin", workerProfile == "node" ? "node.exe" : workerProfile == "python-embed" ? "python.exe" : "native-probe.exe");
+            startup.StartupInfo.hStdInput = inputHandle;
+            string executable = Path.Combine(root, "bin", workerProfile == "node" ? "node.exe" : workerProfile == "python-embed" ? "python.exe" : workerProfile.StartsWith("wasmtime", StringComparison.Ordinal) ? "wasmtime.exe" : "native-probe.exe");
             string output = Path.Combine(root, "output");
             // Environment is an allowlist; parent API keys, NODE_OPTIONS, user profile and PATH are not inherited.
             string windows = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
@@ -240,8 +275,13 @@ internal static class SandboxHost
             // lookup to the staged runtime. -S/-B disable site hooks and bytecode writes explicitly.
             string command = workerProfile == "node" ? Quote(executable) + " --no-warnings --preserve-symlinks --preserve-symlinks-main " + Quote(Path.Combine(root, "input", "worker.mjs")) + " " + Quote(Path.Combine(root, "input", "request.json"))
                 : workerProfile == "python-embed" ? Quote(executable) + " -I -S -B " + Quote(Path.Combine(root, "input", "worker.py")) + " " + Quote(Path.Combine(root, "input", "request.json"))
+                : boundedStdio ? Quote(executable) + " run -C cache=n,parallel-compilation=n -W fuel=10000000,max-memory-size=16777216,max-table-elements=10000,max-instances=1,max-memories=1,max-tables=1,threads=n,shared-memory=n,component-model=n -S inherit-env=n,inherit-stdin=y,inherit-network=n,allow-ip-name-lookup=n,tcp=n,udp=n,http=n,threads=n,config=n,keyvalue=n,nn=n " + Quote(Path.Combine(root, "input", "worker.wat"))
+                // Internal Wasmtime experiment: no cache, inherited secrets, network, extra host
+                // imports or precompiled native input. Only the two fresh staging roots are preopened.
+                : workerProfile == "wasmtime" ? Quote(executable) + " run -C cache=n,parallel-compilation=n -W fuel=10000000,max-memory-size=16777216,max-table-elements=10000,max-instances=1,max-memories=1,max-tables=1,threads=n,shared-memory=n -S inherit-env=n,inherit-stdin=n,inherit-network=n,allow-ip-name-lookup=n,tcp=n,udp=n,http=n,threads=n,config=n,keyvalue=n,nn=n --dir " + Quote(Path.Combine(root, "input") + "::/input") + " --dir " + Quote(Path.Combine(root, "output") + "::/output") + " " + Quote(Path.Combine(root, "input", "worker.wat"))
                 : Quote(executable) + " " + Quote(root);
             Check(CreateProcess(executable, new StringBuilder(command), IntPtr.Zero, IntPtr.Zero, true, CREATE_SUSPENDED | CREATE_UNICODE_ENVIRONMENT | EXTENDED_STARTUPINFO_PRESENT | DETACHED_PROCESS, environment, output, ref startup, out process), "CreateProcess LPAC");
+            if (boundedStdio) { stdoutCapture.Start(); stderrCapture.Start(); }
             processId = process.dwProcessId;
             Check(AssignProcessToJobObject(job, process.hProcess), "AssignProcessToJobObject"); assigned = true;
             Check(OpenProcessToken(process.hProcess, TOKEN_QUERY, out token), "OpenProcessToken");
@@ -251,19 +291,42 @@ internal static class SandboxHost
             bool inJob; Check(IsProcessInJob(process.hProcess, job, out inJob), "IsProcessInJob");
             if (!inJob) throw new InvalidOperationException("Child not assigned to required job");
             if (ResumeThread(process.hThread) == UInt32.MaxValue) throw new Win32Exception(Marshal.GetLastWin32Error(), "ResumeThread");
-            uint wait = WaitForSingleObject(process.hProcess, wall);
+            uint wait;
+            if (boundedStdio)
+            {
+                Stopwatch running = Stopwatch.StartNew();
+                do
+                {
+                    wait = WaitForSingleObject(process.hProcess, 25);
+                    outputLimitExceeded = stdoutCapture.LimitExceeded || stderrCapture.LimitExceeded;
+                    if (stdoutCapture.Failed || stderrCapture.Failed) throw new IOException("Bounded output capture failed");
+                } while (wait == WAIT_TIMEOUT && !outputLimitExceeded && running.ElapsedMilliseconds < wall);
+                timedOut = wait == WAIT_TIMEOUT && !outputLimitExceeded;
+            }
+            else wait = WaitForSingleObject(process.hProcess, wall);
             JOBOBJECT_EXTENDED_LIMIT_INFORMATION observed;
             Check(QueryInformationJobObject(job, 9, out observed, (uint)Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION)), IntPtr.Zero), "Query job limits");
             if (wait == WAIT_TIMEOUT)
             {
                 // Closing this sole private job handle exercises the kernel KILL_ON_JOB_CLOSE rule.
                 // It does not enumerate or terminate unrelated processes or rely on PID reuse.
-                timedOut = true; Check(CloseHandle(job), "Close timed-out job"); job = IntPtr.Zero; assigned = false;
+                timedOut = !outputLimitExceeded; jobClosedOnOutputLimit = outputLimitExceeded;
+                Check(CloseHandle(job), "Close limited job"); job = IntPtr.Zero; assigned = false;
                 if (WaitForSingleObject(process.hProcess, 5000) != 0) throw new InvalidOperationException("Job close failed to terminate its child");
             }
             else if (wait != 0) throw new Win32Exception(Marshal.GetLastWin32Error(), "WaitForSingleObject");
             Check(GetExitCodeProcess(process.hProcess, out exitCode), "GetExitCodeProcess");
-            workerOut.Dispose(); workerOut = null; workerError.Dispose(); workerError = null;
+            if (boundedStdio)
+            {
+                stdoutCapture.Complete(); stderrCapture.Complete();
+                outputLimitExceeded = stdoutCapture.LimitExceeded || stderrCapture.LimitExceeded;
+                // Never publish these bytes as a successful Worker result when a stream exceeded its limit.
+                byte[] capturedOut = stdoutCapture.Bytes, capturedError = stderrCapture.Bytes;
+                workerOut.Write(capturedOut, 0, capturedOut.Length); workerOut.Flush(true);
+                workerError.Write(capturedError, 0, capturedError.Length); workerError.Flush(true);
+                workerOut.Dispose(); workerOut = null; workerError.Dispose(); workerError = null;
+            }
+            else { workerOut.Dispose(); workerOut = null; workerError.Dispose(); workerError = null; }
             // Untrusted output must not turn result collection into a junction/hard-link traversal.
             CheckTree(Path.Combine(root, "output"));
             peakMemory = checked((long)observed.PeakJobMemoryUsed.ToUInt64());
@@ -284,6 +347,10 @@ internal static class SandboxHost
             if (token != IntPtr.Zero) CloseHandle(token);
             if (workerOut != null) workerOut.Dispose();
             if (workerError != null) workerError.Dispose();
+            if (workerInput != null) workerInput.Dispose();
+            if (stdoutCapture != null) stdoutCapture.Dispose();
+            if (stderrCapture != null) stderrCapture.Dispose();
+            if (outputDirectoryGuard != IntPtr.Zero && outputDirectoryGuard != new IntPtr(-1)) CloseHandle(outputDirectoryGuard);
             if (process.hThread != IntPtr.Zero) CloseHandle(process.hThread);
             if (process.hProcess != IntPtr.Zero) CloseHandle(process.hProcess);
             if (job != IntPtr.Zero) CloseHandle(job);
@@ -302,8 +369,63 @@ internal static class SandboxHost
             }
         }
         elapsed.Stop();
-        Console.WriteLine("{\"processId\":" + processId + ",\"exitCode\":" + exitCode + ",\"timedOut\":" + (timedOut ? "true" : "false") + ",\"jobClosedOnTimeout\":" + (timedOut ? "true" : "false") + ",\"elapsedMs\":" + elapsed.ElapsedMilliseconds + ",\"peakJobMemoryBytes\":" + peakMemory + ",\"appContainer\":true,\"lpacOptOut\":true,\"capabilities\":" + (registryReadDiagnostic ? "[\"registryRead\"]" : "[]") + ",\"privateDesktop\":true,\"networkCapabilityCount\":0,\"activeProcessLimit\":1,\"profileDeleted\":true}");
+        Console.WriteLine("{\"processId\":" + processId + ",\"exitCode\":" + exitCode + ",\"timedOut\":" + (timedOut ? "true" : "false") + ",\"jobClosedOnTimeout\":" + (timedOut ? "true" : "false") + ",\"outputLimitExceeded\":" + (outputLimitExceeded ? "true" : "false") + ",\"jobClosedOnOutputLimit\":" + (jobClosedOnOutputLimit ? "true" : "false") + ",\"boundedStdio\":" + (boundedStdio ? "true" : "false") + ",\"elapsedMs\":" + elapsed.ElapsedMilliseconds + ",\"peakJobMemoryBytes\":" + peakMemory + ",\"appContainer\":true,\"lpacOptOut\":true,\"capabilities\":" + (registryReadDiagnostic ? "[\"registryRead\"]" : "[]") + ",\"privateDesktop\":true,\"networkCapabilityCount\":0,\"activeProcessLimit\":1,\"profileDeleted\":true}");
         return 0;
+    }
+
+    // A bounded capture never spools untrusted output to disk. It stops draining on overflow,
+    // so the small OS pipe blocks the guest until the supervising thread closes the Job.
+    private sealed class BoundedCapture : IDisposable
+    {
+        private readonly AnonymousPipeServerStream pipe;
+        private readonly MemoryStream buffer;
+        private readonly int maximum;
+        private Thread reader;
+        public volatile bool LimitExceeded;
+        public volatile bool Failed;
+        public IntPtr ClientHandle { get { return pipe.ClientSafePipeHandle.DangerousGetHandle(); } }
+        public byte[] Bytes { get { return buffer.ToArray(); } }
+        public BoundedCapture(int limit)
+        {
+            maximum = limit; buffer = new MemoryStream();
+            pipe = new AnonymousPipeServerStream(PipeDirection.In, HandleInheritability.Inheritable, 4096);
+        }
+        public void Start()
+        {
+            // Once CreateProcess duplicated the handle, retaining this parent copy would prevent EOF.
+            pipe.DisposeLocalCopyOfClientHandle();
+            reader = new Thread(Read); reader.IsBackground = true; reader.Start();
+        }
+        private void Read()
+        {
+            try
+            {
+                byte[] chunk = new byte[4096]; int length;
+                while ((length = pipe.Read(chunk, 0, chunk.Length)) > 0)
+                {
+                    int remaining = maximum - checked((int)buffer.Length);
+                    if (length > remaining)
+                    {
+                        if (remaining > 0) buffer.Write(chunk, 0, remaining);
+                        LimitExceeded = true; return;
+                    }
+                    buffer.Write(chunk, 0, length);
+                }
+            }
+            catch (IOException) { Failed = true; }
+            catch (ObjectDisposedException) { Failed = true; }
+        }
+        public void Complete()
+        {
+            if (reader != null && !reader.Join(5000)) throw new IOException("Output pipe did not reach EOF after child exit");
+            if (Failed) throw new IOException("Output pipe capture failed");
+        }
+        public void Dispose()
+        {
+            pipe.Dispose();
+            if (reader != null && reader.IsAlive) reader.Join(1000);
+            buffer.Dispose();
+        }
     }
 
     private static string Quote(string argument)
@@ -376,6 +498,7 @@ internal static class SandboxHost
     [DllImport("kernel32.dll", SetLastError = true)] private static extern uint WaitForSingleObject(IntPtr handle, uint milliseconds);
     [DllImport("kernel32.dll", SetLastError = true)] private static extern bool GetExitCodeProcess(IntPtr process, out uint exitCode);
     [DllImport("kernel32.dll", SetLastError = true)] private static extern bool GetFileInformationByHandle(IntPtr file, out BY_HANDLE_FILE_INFORMATION information);
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CreateFile(string path, uint access, uint share, IntPtr security, uint disposition, uint flags, IntPtr template);
     [DllImport("kernel32.dll", SetLastError = true)] private static extern bool SetHandleInformation(IntPtr handle, uint mask, uint flags);
     [DllImport("kernel32.dll")] private static extern bool CloseHandle(IntPtr handle);
     [DllImport("kernel32.dll")] private static extern IntPtr LocalFree(IntPtr pointer);

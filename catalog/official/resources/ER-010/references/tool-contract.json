@@ -1,0 +1,21 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "microsoft_docs_search",
+    "microsoft_docs_fetch",
+    "microsoft_code_sample_search"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "Microsoft 제품·SDK 질문과 선택적 코드 언어",
+    "검색 결과 중 확인할 공식 Learn URL",
+    "본문과 샘플을 구분한 출처 목록"
+  ],
+  "comparisonFields": [
+    "url",
+    "quote",
+    "language"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

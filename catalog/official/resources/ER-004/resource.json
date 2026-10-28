@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-004",
+  "revision": 1,
+  "kind": "mcp",
+  "name": "Linear 연결",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "service"
+  ],
+  "files": [
+    {
+      "path": "scripts/connection-plan.mjs",
+      "bytes": 8370,
+      "sha256": "b8baf94e29a92b83013d6e3ffa364b4ab8b83c8a7376c6c4fa401193d33d1af8"
+    },
+    {
+      "path": "connection.json",
+      "bytes": 528,
+      "sha256": "1e60daa814b257a4fbf0cfc1c7a147ead12fac2d564dddb4e1c9299f7ff3ab61"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 149,
+      "sha256": "45dba41f8cf24a65c9302326506fe5006219018592ab6be3461cd2b8a3c76d0e"
+    },
+    {
+      "path": "references/tool-contract.json",
+      "bytes": 593,
+      "sha256": "e41ea4c4028b0c37c5a5bba80771fb9609f06d4d0c792a73559c02d288843e97"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 434,
+      "sha256": "24514711d35d0ee0b48afb15b47dfb7e10e520c122cd1493a5a1f5f89cfb54ea"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "templates/codex.config.toml.template",
+      "bytes": 285,
+      "sha256": "59d368217784f788bbe49521f02bd2c08861c3ec4dcc4890bdc722f3f726669a"
+    },
+    {
+      "path": "templates/claude.mcp.json.template",
+      "bytes": 128,
+      "sha256": "dc84f1468743137c24bfacf79d1331079a3b1f86cecb279ae07cf7bd08bad241"
+    },
+    {
+      "path": "templates/claude.settings.json.template",
+      "bytes": 342,
+      "sha256": "6e1bf65f32e94d1f5a4409bfe7928551811d05ebfef47ff6ba9a1706d5513696"
+    },
+    {
+      "path": "templates/opencode.json.template",
+      "bytes": 365,
+      "sha256": "eef72bbae3563778c24ad76a8c0816a5e4d2c58c4b4f6bb87e69d029f3785faf"
+    },
+    {
+      "path": "scripts/claude-read-guard.mjs",
+      "bytes": 987,
+      "sha256": "ba7775ab428758e322862483568b505457f274ea4d4ae3a5794c93b387e0cba7"
+    },
+    {
+      "path": "instructions.md",
+      "bytes": 4005,
+      "sha256": "94ee966e71b5f95735aabfe06b7461f816b9ab4ff1de94fb68c7761ec0cc1e81"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1067,
+      "sha256": "9ce21bd30c3e6a8cd49430c205dd6b0c44f0a02108c0558947d65e285281889a"
+    },
+    {
+      "path": "assets/observation-report.md",
+      "bytes": 578,
+      "sha256": "530b0d529de6aad9a73d7520494f14645160f78adad77d519222645478bc9ce8"
+    }
+  ]
+}

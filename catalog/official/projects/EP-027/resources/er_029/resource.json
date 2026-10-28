@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-029",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "쉬운 설명 편집",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2161,
+      "sha256": "035105d598d1881968b48f4b04859ccd84f2444edca23310eb00551f3d682df5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1430,
+      "sha256": "a9bfd2ffb7b29db9f2f896b68fea1874759c083726dd9ca03d6a253b2b7b88e3"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 605,
+      "sha256": "60b9fd0a2cf14bbfe563ce521ab6f08bef02220bc8a620f02a8c78e8cfb11138"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1096,
+      "sha256": "5bf81dfa1f07392ffad6d5ac667e42c2dee382f6743ee72b4045958ab40661dd"
+    }
+  ]
+}

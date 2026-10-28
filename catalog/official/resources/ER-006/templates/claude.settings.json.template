@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__studio_supabase__*"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__studio_supabase__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node resources/ER-006/scripts/claude-read-guard.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

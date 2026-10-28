@@ -1,0 +1,7 @@
+{
+  "operation": "read",
+  "tool": "search_cloudflare_documentation",
+  "arguments": {
+    "query": "Workers KV의 만료 설정과 최소 TTL은 무엇인가요?"
+  }
+}

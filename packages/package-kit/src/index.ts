@@ -15,6 +15,8 @@ import { DEFAULT_LIMITS, readZip, type ArchiveLimits } from './archive/read-zip.
 import { createHostFiles, type TargetHost } from './adapters/hosts.js';
 import { verifyResources } from './resources.js';
 import { readSkillMetadata } from './skills.js';
+import { authoringSnapshot, AUTHORING_IMPORT_LIMITS } from './authoring-import.js';
+export type { AuthoringImportSnapshot } from './authoring-import.js';
 export { readSkillMetadata, type SkillMetadata } from './skills.js';
 export { verifyResources, createTextResource, type ResourceDescriptor } from './resources.js';
 
@@ -39,6 +41,15 @@ export interface PackageBuildInput {
   metadata?: { packageId?: string; packageVersion?: string; createdAt?: string };
 }
 export interface InspectOptions { limits?: Partial<ArchiveLimits>; trustStore?: Readonly<Record<string, string>>; requireSignature?: boolean; }
+
+/** Prepare byte-preserving source data for a private copy; authorization, storage and UI readiness remain caller duties.
+ * Limits cannot be raised by ZIP metadata or by this API's options. Snapshot ownership prevents later caller byte mutation. */
+export async function prepareAuthoringImport(bytes: Uint8Array, options: Pick<InspectOptions, 'trustStore' | 'requireSignature'> = {}) {
+  if (!(bytes instanceof Uint8Array) || bytes.byteLength > AUTHORING_IMPORT_LIMITS.maxArchiveBytes || bytes.buffer instanceof SharedArrayBuffer) throw new PackageError('AUTHORING_IMPORT_LIMIT', '독립 복사 원본은 공유 메모리가 아닌 32 MiB 이하 ZIP이어야 합니다.');
+  const source = new Uint8Array(bytes);
+  const inspected = await inspectPackage(source, { trustStore: options.trustStore, requireSignature: options.requireSignature, limits: AUTHORING_IMPORT_LIMITS.archive });
+  return authoringSnapshot(source, inspected);
+}
 
 /** Build an operational snapshot. This function does not claim that a host or real model was tested. */
 export async function buildPackage(input: PackageBuildInput): Promise<{ bytes: Uint8Array; manifest: PackageManifest }> {
@@ -151,7 +162,7 @@ export async function inspectPackage(bytes: Uint8Array, options: InspectOptions 
   const warnings: string[] = []; let trust: 'unsigned' | 'verified' = 'unsigned';
   const signatureBytes = files.get('manifest.sig');
   if (signatureBytes) {
-    const signature = parseStrictJson(new TextDecoder().decode(signatureBytes)) as { algorithm?: string; keyId?: string; signature?: string };
+    const signature = parseStrictJson(new TextDecoder('utf-8', { fatal: true }).decode(signatureBytes)) as { algorithm?: string; keyId?: string; signature?: string };
     if (!signature || Object.keys(signature).some(key => !['algorithm', 'keyId', 'signature'].includes(key)) || signature.algorithm !== 'Ed25519' || typeof signature.keyId !== 'string' || typeof signature.signature !== 'string' || !/^[A-Za-z0-9_-]{86}$/.test(signature.signature)) throw new PackageError('SIGNATURE_INVALID', '서명 형식이 잘못되었습니다.');
     const trustedKey = options.trustStore?.[signature.keyId];
     if (!trustedKey) throw new PackageError('SIGNATURE_UNTRUSTED', 'ZIP 외부의 신뢰 목록에서 서명 키를 찾지 못했습니다.');
@@ -163,7 +174,7 @@ export async function inspectPackage(bytes: Uint8Array, options: InspectOptions 
   let workflow: Workflow | undefined;
   if (manifest.packageKind === 'workflow') {
     if (manifest.entrypoint !== 'workflow.json' || !files.has('workflow.json')) throw new PackageError('ENTRYPOINT_INVALID', '실행 정의가 없습니다.');
-    const parsed = validateWorkflowShape(parseStrictJson(new TextDecoder().decode(files.get('workflow.json')!)));
+    const parsed = validateWorkflowShape(parseStrictJson(new TextDecoder('utf-8', { fatal: true }).decode(files.get('workflow.json')!)));
     if (!parsed.valid) throw new PackageError('WORKFLOW_INVALID', parsed.issues.map(i => i.message).join('\n'));
     workflow = parsed.value;
     const errors = analyzeWorkflow(workflow).filter(i => i.severity === 'error');

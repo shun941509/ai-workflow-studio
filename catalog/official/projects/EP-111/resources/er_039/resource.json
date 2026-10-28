@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-039",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "RAG 답변 유보",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2328,
+      "sha256": "83b7eb96fb6e1880fd515b35af4522a6bb87d0f0ba0632c1504e9f7d3147f01f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1457,
+      "sha256": "c4918e9700a5141414eee19723745e239c99e97f8d9c23b401799d2ef27947b3"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 766,
+      "sha256": "33632c5ebe1819b9dd44abb3c0f1447a8ced4e4c56025b844ea75618d6a290d0"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1103,
+      "sha256": "ad8c9f826e88560ea828913732d3e51ed1537b54dca4e95b8388d320c61e6cd1"
+    }
+  ]
+}

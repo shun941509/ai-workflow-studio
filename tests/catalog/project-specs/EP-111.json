@@ -1,0 +1,71 @@
+{
+  "$comment": "Internal future acceptance cases, not actual model/host evidence. Excluded from production ZIPs.",
+  "projectId": "EP-111",
+  "sourceContract": {
+    "purpose": "코드와 의미 동시 검색",
+    "blocksAndConnections": "`knowledge·retrieval·ai` / 융합·reranker",
+    "inputOutput": "번호·증상 → 절차",
+    "acceptanceCriteria": "정답 구간 상위 회수, 유사 코드 구분"
+  },
+  "artifactSha256": "a9f26b0b99d0a092194053626a66a33a3c207552eed70586b2b6bf8766f00486",
+  "practiceInput": "catalog/official/projects/EP-111/sample-input.json",
+  "boundaryChecks": [
+    "Exact managed source bytes, index/citation lineage and three host payloads",
+    "Missing role-specific model profiles block full execution",
+    "Test-only provider boundaries verify real SQLite ranking events and failure handling; no semantic quality claim"
+  ],
+  "actualModelAcceptance": [
+    "부품 번호와 증상을 한 질의로 보존하고 keyword/vector/RRF/reranker 단계를 구분해 기록합니다.",
+    "QX-120A의 QUEUE-HOLD는 등록 대기이며 QX-120B의 미리보기 지연·QX-102A의 날짜 조건·QX-210A의 전송 결과 불명과 섞지 않습니다.",
+    "실제 정답 원문 구간이 top3에 회수되는지 고정 반례 세트로 평가하고, 모델 답변의 모든 단계가 정확한 부품의 인용인지 검사합니다.",
+    "답변이 다른 부품 번호를 반환하면 identifier_mismatch로 보류합니다. 같은 번호를 반환해도 인용 적용의 정확성은 별도 실제 검증 대상입니다.",
+    "미완성 번호·없는 장애·미기재 보장 시간은 유보하며 벡터 검색의 근접 후보를 정답으로 단정하지 않습니다."
+  ],
+  "qualityCases": [
+    {
+      "id": "Q111-A",
+      "input": {
+        "partNumber": "QX-120A",
+        "symptom": "문서는 저장됐는데 목록에 보이지 않고 QUEUE-HOLD가 표시됩니다. 무엇을 확인해야 하나요?"
+      },
+      "expectedSourceIds": [
+        "PART-QX-120A"
+      ],
+      "counterexampleSourceIds": [
+        "PART-QX-120B",
+        "PART-QX-102A",
+        "PART-QX-210A"
+      ],
+      "criterion": "정답 구간 top3 회수 및 부품별 절차 혼입 없음"
+    },
+    {
+      "id": "Q111-B",
+      "input": {
+        "partNumber": "QX-120B",
+        "symptom": "목록에는 문서가 있지만 PREVIEW-WAIT만 표시됩니다."
+      },
+      "expectedSourceIds": [
+        "PART-QX-120B"
+      ],
+      "counterexampleSourceIds": [
+        "PART-QX-120A"
+      ],
+      "criterion": "미리보기와 등록 대기를 구별"
+    },
+    {
+      "id": "Q111-UNKNOWN",
+      "input": {
+        "partNumber": "QX-120",
+        "symptom": "어떤 모듈인지 모르겠습니다."
+      },
+      "expectedStatus": "insufficient_evidence",
+      "criterion": "유사 코드 임의 보정 금지"
+    }
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

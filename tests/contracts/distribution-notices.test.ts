@@ -1,0 +1,61 @@
+import { afterEach, describe, expect, it } from 'vitest';
+import { createHash } from 'node:crypto';
+import { mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+import { tmpdir } from 'node:os';
+import { collectNoticeInventory, verifyNoticeInventory } from '../../tooling/distribution/notice-inventory';
+
+const cleanup: string[] = []; const sha = (bytes: string | Uint8Array) => createHash('sha256').update(bytes).digest('hex');
+/** Only explicit temporary trees are removed; fixtures never modify installed packages or production notices. */
+afterEach(async () => { for (const directory of cleanup.splice(0)) { if (!resolve(directory).startsWith(resolve(tmpdir()) + '\\') && !resolve(directory).startsWith(resolve(tmpdir()) + '/')) throw new Error('Unsafe fixture cleanup'); await rm(directory, { recursive: true, force: true }); } });
+async function workspace() { const root = await mkdtemp(join(tmpdir(), 'studio-notices-')); cleanup.push(root); return root; }
+async function pack(root: string, name = 'used-package', version = '1.0.0', license: string | undefined = 'MIT') {
+  const directory = join(root, 'node_modules', name); await mkdir(join(directory, 'dist'), { recursive: true }); const metadata = JSON.stringify({ name, version, ...(license === undefined ? {} : { license }) }); await writeFile(join(directory, 'package.json'), metadata); await writeFile(join(directory, 'dist/input.js'), 'export const number = 1;\n'); return { directory, input: join(directory, 'dist/input.js'), metadata };
+}
+
+describe('production input notice inventory', () => {
+  it('copies original notice bytes for retained inputs only, never installed-but-unused dependencies or source code', async () => {
+    const root = await workspace(); const used = await pack(root); const unused = await pack(root, 'development-only'); const original = Buffer.from('Copyright author\r\nOriginal permission terms\r\n'); await writeFile(join(used.directory, 'LICENSE'), original); await writeFile(join(unused.directory, 'LICENSE'), 'NOT SHIPPED');
+    const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: used.input }, { id: used.input }] }); expect(result.inventory.components.map((item) => item.name)).toEqual(['used-package']); expect(result.inventory.components[0]!.modules).toHaveLength(1); expect(result.inventory.components[0]!.declaredLicense).toBe('MIT'); expect(result.inventory.noticeComplete).toBe(true); expect(result.inventory.releaseApproved).toBe(false);
+    const notice = result.inventory.components[0]!.notices[0]!; expect(notice.sha256).toBe(sha(original)); expect(Buffer.from(result.assets.get(notice.outputPath)!)).toEqual(original); expect([...result.assets.keys()]).not.toContain(expect.stringContaining('input.js')); expect(JSON.stringify(result.inventory)).not.toContain(root); expect(JSON.stringify(result.inventory)).not.toContain('development-only');
+  });
+  it('hashes the exact bundler-supplied input snapshot even if the file changed afterward', async () => {
+    const root = await workspace(); const pkg = await pack(root); await writeFile(join(pkg.directory, 'LICENSE'), 'original notice'); const supplied = new TextEncoder().encode('export const number = 42;');
+    const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input, contents: supplied }] }); expect(result.inventory.components[0]!.modules[0]!.sha256).toBe(sha(supplied)); expect(result.inventory.components[0]!.packageJsonSha256).toBe(sha(pkg.metadata));
+  });
+  it('retains LICENSES, nested COPYING and declared custom license references without scanning unrelated files', async () => {
+    const root = await workspace(); const pkg = await pack(root, 'multiple-notices', '2.0.0', 'SEE LICENSE IN TERMS.txt'); await mkdir(join(pkg.directory, 'LICENSES')); await writeFile(join(pkg.directory, 'LICENSES/MIT.txt'), 'MIT original'); await writeFile(join(pkg.directory, 'dist/COPYING'), 'COPYING original'); await writeFile(join(pkg.directory, 'NOTICE.txt'), 'NOTICE original'); await writeFile(join(pkg.directory, 'TERMS.txt'), 'TERMS original'); await writeFile(join(pkg.directory, 'README.md'), 'Not a notice'); await writeFile(join(pkg.directory, 'dist/copyright.mjs'), 'unrelated icon code'); await writeFile(join(pkg.directory, 'dist/notice.js'), 'unrelated component code');
+    const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(result.inventory.components[0]!.notices.map((item) => item.source).sort()).toEqual(['package/LICENSES/MIT.txt', 'package/NOTICE.txt', 'package/TERMS.txt', 'package/dist/COPYING'].sort()); expect(result.inventory.noticeComplete).toBe(true);
+  });
+  it('does not fabricate a notice from a license label or approve a missing declaration', async () => {
+    const root = await workspace(); const pkg = await pack(root); const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(result.inventory.gaps).toContainEqual(expect.objectContaining({ code: 'LICENSE_OR_NOTICE_FILE_MISSING' })); expect(result.inventory.noticeComplete).toBe(false);
+    await writeFile(join(pkg.directory, 'package.json'), JSON.stringify({ name: 'used-package', version: '1.0.0' })); await writeFile(join(pkg.directory, 'LICENSE'), 'Available original'); const missing = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(missing.inventory.gaps).toContainEqual(expect.objectContaining({ code: 'LICENSE_DECLARATION_MISSING' }));
+  });
+  it('does not copy hidden configuration or executable files named in a license declaration', async () => {
+    const root = await workspace(); const pkg = await pack(root, 'bad-license-reference', '1.0.0', 'SEE LICENSE IN .env'); await writeFile(join(pkg.directory, '.env'), 'private-test-value'); const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(result.inventory.gaps).toContainEqual(expect.objectContaining({ code: 'LICENSE_REFERENCE_UNSAFE' })); expect([...result.assets.values()].some((bytes) => new TextDecoder().decode(bytes).includes('private-test-value'))).toBe(false);
+  });
+  it('never follows a notice directory junction to copy unrelated files', async () => {
+    const root = await workspace(); const external = await workspace(); const pkg = await pack(root); await writeFile(join(external, 'LICENSE'), 'private unrelated value'); await symlink(external, join(pkg.directory, 'LICENSES'), 'junction');
+    const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(result.inventory.noticeComplete).toBe(false); expect(result.inventory.gaps).toContainEqual(expect.objectContaining({ code: 'NOTICE_FILE_UNREADABLE' })); expect([...result.assets.values()].some((bytes) => new TextDecoder().decode(bytes).includes('private unrelated value'))).toBe(false);
+  });
+  it('redacts unknown virtual and outside-workspace input identifiers while reporting the gap', async () => {
+    const root = await workspace(); const outside = await workspace(); const pkg = await pack(outside); const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: `\0${root}/private-helper` }, { id: pkg.input }] }); expect(result.inventory.gaps.map((item) => item.code)).toEqual(['GENERATED_INPUT_UNATTRIBUTED', 'INPUT_OUTSIDE_WORKSPACE', 'NO_PRODUCTION_INPUTS']); expect(JSON.stringify(result.inventory)).not.toContain(root.replaceAll('\\', '\\\\')); expect(JSON.stringify(result.inventory)).not.toContain(outside.replaceAll('\\', '\\\\'));
+  });
+  it('does not report an empty production inventory as complete', async () => { const root = await workspace(); const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [] }); expect(result.inventory.noticeComplete).toBe(false); expect(result.inventory.gaps).toEqual([{ code: 'NO_PRODUCTION_INPUTS' }]); });
+  it('requires real source bytes and package identity for attributed generated production helpers', async () => {
+    const root = await workspace(); const pkg = await pack(root, 'builder'); await writeFile(join(pkg.directory, 'LICENSE'), 'Builder notice'); const missing = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: '\0helper', generatedOwner: pkg.input }] }); expect(missing.inventory.gaps).toContainEqual(expect.objectContaining({ code: 'GENERATED_SOURCE_MISSING' })); const complete = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: '\0helper', contents: new TextEncoder().encode('runtime()'), generatedOwner: pkg.input, generatedLabel: 'runtime.js' }] }); expect(complete.inventory.components[0]!.modules[0]!.path).toBe('generated/runtime.js'); expect(complete.inventory.noticeComplete).toBe(true);
+  });
+  it('rejects a changed supplemental notice and a mismatching package fingerprint', async () => {
+    const root = await workspace(); const pkg = await pack(root); const notices = join(root, 'tooling/distribution/notices'); await mkdir(notices, { recursive: true }); await writeFile(join(notices, 'LICENSE'), 'original'); const gitHead = 'a'.repeat(40); const entry = { name: 'used-package', version: '1.0.0', gitHead, packageJsonSha256: sha(pkg.metadata), notices: [{ path: 'LICENSE', sha256: sha('original'), source: `https://raw.githubusercontent.com/test/project/${gitHead}/LICENSE` }] }; await writeFile(join(notices, 'provenance.json'), JSON.stringify({ packages: [entry] }));
+    const complete = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(complete.inventory.noticeComplete).toBe(true); await writeFile(join(notices, 'LICENSE'), 'changed'); const changed = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(changed.inventory.gaps).toContainEqual(expect.objectContaining({ code: 'SUPPLEMENT_NOTICE_INVALID' })); entry.packageJsonSha256 = 'b'.repeat(64); await writeFile(join(notices, 'provenance.json'), JSON.stringify({ packages: [entry] })); const mismatch = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] }); expect(mismatch.inventory.gaps).toContainEqual(expect.objectContaining({ code: 'SUPPLEMENT_PROVENANCE_MISMATCH' }));
+  });
+  it('includes the pinned js-tiktoken upstream original omitted by its published npm package', async () => {
+    const root = resolve('.'); const input = join(root, 'node_modules/.pnpm/js-tiktoken@1.0.21/node_modules/js-tiktoken/dist/lite.cjs'); const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: input }] }); expect(result.inventory.noticeComplete).toBe(true); const component = result.inventory.components[0]!; expect(component).toMatchObject({ name: 'js-tiktoken', version: '1.0.21', declaredLicense: 'MIT' }); const notice = component.notices[0]!; expect(notice.source).toContain('4c8b748e07992c00386f3180af5c574b27b65139'); expect(notice.sha256).toBe('418cb499b436128d653d79941333a5437b7be2ea9213dcc2f04d15d5d2c51d86'); expect(Buffer.from(result.assets.get(notice.outputPath)!)).toEqual(await readFile(join(root, 'tooling/distribution/notices/js-tiktoken-1.0.21/LICENSE')));
+  });
+  it('rechecks copied notice bytes and refuses forged completeness claims before final packaging', async () => {
+    const root = await workspace(); const pkg = await pack(root); await writeFile(join(pkg.directory, 'LICENSE'), 'original notice'); const result = await collectNoticeInventory({ workspaceRoot: root, scope: 'test', inputs: [{ id: pkg.input }] });
+    await expect(verifyNoticeInventory(result.inventory, async (path) => result.assets.get(path)!)).resolves.toEqual({ noticeComplete: true });
+    await expect(verifyNoticeInventory(result.inventory, async () => new TextEncoder().encode('changed'))).rejects.toThrow('NOTICE_ASSET_INTEGRITY');
+    result.inventory.components[0]!.notices = []; await expect(verifyNoticeInventory(result.inventory, async (path) => result.assets.get(path)!)).rejects.toThrow('NOTICE_COMPLETENESS_MISMATCH');
+  });
+});

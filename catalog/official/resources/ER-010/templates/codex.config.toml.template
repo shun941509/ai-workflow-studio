@@ -1,0 +1,6 @@
+# 수동 검토 후 프로젝트 .codex/config.toml에 병합하세요. 전역 설정 변경 금지.
+[mcp_servers.studio_learn]
+url = "https://learn.microsoft.com/api/mcp"
+enabled = false
+enabled_tools = ["microsoft_docs_search","microsoft_docs_fetch","microsoft_code_sample_search"]
+default_tools_approval_mode = "prompt"

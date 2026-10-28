@@ -1,0 +1,12 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "mentionCount": 3,
+  "entityIds": [
+    "blue",
+    "hanbit"
+  ],
+  "reject": [
+    "같은 별칭에 다른 ID",
+    "허용되지 않은 유형"
+  ]
+}

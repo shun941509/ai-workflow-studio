@@ -1,0 +1,28 @@
+{
+  "fictional": true,
+  "document": {
+    "id": "entity-document",
+    "revision": 1,
+    "text": "가상 한빛 연구소는 푸른 제품을 개발합니다. 한빛 연구소의 기록입니다."
+  },
+  "allowedTypes": [
+    "organization",
+    "product"
+  ],
+  "dictionary": [
+    {
+      "id": "hanbit",
+      "type": "organization",
+      "names": [
+        "한빛 연구소"
+      ]
+    },
+    {
+      "id": "blue",
+      "type": "product",
+      "names": [
+        "푸른 제품"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__studio_notion__*"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__studio_notion__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node resources/ER-002/scripts/claude-read-guard.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

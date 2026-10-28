@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "studio_github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/readonly"
+    }
+  }
+}

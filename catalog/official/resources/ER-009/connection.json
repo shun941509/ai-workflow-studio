@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "playwright",
+  "endpoint": null,
+  "transport": "stdio-unavailable",
+  "auth": "none-local-runtime",
+  "state": "planned",
+  "blockers": [
+    "OS 격리·파일 경계·DNS/IP/redirect/subresource까지 강제하는 외부 네트워크 제한이 미구현입니다.",
+    "고정 npm 버전의 전이 의존·브라우저 바이너리까지의 검증과 격리된 실제 화면 시험이 없습니다."
+  ],
+  "readTools": [
+    "browser_navigate",
+    "browser_snapshot",
+    "browser_take_screenshot"
+  ],
+  "compareFields": [
+    "url",
+    "title",
+    "screenshotSha256"
+  ],
+  "sourceHosts": [
+    "example.com"
+  ],
+  "sourceHost": "example.com",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified",
+  "packagePin": {
+    "name": "@playwright/mcp",
+    "version": "0.0.83",
+    "gitHead": "f183dad4a52965583e3cc1d59b88cdc279e2e57d",
+    "integrity": "sha512-oNcl+Ae2/IAjhfPeP46BfIkSakfmprY+aOtkv5MjrQ4lPav4/yNtPhL0iq8SlIM90oApWgBDUxaNKvktazUKOg==",
+    "license": "Apache-2.0",
+    "packageInstalled": false,
+    "dependencyTreeVerified": false,
+    "browserVerified": false
+  }
+}

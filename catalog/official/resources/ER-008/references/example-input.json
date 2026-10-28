@@ -1,0 +1,5 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "query": "Workers KV의 만료 설정과 최소 TTL은 무엇인가요?"
+}

@@ -1,21 +1,30 @@
 import { createHash, randomUUID } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 import { BASIC_CAPABILITIES, validateWorkflowShape, validateJsonValue, type Workflow, type WorkflowNode, type ValidationIssue, type FileRef } from '@studio/spec';
 import fileRefSchema from '../../../packages/spec/schemas/file-ref.schema.json' with { type: 'json' };
-import { analyzeWorkflow, collectRequirements, createResolvedPlan, resolveBindings, ContractError, validateTextExtraction, type NodeOutput } from '@studio/workflow-core';
+import { analyzeWorkflow, collectRequirements, createResolvedPlan, resolveBindings, ContractError, validateTextExtraction, validateAgenticRag, type NodeOutput } from '@studio/workflow-core';
 import { canonicalDigest, inspectPackage, verifyResources } from '@studio/package-kit';
 import { RunStore, scopedKey, type ModelProfile, type RunRecord, type WaitRecord, type ChildScopeRecord } from './state/store.js';
 import type { CredentialStore } from './security/credential-store.js';
 import { ModelError, type ModelProvider } from './providers/model-provider.js';
 import { OpenAIResponsesProvider } from './providers/openai.js';
 import { ModelBroker } from './providers/model-broker.js';
+import { EmbeddingBroker } from './providers/embedding-broker.js';
+import { OpenAIEmbeddingProvider, type EmbeddingProvider } from './providers/embedding-provider.js';
+import { EMBEDDING_CONTRACT, embeddingProfile } from './providers/embedding-contract.js';
+import { RunEmbeddingSession } from './rag/embedding-session.js';
+import { RunRerankSession } from './rag/rerank-session.js';
+import { rerankProfile, RERANK_CAPABILITIES, RERANK_CONTRACT } from './providers/rerank-contract.js';
+import { packageModelRequirements, type ModelRequirement } from './profiles/package-requirements.js';
 import { RunnerError, objectValue, publicError, stringValue } from './errors.js';
 import { executeInput } from './handlers/input.js';
 import { executeAI } from './handlers/ai.js';
 import { executeOutput } from './handlers/output.js';
 import { executeResource } from './handlers/resource.js';
 import { VerifiedMaterials } from './resources/verified-materials.js';
+import { workingContextAudit, workingContextAssets } from './context/working-context.js';
 import { validateGuardrail, executeGuardrail } from './handlers/guardrail.js';
 import { executePure, isRecoverableFailure, type RecoverableFailure } from './handlers/pure.js';
 import { DurableGraph } from './execution/durable-graph.js';
@@ -29,10 +38,16 @@ import { executeTaskAgent, proposePlan, validateTaskAgent, validateFixedTeam, va
 import { RunRagRuntime, type RunContextBuilder } from './rag/run-runtime.js';
 import { RUN_RAG_CAPABILITIES, validateRunRagNode } from './rag/run-contract.js';
 import { buildRunRagContext } from './rag/context-tokenizer.js';
+import { CANDIDATE_CAPABILITIES, CANDIDATE_VERIFIER, validateCandidateSearchNode, assertCandidateVerifierPin } from './execution/candidate-search.js';
+import { BUILTIN_TOOL_CAPABILITIES, validateBuiltinToolNode, builtinToolPins, assertBuiltinToolPlan, executeBuiltinTool } from './tools/builtin-registry.js';
+import { RunDisclosureGate, disclosureError, type DisclosureStatus } from './provenance/run-disclosure.js';
+import { AGENTIC_CAPABILITIES, AGENTIC_CONTRACT, assertAgenticProfile, assertAgenticPlan } from './agentic/contracts.js';
+import { executeAgenticRag } from './agentic/runtime.js';
 
 export interface StartRequest { packageHandle: string; requestId: string; inputs: unknown; modelBindings: Record<string, string> }
 type Imported = Awaited<ReturnType<typeof inspectPackage>>;
 interface MaterialSummary { alias: string; name: string; kind: string; revision: number; entrypoint: string; sha256: string; uses: string[] }
+interface PackageDetail { packageHandle: string; name: string; manifest: unknown; trust: string; warnings: string[]; inputs: unknown; modelProfiles: string[]; modelRequirements: ModelRequirement[]; materials: MaterialSummary[] }
 // Generic wait validation intentionally disallows all regex. ArtifactStore performs the full trusted FileRef validation.
 const fileSelectionSchema = { ...fileRefSchema, properties: Object.fromEntries(Object.entries(fileRefSchema.properties).map(([key, schema]) => [key, Object.fromEntries(Object.entries(schema).filter(([name]) => name !== 'pattern'))])) };
 
@@ -46,17 +61,32 @@ export class RunnerService {
   private readonly waitTimers = new Map<string, ReturnType<typeof setTimeout>>();
   private closing = false;
   private readonly broker: ModelBroker;
+  private readonly embeddingSession: RunEmbeddingSession;
+  private readonly rerankSession: RunRerankSession;
   private readonly artifacts: ArtifactStore;
   private rag?: RunRagRuntime;
+  private readonly disclosure: RunDisclosureGate;
 
-  constructor(readonly store: RunStore, readonly credentials: CredentialStore, private readonly dataDirectory: string, provider: ModelProvider = new OpenAIResponsesProvider(), private readonly ragContextBuilder: RunContextBuilder = buildRunRagContext) {
-    this.broker = new ModelBroker(store, credentials, provider);
+  constructor(readonly store: RunStore, readonly credentials: CredentialStore, private readonly dataDirectory: string, provider: ModelProvider = new OpenAIResponsesProvider(), private readonly ragContextBuilder: RunContextBuilder = buildRunRagContext, embeddingProvider: EmbeddingProvider = new OpenAIEmbeddingProvider()) {
+    this.disclosure = new RunDisclosureGate(store, runId => {
+      // Publication must never recreate a missing authority database and silently grant a fresh identity.
+      if (!existsSync(join(dataDirectory, 'rag', 'operations.sqlite')) || !existsSync(join(dataDirectory, 'rag', 'generations.sqlite'))) throw disclosureError('RAG_DISCLOSURE_UNAVAILABLE');
+      return this.ragRuntime().currentDisclosure(runId);
+    });
+    this.broker = new ModelBroker(store, credentials, provider, runId => this.disclosure.assert(runId));
+    this.embeddingSession = new RunEmbeddingSession(store, new EmbeddingBroker(store, credentials, embeddingProvider, runId => this.disclosure.assert(runId)));
+    this.rerankSession = new RunRerankSession(store, this.broker);
     this.artifacts = new ArtifactStore(join(dataDirectory, 'artifacts'));
     this.capabilities.push('node.document_extract@1', 'document_extract.text@1', 'document_extract.builtin_utf8@1');
+    this.capabilities.push('workflow.completion@1', 'workflow.work_definition@1', 'workflow.working_context@1');
+    this.capabilities.push(...CANDIDATE_CAPABILITIES);
+    this.capabilities.push(...BUILTIN_TOOL_CAPABILITIES);
     this.capabilities.push(...RUN_RAG_CAPABILITIES.filter(capability => !capability.includes('retrieval') || ragContextBuilder !== undefined));
+    // Only the verified keyword/abstain Agentic protocol is exposed; no clarification or tool expansion is implied.
+    if (ragContextBuilder !== undefined) this.capabilities.push(...RERANK_CAPABILITIES, ...AGENTIC_CAPABILITIES);
   }
 
-  async importPackage(bytes: Uint8Array): Promise<{ packageHandle: string; name: string; manifest: unknown; trust: string; warnings: string[]; inputs: unknown; modelProfiles: string[]; materials: MaterialSummary[] }> {
+  async importPackage(bytes: Uint8Array): Promise<PackageDetail> {
     const inspected = await inspectPackage(bytes);
     const handle = `pkg_${randomUUID()}`;
     const directory = join(this.dataDirectory, 'packages');
@@ -68,7 +98,7 @@ export class RunnerService {
       this.store.savePackage({ handle, filename, sha256: createHash('sha256').update(bytes).digest('hex'), name, createdAt: new Date().toISOString() });
     } catch (error) { await unlink(join(directory, filename)).catch(() => undefined); throw error; }
     this.packages.set(handle, inspected);
-    return { packageHandle: handle, name, manifest: inspected.manifest, trust: inspected.trust, warnings: inspected.warnings, inputs: inspected.workflow?.inputs ?? {}, modelProfiles: Object.keys(inspected.workflow?.modelProfiles ?? {}), materials: this.materialSummaries(inspected) };
+    return this.packageDetail(handle, inspected);
   }
 
   private async imported(handle: string): Promise<Imported> {
@@ -84,9 +114,14 @@ export class RunnerService {
     return inspected;
   }
 
-  async inspect(handle: string): Promise<unknown> {
-    const imported = await this.imported(handle);
-    return { packageHandle: handle, name: imported.workflow?.name ?? '자료 패키지', manifest: imported.manifest, trust: imported.trust, warnings: imported.warnings, inputs: imported.workflow?.inputs ?? {}, modelProfiles: Object.keys(imported.workflow?.modelProfiles ?? {}), materials: this.materialSummaries(imported) };
+  async inspect(handle: string): Promise<PackageDetail> {
+    return this.packageDetail(handle, await this.imported(handle));
+  }
+
+  /** Import and reopen expose the same requirements as readiness; unused declarations do not demand credentials. */
+  private packageDetail(handle: string, imported: Imported): PackageDetail {
+    const modelRequirements = packageModelRequirements(imported.workflow);
+    return { packageHandle: handle, name: imported.workflow?.name ?? '자료 패키지', manifest: imported.manifest, trust: imported.trust, warnings: imported.warnings, inputs: imported.workflow?.inputs ?? {}, modelProfiles: modelRequirements.map(requirement => requirement.alias), modelRequirements, materials: this.materialSummaries(imported) };
   }
 
   /** Inspection lists verified material identity and explicit consumers without executing or decoding payloads. */
@@ -125,8 +160,10 @@ export class RunnerService {
       if (node.type === 'guardrail') { try { validateGuardrail(node.config); } catch (error) { const detail = publicError(error); add(detail.code, detail.message, `/nodes/${node.id}/config`); } }
       if (node.type === 'knowledge' || node.type === 'retrieval') { try { validateRunRagNode(node); } catch (error) { const detail = publicError(error); add(detail.code, detail.message, `/nodes/${node.id}/config`); } }
       if (node.type === 'document_extract') { try { validateTextExtraction(node); } catch (error) { const detail = publicError(error); add(detail.code, detail.message, `/nodes/${node.id}/config`); } }
+      if (node.type === 'candidate_search') { try { validateCandidateSearchNode(node); } catch (error) { const detail = publicError(error); add(detail.code, detail.message, `/nodes/${node.id}/config`); } }
+      if (node.type === 'tool') { try { validateBuiltinToolNode(node); } catch (error) { const detail = publicError(error); add(detail.code, detail.message, `/nodes/${node.id}/config`); } }
       if (node.type === 'agent' || node.type === 'agent_team' || node.type === 'orchestrator') {
-        try { if (node.type === 'agent') validateTaskAgent(node); else if (node.type === 'agent_team') validateFixedTeam(node); else validatePlanOnly(node); }
+        try { if (node.type === 'agent') { if (node.config.strategy === 'agentic_rag') validateAgenticRag(node); else validateTaskAgent(node); } else if (node.type === 'agent_team') validateFixedTeam(node); else validatePlanOnly(node); }
         catch (error) { const detail = publicError(error); add(detail.code, detail.message, `/nodes/${node.id}/config`); }
       }
       if (node.type === 'file_output') {
@@ -146,12 +183,19 @@ export class RunnerService {
     }
     for (const alias of needed.modelProfiles) {
       const declaration = workflow.modelProfiles[alias];
-      if (!declaration || declaration.kind !== 'chat' || declaration.requiredFeatures.some((feature) => !['text', 'json', 'json_schema'].includes(feature))) {
+      if (!declaration || !['chat', 'embedding', 'reranker'].includes(declaration.kind) || declaration.requiredFeatures.some((feature) => !(declaration.kind === 'embedding' ? ['embedding'] : declaration.kind === 'reranker' ? ['rerank', 'json_schema'] : ['text', 'json', 'json_schema']).includes(feature))) {
         add('MODEL_CAPABILITY_MISSING', `${alias} 모델 요구 기능은 이 Runner에서 지원하지 않습니다.`, `/modelProfiles/${alias}`);
       }
       const profileId = modelBindings[alias];
       if (!profileId) { add('MODEL_PROFILE_REQUIRED', `${alias} 모델 연결을 선택하세요.`, `/modelProfiles/${alias}`); continue; }
-      try { const profile = this.store.getProfile(profileId); if (!await this.credentials.has(profile.credentialRef)) add('CREDENTIAL_REQUIRED', `${alias} 인증정보를 설정하세요.`); }
+      try {
+        const profile = this.store.getProfile(profileId);
+        if ([workflow, ...Object.values(workflow.subworkflows)].some(flow => flow?.nodes.some(node => node.type === 'agent' && node.config.strategy === 'agentic_rag' && node.config.modelProfile === alias))) assertAgenticProfile(profile);
+        if ((profile.kind ?? 'chat') !== declaration?.kind) add('MODEL_CAPABILITY_MISSING', `${alias} 모델 연결 종류가 선언과 다릅니다.`);
+        if (declaration?.kind === 'embedding') embeddingProfile(profile, alias);
+        if (declaration?.kind === 'reranker') rerankProfile(profile, alias);
+        if (!await this.credentials.has(profile.credentialRef)) add('CREDENTIAL_REQUIRED', `${alias} 인증정보를 설정하세요.`);
+      }
       catch { add('MODEL_PROFILE_REQUIRED', `${alias} 모델 연결을 찾을 수 없습니다.`); }
     }
     return { ready: !issues.some((issue) => issue.severity === 'error'), issues };
@@ -165,15 +209,28 @@ export class RunnerService {
     const input = objectValue(value);
     const name = stringValue(input.name, '연결 이름', 120);
     const model = stringValue(input.model, '모델 ID', 120);
+    const kind = input.kind ?? 'chat';
+    if (kind !== 'chat' && kind !== 'embedding' && kind !== 'reranker') throw new RunnerError('INVALID_MODEL_KIND', '모델 연결 종류가 올바르지 않습니다.');
+    if (kind === 'embedding' && Object.keys(input).some(key => !['name', 'kind', 'model', 'apiKey'].includes(key))) throw new RunnerError('EMBEDDING_PROFILE_UNSUPPORTED', '임베딩 차원·토크나이저·주소는 고정 계약으로만 제공합니다.');
+    if (kind === 'embedding' && model !== EMBEDDING_CONTRACT.model) throw new RunnerError('EMBEDDING_PROFILE_UNSUPPORTED', '임베딩은 text-embedding-3-small 고정 계약만 지원합니다.');
+    if (kind === 'reranker' && (model !== RERANK_CONTRACT.model || Object.keys(input).some(key => !['name', 'kind', 'model', 'apiKey'].includes(key)))) throw new RunnerError('RERANK_PROFILE_UNSUPPORTED', '재순위 연결은 고정 Responses 모델·계약만 지원합니다.');
     if (!/^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(model)) throw new RunnerError('INVALID_MODEL', '모델 ID 형식이 올바르지 않습니다.');
     const apiKey = stringValue(input.apiKey, 'API 키', 65536);
     if (!this.credentials.available) throw new RunnerError('SECURE_STORE_UNAVAILABLE', '이 환경에서는 보안 저장소를 사용할 수 없습니다.');
     const id = `model_${randomUUID()}`;
     const credentialRef = `credential_${randomUUID()}`;
     await this.credentials.set(credentialRef, apiKey);
-    try { this.store.saveProfile({ id, name, provider: 'openai', model, credentialRef }); }
+    try { this.store.saveProfile({ id, name, provider: 'openai', model, credentialRef, ...(kind !== 'chat' ? { kind } : {}) }); }
     catch (error) { await this.credentials.delete(credentialRef); throw error; }
-    return { id, name, provider: 'openai', model };
+    return { id, name, provider: 'openai', model, ...(kind !== 'chat' ? { kind } : {}) };
+  }
+
+  /** A missing lookup is a point-in-time observation, not proof that an in-flight start can never commit.
+   * Only UI-generated UUIDs are recoverable by this read-only endpoint; legacy start IDs remain valid for start deduplication. */
+  lookupRunRequest(requestId: string): { state: 'found'; runId: string } | { state: 'not_found' } {
+    if (!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(requestId)) throw new RunnerError('REQUEST_ID_INVALID', '실행 요청 ID가 올바르지 않습니다.');
+    const runId = this.store.findRequestRunId(requestId);
+    return runId ? { state: 'found', runId } : { state: 'not_found' };
   }
 
   /** Duplicate requests are checked before network readiness to preserve idempotency after credential changes. */
@@ -188,18 +245,28 @@ export class RunnerService {
     const workflow = (await this.imported(request.packageHandle)).workflow as Workflow;
     const materials = new VerifiedMaterials(workflow, (await this.imported(request.packageHandle)).files);
     if (!validateJsonValue(workflow.inputs, request.inputs).valid) throw new RunnerError('INPUT_INVALID', '입력이 프로젝트의 입력 형식과 일치하지 않습니다.');
+    // Preserve the original request hash for idempotency, but never pin or resume an unused supplied connection.
+    // Older clients may send every declaration; only the same required aliases checked by validate enter the plan.
+    const needed = collectRequirements(workflow);
+    const modelBindings = Object.fromEntries(needed.modelProfiles.map(alias => [alias, request.modelBindings[alias]!]));
+    const executionRequest = { ...request, modelBindings };
     const modelProfiles: Record<string, unknown> = Object.create(null) as Record<string, unknown>;
-    for (const [alias, id] of Object.entries(request.modelBindings)) {
+    for (const [alias, id] of Object.entries(modelBindings)) {
       const profile = this.store.getProfile(id);
-      modelProfiles[alias] = { id: profile.id, provider: profile.provider, model: profile.model };
+      modelProfiles[alias] = profile.kind === 'reranker' ? rerankProfile(profile, alias) : { id: profile.id, provider: profile.provider, model: profile.model, ...(profile.kind === 'embedding' ? { kind: profile.kind, embedding: embeddingProfile(profile, alias) } : {}) };
     }
     const record = this.store.getPackage(request.packageHandle);
-    const resolved = await createResolvedPlan(workflow, { packageHash: record.sha256 }, { modelProfiles });
-    const plan = { resolved, workflow, modelProfiles };
+    const candidateVerifiers = needed.capabilities.includes('node.candidate_search@1') ? { [CANDIDATE_VERIFIER.id]: CANDIDATE_VERIFIER } : undefined;
+    const builtinTools = builtinToolPins(workflow);
+    const hasEmbedding = Object.values(modelProfiles).some(value => objectValue(value).kind === 'embedding');
+    const hasReranker = Object.values(modelProfiles).some(value => objectValue(value).kind === 'reranker');
+    const hasAgentic = needed.capabilities.includes('agent.agentic_rag@1');
+    const resolved = await createResolvedPlan(workflow, { packageHash: record.sha256, ...(candidateVerifiers ? { candidateVerifiers } : {}), ...(Object.keys(builtinTools).length ? { builtinTools } : {}), ...(hasEmbedding ? { embeddingContract: EMBEDDING_CONTRACT } : {}), ...(hasReranker ? { rerankerContract: RERANK_CONTRACT } : {}), ...(hasAgentic ? { agenticContract: AGENTIC_CONTRACT } : {}) }, { modelProfiles });
+    const plan = { resolved, workflow, modelProfiles, ...(workflow.workDefinition?.harness.workingContext ? { workingContextAssets: workingContextAssets(workflow, materials) } : {}) };
     const planHash = canonicalDigest(plan);
     const limits = objectValue(objectValue(workflow.policy).limits);
-    const run = this.store.createRun({ requestId: request.requestId, requestHash, packageHandle: request.packageHandle, planHash, plan, inputs: request.inputs, modelBindings: request.modelBindings, nodeIds: workflow.nodes.map((node) => node.id), edges: workflow.edges, maxModelCalls: Number(limits.maxModelCalls), maxTotalTokens: Number(limits.maxTotalTokens) });
-    if (run.status === 'created') this.launch(run.id, workflow, request, materials);
+    const run = this.store.createRun({ requestId: request.requestId, requestHash, packageHandle: request.packageHandle, planHash, plan, inputs: request.inputs, modelBindings, nodeIds: workflow.nodes.map((node) => node.id), edges: workflow.edges, maxModelCalls: Number(limits.maxModelCalls), maxTotalTokens: Number(limits.maxTotalTokens) });
+    if (run.status === 'created') this.launch(run.id, workflow, executionRequest, materials);
     return { runId: run.id, status: run.status };
   }
 
@@ -210,19 +277,44 @@ export class RunnerService {
     this.tasks.set(runId, task);
   }
 
-  status(runId: string): RunRecord & { nodes: { nodeId: string; status: string }[]; edges: ReturnType<RunStore['graphState']>['edges']; waits: WaitRecord[]; childScopes: Omit<ChildScopeRecord, 'input' | 'result'>[]; childScopeCount: number; files: ReturnType<RunStore['listArtifacts']> } {
+  /** One gate follows the root run through child scopes, copied strings, memory and artifacts. */
+  private ragRuntime(): RunRagRuntime {
+    return this.rag ??= new RunRagRuntime(join(this.dataDirectory, 'rag'), (id, reference) => {
+      const resolved = this.artifacts.resolve(id, reference); return this.readArtifact(id, resolved.id);
+    }, this.ragContextBuilder, this.embeddingSession, this.rerankSession, {
+      assert: runId => this.disclosure.assert(runId),
+      pin: (runId, snapshot) => this.disclosure.pin(runId, snapshot),
+      block: (runId, code) => this.store.blockDisclosure(runId, code),
+      unobserved: runId => this.store.getDisclosureState(runId).state === 'unobserved',
+      inventory: runId => this.store.listArtifacts(runId).map(record => record.reference),
+    });
+  }
+
+  private disclosedRun(run: RunRecord): RunRecord & { disclosure: DisclosureStatus } {
+    const disclosure = this.disclosure.status(run.id);
+    return disclosure.allowed ? { ...run, disclosure } : { ...run, result: null, outcome: null, error: { code: disclosure.code, message: disclosure.message }, disclosure };
+  }
+  listRuns() { return this.store.listRuns().map(run => this.disclosedRun(run)); }
+
+  status(runId: string): RunRecord & { disclosure: DisclosureStatus; nodes: { nodeId: string; status: string }[]; edges: ReturnType<RunStore['graphState']>['edges']; waits: WaitRecord[]; childScopes: Omit<ChildScopeRecord, 'input' | 'result'>[]; childScopeCount: number; files: ReturnType<RunStore['listArtifacts']>; workingContexts: ReturnType<RunStore['workingContexts']['list']>['records']; workingContextCount: number } {
+    const run = this.disclosedRun(this.store.getRun(runId));
+    if (!run.disclosure.allowed) return { ...run, nodes: [], edges: [], waits: [], childScopes: [], childScopeCount: 0, files: [], workingContexts: [], workingContextCount: 0 };
     const graph = this.store.graphState(runId);
     const children = this.store.childScopeSummary(runId);
-    return { ...this.store.getRun(runId), nodes: graph.nodes.map(({ nodeId, status }) => ({ nodeId, status })), edges: graph.edges, waits: this.store.listWaits(runId).filter((wait) => ['pending', 'responded'].includes(wait.state)), childScopes: children.scopes, childScopeCount: children.total, files: this.store.listArtifacts(runId) };
+    const contexts = this.store.workingContexts.list(runId);
+    return { ...run, nodes: graph.nodes.map(({ nodeId, status }) => ({ nodeId, status })), edges: graph.edges, waits: this.store.listWaits(runId).filter((wait) => ['pending', 'responded'].includes(wait.state)), childScopes: children.scopes, childScopeCount: children.total, files: this.store.listArtifacts(runId), workingContexts: contexts.records, workingContextCount: contexts.total };
   }
-  events(runId: string, after = 0) { return this.store.listEvents(runId, after); }
-  results(runId: string): { runId: string; status: string; result: unknown; usage: RunRecord['usage']; files: ReturnType<RunStore['listArtifacts']> } {
+  events(runId: string, after = 0) { this.disclosure.assert(runId); return this.store.listEvents(runId, after); }
+  results(runId: string): { runId: string; status: string; result: unknown; outcome: RunRecord['outcome']; usage: RunRecord['usage']; files: ReturnType<RunStore['listArtifacts']>; workingContexts: ReturnType<RunStore['workingContexts']['list']>['records']; workingContextCount: number } {
+    this.disclosure.assert(runId);
     const run = this.store.getRun(runId);
-    return { runId, status: run.status, result: run.result, usage: run.usage, files: this.store.listArtifacts(runId) };
+    const contexts = this.store.workingContexts.list(runId);
+    return { runId, status: run.status, result: run.result, outcome: run.outcome, usage: run.usage, files: this.store.listArtifacts(runId), workingContexts: contexts.records, workingContextCount: contexts.total };
   }
 
   /** A download resolves a registered current-run identity, never a relativePath supplied by a client. */
   readArtifact(runId: string, fileId: string) {
+    this.disclosure.assert(runId);
     this.store.getRun(runId); const registered = this.store.getArtifact(runId, fileId);
     this.artifacts.resolve(runId, registered.reference); return this.artifacts.read(runId, fileId);
   }
@@ -237,6 +329,7 @@ export class RunnerService {
   }
 
   fileUploadLimit(runId: string, waitId: string): number {
+    this.disclosure.assert(runId);
     this.store.expireWait(waitId); const node = this.fileWaitNode(runId, waitId); const wait = this.store.getWait(waitId);
     if (wait.state !== 'pending' || this.store.getRun(runId).status !== 'waiting') throw new RunnerError('WAIT_NOT_PENDING', '파일 선택 대기가 종료되었습니다.', 409);
     return Math.min(node.config.maxBytesPerFile, this.artifacts.limits.maxBytesPerFile);
@@ -257,11 +350,12 @@ export class RunnerService {
     const run = this.store.requestCancel(runId);
     if (run.cancelRequested) this.active.get(runId)?.abort();
     for (const wait of this.store.listWaits(runId)) { clearTimeout(this.waitTimers.get(wait.id)); this.waitTimers.delete(wait.id); }
-    return run;
+    return this.disclosedRun(run);
   }
 
   /** Only the authenticated local browser response route calls this method; MCP has no answering tool. */
   respondWait(runId: string, waitId: string, value: unknown): { waitId: string; state: string; runId: string } {
+    this.disclosure.assert(runId);
     const input = objectValue(value);
     if (Object.keys(input).some((key) => !['requestId', 'response', 'decision'].includes(key)) || !Object.hasOwn(input, 'response')) throw new RunnerError('INVALID_WAIT_RESPONSE', '응답 ID·응답 본문·검토 결정만 전달할 수 있습니다.');
     const requestId = stringValue(input.requestId, '응답 ID', 128);
@@ -304,11 +398,18 @@ export class RunnerService {
       const saved = this.store.getExecution(run.id); const plan = objectValue(saved.plan);
       if (canonicalDigest(plan) !== saved.planHash || wait.planHash !== saved.planHash) throw new RunnerError('PLAN_CHANGED', '고정한 실행 계획과 대기 정보가 다릅니다.');
       const checked = validateWorkflowShape(plan.workflow); if (!checked.valid) throw new RunnerError('PLAN_CHANGED', '저장된 실행 계획을 검사하지 못했습니다.');
+      if (collectRequirements(checked.value).capabilities.includes('node.candidate_search@1')) assertCandidateVerifierPin(plan);
+      assertBuiltinToolPlan(checked.value, plan);
+      this.embeddingSession.assertPlan(plan);
+      this.rerankSession.assertPlan(plan);
+      assertAgenticPlan(plan);
+      this.disclosure.assert(run.id);
       const imported = await this.imported(run.packageHandle);
       if (canonicalDigest(imported.workflow) !== canonicalDigest(checked.value)) throw new RunnerError('PLAN_CHANGED', '저장된 계획과 운영 패키지가 다릅니다.');
       const materials = new VerifiedMaterials(checked.value, imported.files);
       if (this.closing || this.store.getRun(run.id).status !== 'waiting') return;
       const current = this.store.getWait(wait.id); if (current.state !== 'responded') return;
+      this.disclosure.assert(run.id);
       const node = checked.value.nodes.find((node) => node.id === wait.nodeId);
       if (!node || (node.type !== 'form' && node.type !== 'review' && node.type !== 'file_input')) throw new RunnerError('WAIT_NODE_INVALID', '대기 중인 블록을 찾을 수 없습니다.');
       const output: NodeOutput = node.type === 'file_input' ? executeManagedFileInput(node, { files: current.response }, { store: this.artifacts, runId: run.id }) : { data: current.kind === 'review' ? { decision: current.decision, feedback: current.response } : current.response };
@@ -355,6 +456,7 @@ export class RunnerService {
       this.store.beginActiveSegment(runId); checkpoint = performance.now(); segmentActive = true;
       while ((current = graph.next())) {
         const node = current;
+        this.disclosure.assert(runId);
         if (controller.signal.aborted || this.store.getRun(runId).cancelRequested) {
           if (controller.signal.reason instanceof RunnerError) throw controller.signal.reason;
           throw new RunnerError('RUN_CANCELLED', '실행이 취소되었습니다.');
@@ -383,7 +485,7 @@ export class RunnerService {
           }
         } catch (error) {
           const detail = error instanceof ModelError ? { code: error.code, message: error.message } : publicError(error);
-          const unknown = error instanceof ModelError && error.outcome === 'unknown' || detail.code === 'RAG_RECONCILIATION_REQUIRED';
+          const unknown = error instanceof ModelError && error.outcome === 'unknown' || ['RAG_RECONCILIATION_REQUIRED', 'AGENTIC_RECONCILIATION_REQUIRED'].includes(detail.code);
           // Only confirmed data failures may use error edges; protected stops cannot be recovered by graph wiring.
           if (node.execution.onError !== 'route' || !isRecoverableFailure(detail.code) || unknown || controller.signal.aborted || this.store.getRun(runId).cancelRequested) throw error;
           const target = workflow.edges.find((edge) => edge.from.nodeId === node.id && edge.from.port === 'error')!.to.nodeId;
@@ -395,9 +497,9 @@ export class RunnerService {
       throw new RunnerError('CONTROL_STALLED', '활성 경로가 최종 결과에 도달하지 못했습니다.');
     } catch (error) {
       const detail = error instanceof ModelError ? { code: error.code, message: error.message } : publicError(error);
-      const unknown = error instanceof ModelError && error.outcome === 'unknown' || detail.code === 'RAG_RECONCILIATION_REQUIRED';
+      const unknown = error instanceof ModelError && error.outcome === 'unknown' || ['RAG_RECONCILIATION_REQUIRED', 'AGENTIC_RECONCILIATION_REQUIRED'].includes(detail.code);
       const cancelled = !unknown && this.store.getRun(runId).cancelRequested;
-      const blocked = ['BUDGET_EXCEEDED', 'GUARDRAIL_BLOCKED', 'UPSTREAM_BLOCKED', 'TRANSFORM_LIMIT', 'EXPRESSION_LIMIT', 'LOOP_LIMIT', 'CHILD_RESULT_LIMIT', 'FLOW_RECURSION', 'FLOW_DEPTH_EXCEEDED', 'MEMORY_QUOTA_EXCEEDED', 'PLAN_SIZE_LIMIT', 'RAG_BUDGET_EXCEEDED', 'RAG_INPUT_LIMIT', 'RAG_STORE_QUOTA', 'RAG_GENERATION_LIMIT', 'CONTEXT_BUDGET_EXCEEDED', 'CONTEXT_TEXT_LIMIT'].includes(detail.code);
+      const blocked = detail.code.startsWith('RAG_DISCLOSURE_') || ['BUDGET_EXCEEDED', 'GUARDRAIL_BLOCKED', 'UPSTREAM_BLOCKED', 'TRANSFORM_LIMIT', 'EXPRESSION_LIMIT', 'LOOP_LIMIT', 'CHILD_RESULT_LIMIT', 'FLOW_RECURSION', 'FLOW_DEPTH_EXCEEDED', 'MEMORY_QUOTA_EXCEEDED', 'PLAN_SIZE_LIMIT', 'RAG_BUDGET_EXCEEDED', 'RAG_INPUT_LIMIT', 'RAG_STORE_QUOTA', 'RAG_GENERATION_LIMIT', 'CONTEXT_BUDGET_EXCEEDED', 'CONTEXT_TEXT_LIMIT', 'CANDIDATE_LIMIT'].includes(detail.code);
       if (current) this.store.transitionNode(runId, current.id, unknown ? 'reconciling' : cancelled ? 'cancelled' : blocked ? 'blocked' : 'failed');
       this.store.stopPendingNodes(runId, cancelled ? 'cancelled' : 'blocked');
       this.store.transitionRun(runId, unknown ? 'attention_required' : cancelled ? 'cancelled' : blocked ? 'blocked' : 'failed', { error: detail });
@@ -415,8 +517,10 @@ export class RunnerService {
       const timeout = AbortSignal.timeout(node.execution.timeoutMs); const signal = AbortSignal.any([parentSignal, timeout]);
       let retry = false;
       try {
+        this.disclosure.assert(runId);
         this.store.transitionNode(runId, storedId, composite ? 'waiting_children' : 'running');
         let output: NodeOutput; let port = 'next';
+        if (node.type === 'candidate_search') assertCandidateVerifierPin(this.store.getExecution(runId).plan);
         if (composite) output = await children.execute(node, inputs, scope, signal);
         else if (node.type === 'input') output = executeInput(request.inputs);
         else if (node.type === 'form' && node.config.mode === 'initial') output = executeInput(request.inputs);
@@ -443,21 +547,39 @@ export class RunnerService {
           this.readArtifact(runId, stringValue(objectValue(inputs.file).id, '파일 ID', 100));
           output = executeTextExtraction(node, inputs, { store: this.artifacts, runId });
         }
+        else if (node.type === 'tool') {
+          output = executeBuiltinTool(node.config.tool, inputs.arguments, this.store.getExecution(runId).plan, {
+            runId, store: this.artifacts, signal,
+            authorizeFile: value => { const file = this.artifacts.resolve(runId, value); return this.readArtifact(runId, file.id).reference; },
+            checkpoint: () => {
+              if (this.store.getRun(runId).cancelRequested) throw new RunnerError('RUN_CANCELLED', '실행이 취소되었습니다.');
+              if (performance.now() >= expiresAt || performance.now() - started > node.execution.timeoutMs) throw new RunnerError('BUDGET_EXCEEDED', '도구 실행의 시간 한도를 초과했습니다.');
+            },
+          });
+        }
         else if (node.type === 'knowledge' || node.type === 'retrieval') {
           // FileRef resolution checks both the immutable artifact bytes and this run's durable registration.
-          this.rag ??= new RunRagRuntime(join(this.dataDirectory, 'rag'), (id, reference) => {
-            const resolved = this.artifacts.resolve(id, reference); return this.readArtifact(id, resolved.id);
-          }, this.ragContextBuilder);
-          output = await this.rag.execute(runId, storedId, node, inputs, { signal, checkpoint: () => {
+          output = await this.ragRuntime().execute(runId, storedId, node, inputs, { signal, checkpoint: () => {
             if (signal.aborted) throw interruption(signal);
             if (this.store.getRun(runId).cancelRequested) throw new RunnerError('RUN_CANCELLED', '실행이 취소되었습니다.');
             if (performance.now() >= expiresAt || performance.now() - started > node.execution.timeoutMs) throw new RunnerError('BUDGET_EXCEEDED', '지식·검색 작업의 실행 시간 한도를 초과했습니다.');
           } });
         }
         else if (node.type === 'guardrail') output = executeGuardrail(inputs.value, node.config);
+        else if (node.type === 'agent' && node.config.strategy === 'agentic_rag') output = await executeAgenticRag({ runId, nodeId: storedId, node, inputs, store: this.store, rag: this.ragRuntime(), execution: { signal, checkpoint: () => {
+          this.disclosure.assert(runId); if (signal.aborted) throw interruption(signal);
+          if (this.store.getRun(runId).cancelRequested) throw new RunnerError('RUN_CANCELLED', '실행이 취소되었습니다.');
+          if (performance.now() >= expiresAt || performance.now() - started > node.execution.timeoutMs) throw new RunnerError('BUDGET_EXCEEDED', 'Agentic RAG 실행 시간 한도를 초과했습니다.');
+        } }, invoke: async request => {
+          const saved = this.store.getExecution(runId); const plan = objectValue(saved.plan); if (canonicalDigest(plan) !== saved.planHash) throw new RunnerError('PLAN_CHANGED', '고정 실행 계획이 변경되었습니다.'); assertAgenticPlan(plan);
+          const pinned = objectValue(objectValue(plan.modelProfiles)[node.config.modelProfile]); const profile = this.store.getProfile(String(pinned.id)); assertAgenticProfile(profile);
+          if (canonicalDigest(pinned) !== canonicalDigest({ id: profile.id, provider: profile.provider, model: profile.model })) throw new RunnerError('AGENTIC_PLAN_CHANGED', '고정 모델 연결이 변경되었습니다.');
+          return this.broker.invoke(runId, storedId, profile, request, signal);
+        } });
         else if (node.type === 'agent') output = await executeTaskAgent(node, inputs, async (alias, modelRequest) => {
           const profileId = request.modelBindings[alias]; if (!profileId) throw new RunnerError('MODEL_PROFILE_REQUIRED', '모델 연결이 필요합니다.');
-          return this.broker.invoke(runId, storedId, this.store.getProfile(profileId), modelRequest, signal);
+          const saved = this.store.getExecution(runId); if (canonicalDigest(saved.plan) !== saved.planHash) throw new RunnerError('PLAN_CHANGED', '고정 실행 계획이 변경되었습니다.');
+          return this.broker.invoke(runId, storedId, this.store.getProfile(profileId), modelRequest, signal, undefined, workingContextAudit({ workflow, node, inputs, materials, runId, attemptId, planHash: saved.planHash, scopeId: scope.id }));
         }, materials.additions(node));
         else if (node.type === 'orchestrator') {
           const tasks = await proposePlan(node, inputs, workflow, async (alias, modelRequest) => {
@@ -470,7 +592,8 @@ export class RunnerService {
         else if (node.type === 'ai') output = await executeAI(inputs, objectValue(node.config), async (alias, modelRequest) => {
           const profileId = request.modelBindings[alias];
           if (!profileId) throw new RunnerError('MODEL_PROFILE_REQUIRED', '모델 연결이 필요합니다.');
-          return this.broker.invoke(runId, storedId, this.store.getProfile(profileId), modelRequest, signal);
+          const saved = this.store.getExecution(runId); if (canonicalDigest(saved.plan) !== saved.planHash) throw new RunnerError('PLAN_CHANGED', '고정 실행 계획이 변경되었습니다.');
+          return this.broker.invoke(runId, storedId, this.store.getProfile(profileId), modelRequest, signal, undefined, workingContextAudit({ workflow, node, inputs, materials, runId, attemptId, planHash: saved.planHash, scopeId: scope.id }));
         }, materials.additions(node));
         else if (node.type === 'classify' || node.type === 'evaluate' && node.config.mode === 'model') ({ output, port } = await executeModelDecision(node, inputs, async (alias, modelRequest) => {
           const profileId = request.modelBindings[alias];
@@ -478,6 +601,7 @@ export class RunnerService {
           return this.broker.invoke(runId, storedId, this.store.getProfile(profileId), modelRequest, signal);
         }));
         else ({ output, port } = executePure(node, inputs, failure));
+        this.disclosure.assert(runId);
         if (signal.aborted) throw interruption(signal);
         // Monotonic elapsed checks also cover synchronous work that cannot yield to the timeout timer.
         if (performance.now() >= expiresAt || performance.now() - started > node.execution.timeoutMs) throw new RunnerError('BUDGET_EXCEEDED', '실행 시간 한도를 초과하여 후속 작업을 차단했습니다.');

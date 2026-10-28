@@ -1,0 +1,9 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "organization": "fictional-hanbit",
+  "project": "sample-web",
+  "issueId": "SAMPLE-12",
+  "from": "2026-10-01T00:00:00Z",
+  "until": "2026-11-01T00:00:00Z"
+}

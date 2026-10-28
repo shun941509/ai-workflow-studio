@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "avatar-meeting-procedure",
+  "revision": 1,
+  "name": "회의 후속 정리 Skill",
+  "kind": "skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "MIT",
+    "path": "LICENSE.txt"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 2024,
+      "sha256": "b177d7b9838a619f7c1d5b07bed28006b9a7f498014ca0880897ef2326b8ab4c"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "6f79eb552f556c309c68f36b499807184b0545de51634276c4e9cdcdb552273e"
+    }
+  ]
+}

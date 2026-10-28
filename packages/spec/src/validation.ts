@@ -18,7 +18,7 @@ export type ValidationResult<T> = { valid: true; value: T; issues: ValidationIss
 
 /** Only trusted bundled schemas should be compiled directly; untrusted schemas use validateJsonValue. */
 export function createSchemaValidator(): Ajv2020 {
-  const ajv = new Ajv2020({ strict: true, allErrors: true, coerceTypes: false, useDefaults: false, removeAdditional: false, validateFormats: true });
+  const ajv = new Ajv2020({ strict: true, allErrors: true, coerceTypes: false, useDefaults: false, removeAdditional: false, validateFormats: true, ownProperties: true });
   addFormats(ajv);
   return ajv;
 }
@@ -31,6 +31,7 @@ const validateNode = ajv.compile({
   $defs: schemaBundle.$defs,
 });
 const userAjv = createSchemaValidator();
+installJsonEquality(userAjv);
 const userValidators = new Map<string, ValidateFunction>();
 const configValidators = new Map<string, ValidateFunction>();
 
@@ -56,6 +57,51 @@ function issue(code: string, message: string, instancePath = ''): ValidationIssu
 
 function fromAjv(errors: ErrorObject[] | null | undefined): ValidationIssue[] {
   return (errors ?? []).slice(0, 24).map(error => issue('SCHEMA_INVALID', `${error.instancePath || '/'} ${error.message ?? 'does not satisfy the contract'}`, error.instancePath));
+}
+
+/** Own a JSON-only schema without invoking inherited toJSON/valueOf/toString hooks or retaining caller mutations. */
+function ownJsonSchema(value: unknown): unknown {
+  if (value === null || typeof value !== 'object') return value;
+  if (Array.isArray(value)) {
+    const result: unknown[] = [];
+    for (let index = 0; index < value.length; index++) result.push(ownJsonSchema(Object.getOwnPropertyDescriptor(value, String(index))!.value));
+    return result;
+  }
+  const result: Record<string, unknown> = {};
+  for (const key of Object.keys(value)) Object.defineProperty(result, key, { value: ownJsonSchema(Object.getOwnPropertyDescriptor(value, key)!.value), enumerable: true, configurable: true, writable: true });
+  return result;
+}
+
+/** JSON equality ignores JS prototypes and object order, preserves array order/types, and treats -0 as zero. */
+function jsonMeaningKey(value: unknown): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) {
+    const entries: string[] = [];
+    for (let index = 0; index < value.length; index++) entries.push(jsonMeaningKey(Object.getOwnPropertyDescriptor(value, String(index))!.value));
+    return `[${entries.join(',')}]`;
+  }
+  return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${jsonMeaningKey(Object.getOwnPropertyDescriptor(value, key)!.value)}`).join(',')}}`;
+}
+
+/** AJV's JS deep comparator checks constructor and calls valueOf/toString. User JSON must never use those semantics. */
+function installJsonEquality(validator: Ajv2020): void {
+  validator.removeKeyword('const').addKeyword({ keyword: 'const', errors: false, compile(schema: unknown) {
+    const key = jsonMeaningKey(schema); return (value: unknown) => jsonMeaningKey(value) === key;
+  } });
+  validator.removeKeyword('enum').addKeyword({ keyword: 'enum', schemaType: 'array', errors: false, compile(schema: unknown[]) {
+    if (schema.length === 0) throw new Error('enum must have a non-empty array');
+    const keys = new Set(schema.map(jsonMeaningKey)); return (value: unknown) => keys.has(jsonMeaningKey(value));
+  } });
+  // uniqueItems uses the same JSON semantics, including schemas reached through a local reference.
+  // Canonical keys avoid the previous quadratic pairwise object comparisons for uniqueItems.
+  validator.removeKeyword('uniqueItems').addKeyword({ keyword: 'uniqueItems', type: 'array', schemaType: 'boolean', errors: false, compile(enabled: boolean) {
+    return (value: unknown[]) => {
+      if (!enabled) return true;
+      const keys = new Set<string>();
+      for (let index = 0; index < value.length; index++) { const key = jsonMeaningKey(Object.getOwnPropertyDescriptor(value, String(index))!.value); if (keys.has(key)) return false; keys.add(key); }
+      return true;
+    };
+  } });
 }
 
 /** Bound schema compilation and forbid regex execution until a cancellable isolated validator exists. */
@@ -110,6 +156,9 @@ function assertSupportedSchema(schema: unknown): void {
 }
 
 function getUserValidator(schema: unknown): ValidateFunction {
+  // Validate descriptors/prototypes before cloning; JSON.stringify alone could execute user-controlled inherited hooks.
+  assertJsonData(schema);
+  schema = ownJsonSchema(schema);
   assertSupportedSchema(schema);
   const key = JSON.stringify(schema);
   let validator = userValidators.get(key);
@@ -149,6 +198,10 @@ function embeddedSchemaIssues(workflow: Workflow): ValidationIssue[] {
     });
   };
   flow(workflow, '');
+  // Business criteria use the same bounded user-schema language as node results, never remote schema references.
+  workflow.completion?.criteria.forEach((criterion, index) => {
+    if (criterion.kind === 'result_schema') check(criterion.schema, `/completion/criteria/${index}/schema`);
+  });
   for (const [alias, definition] of Object.entries(workflow.subworkflows)) if (definition) flow(definition, `/subworkflows/${alias}`);
   return issues;
 }

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-009",
+  "revision": 1,
+  "kind": "mcp",
+  "name": "Playwright 연결",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "service"
+  ],
+  "files": [
+    {
+      "path": "scripts/connection-plan.mjs",
+      "bytes": 8370,
+      "sha256": "b8baf94e29a92b83013d6e3ffa364b4ab8b83c8a7376c6c4fa401193d33d1af8"
+    },
+    {
+      "path": "connection.json",
+      "bytes": 1157,
+      "sha256": "5230731c7e45ffd80b576383e56f056ccea377a54ae4d245a14b87a2650f2b5e"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 136,
+      "sha256": "6b50f7437a54e6311b7ee3584dc79564005de98b752751be7e0b454e337240e4"
+    },
+    {
+      "path": "references/tool-contract.json",
+      "bytes": 646,
+      "sha256": "133228cf12f6d95b114b58e1d2ed8003a89a06051ee8f95ee4b799b941bb980e"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 509,
+      "sha256": "181a9fd496fa2616877a96a8b5ea83b0d769726f303bd3e110cdaba0fbf0b791"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "templates/codex.connection-blocked.json",
+      "bytes": 443,
+      "sha256": "591aa0f5c8c87a04730eff37c65e92b6fb8d2b43c8958b69d0cf274373f29407"
+    },
+    {
+      "path": "templates/claude-code.connection-blocked.json",
+      "bytes": 449,
+      "sha256": "aa1b7e70ed5227171e14286ab318e83112158efa544bd8ad89dfb761b2003994"
+    },
+    {
+      "path": "templates/opencode.connection-blocked.json",
+      "bytes": 446,
+      "sha256": "5f38d4759e5a4710b5b5415ca5f50f1685757d6f3440ddcd18fce5e13868f951"
+    },
+    {
+      "path": "instructions.md",
+      "bytes": 4212,
+      "sha256": "64912686a17ef7d92c22963d609a459a0f7aec7034b0870e2062b3c4953f1267"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1328,
+      "sha256": "eb49bd8cdee7be977482bca9ac268604a2a6d3a53c95d1460a4f9b43c7911aa1"
+    },
+    {
+      "path": "assets/observation-report.md",
+      "bytes": 575,
+      "sha256": "69ecfc397c10b4a2a4b80f21c40f3b9e3b74280743a09a3383bf92b5a95e46e7"
+    }
+  ]
+}

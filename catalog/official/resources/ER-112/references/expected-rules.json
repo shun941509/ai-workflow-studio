@@ -1,0 +1,8 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "action": "retrieve",
+  "remainingRounds": 2,
+  "remainingTokens": 320,
+  "duplicateNextQuery": "clarify",
+  "exhaustedBudget": "hold"
+}

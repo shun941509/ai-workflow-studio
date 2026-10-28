@@ -1,0 +1,10 @@
+{
+  "fictional": true,
+  "document": {
+    "id": "hanbit-policy",
+    "revision": 1,
+    "text": "﻿한빛 가상 기관의 반품 규정입니다.\r\n접수 번호 API-204와 😀 표시는 보존합니다.\r\n"
+  },
+  "maxCharacters": 16,
+  "overlap": 0
+}

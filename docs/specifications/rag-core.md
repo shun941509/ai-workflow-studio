@@ -1,6 +1,6 @@
 # RAG 순수 기반 계약
 
-`@studio/rag-core`는 P3-10A/10B/13A의 데이터·권한·예산 기반과 제한된 로컬 BM25/exact vector 검색 계산을 제공한다. 파일·DB·네트워크·모델 SDK에 접근하지 않는다. 실제 embedding/reranker 모델, 영속 검색 서비스, GraphRAG 생성/검색, Runner 연결은 아직 없다. 새 Runner capability는 없다. TypeScript 내부 계약이며 canonical Workflow/Node JSON Schema를 복제하거나 변경하지 않는다.
+`@studio/rag-core`는 P3-10A/10B/13A의 데이터·권한·예산 기반과 제한된 로컬 BM25/exact vector 검색 계산을 제공한다. 이 순수 패키지는 파일·DB·네트워크·모델 SDK에 접근하지 않는다. 후속 Runner 계층이 영속 저장·고정 OpenAI 임베딩 어댑터·키워드/벡터/RRF 혼합 검색을 연결한다. 실제 유료 API와 검색 품질은 미검증이다. TypeScript 내부 계약이며 canonical Workflow/Node JSON Schema를 복제하거나 변경하지 않는다.
 
 ## 패키지와 공개 진입점
 
@@ -123,4 +123,6 @@ clarification 대기/재개는 같은 session과 누적 사용량을 보존한�
 
 `tests/contracts/rag-core.test.ts`는 실제 bytes/hash, mutation, chunk 범위, embedding 설정/벡터 mismatch, 세대 활성화 충돌, 저장 artifact 변조, tenant/project ACL, tombstone/revision, 철회 후 인용, provenance 위조, 혼합권한 요약, rank normalization/RRF, rerank ID injection, token 한도, 예산 예약/미확인/clarification을 검사한다. 테스트의 가상 provider·artifact bytes는 내부 검증 자료이며 공식 검색 예제로 게시하지 않는다.
 
-미구현: 실제 parsing/OCR, BM25/vector store, embedding/reranker API, index DB·원자적 활성화·ACL 저장소, 삭제 무효화 전파/캐시 구현, GraphRAG 구축·local/global 검색, Agentic query planner·모델 루프, 검색 품질 평가, Runner/UI/ZIP 연결. 이 패키지의 시험 통과를 해당 기능이나 240개 예제 완료로 세지 않는다.
+후속 구현으로 bounded BM25·exact vector 계산, SQLite 세대/원자적 활성화·현재 ACL 저장소, 실행별 키워드/벡터/혼합 build/open/search, 실제 `o200k_base` 문맥 계수를 연결했다. 임베딩과 선택적 재순위는 고정 OpenAI 어댑터·DPAPI·공유 예산에 연결했으나 테스트는 공급자 경계 대역을 사용했고 실제 API 호출은 하지 않았다. 편집기는 키워드·벡터·혼합 설정과 임베딩 연결을 제공한다. 상세 운영 범위는 [진행 상태](../implementation/status.md), [저장소](rag-store.md), [토큰 계산](rag-tokenizer.md), [임베딩 계약](rag-embeddings.md), [재순위 계약](rag-reranker.md), [편집기 계약](rag-authoring-ui.md)을 함께 확인한다.
+
+후속 일반 AI의 문자열 전달은 [실행 전체의 공개 권한 기준](run-disclosure.md)으로 보수적으로 보호한다. 필드별 근거 추적은 아니며 관련 없는 값도 같은 실행이면 권한 변경 때 차단한다. 미구현: UTF-8 원문 외 parsing/OCR, 필드별 provenance, 물리 삭제·보존 정책과 무효화 전파, Agentic 실행, GraphRAG 구축·local/global 검색, Agentic query planner·모델 루프, 실제 분야별 검색 품질 검증. 내부 한국어24문항 진단은 [키워드 품질 기록](keyword-quality.md)에 있으며 자연어·형태소 검색의 한계를 확인했다. 이 패키지의 시험 통과를 해당 기능이나 240개 예제 완료로 세지 않는다.

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-026",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "초보 사용자 관점",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2272,
+      "sha256": "f57ca08802729718cb3d68bcae259b4b5cd6844c39f27fbd9e2b6fd52d33693c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1439,
+      "sha256": "a02d7b8fcb715e8c27af6a3bda2a98904c5460a3a7e32a99327bfe6dbb09e931"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 736,
+      "sha256": "8b5309741c4ca4dc82b9a0d3583c470b9231982300db53010ea3ff3dd38a0ac5"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1123,
+      "sha256": "a3648ac6e3f34ed9d44bca04f4eef4b4a394dbcdf73dfe4b6efbf5bdb13ba268"
+    }
+  ]
+}

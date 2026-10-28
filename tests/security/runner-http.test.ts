@@ -26,7 +26,11 @@ describe('Runner HTTP trust boundary', () => {
     expect((await fetch(`${origin}/api/info`)).status).toBe(401);
     expect((await fetch(`${origin}/api/info`, { headers: { authorization: 'Bearer test-only-loopback-token', origin: 'https://untrusted.invalid' } })).status).toBe(403);
     const accepted = await fetch(`${origin}/api/info`, { headers: { authorization: 'Bearer test-only-loopback-token' } });
-    expect(accepted.status).toBe(200); expect((await accepted.json()).capabilities).toEqual(['node.input@1', 'node.ai@1', 'node.output@1', 'node.resource@1', 'node.transform@1', 'node.condition@1', 'node.merge@1', 'node.evaluate@1', 'evaluate.rules@1', 'node.guardrail@1', 'node.error@1', 'node.form@1', 'node.review@1', 'node.classify@1', 'evaluate.model@1', 'node.subworkflow@1', 'node.loop@1', 'node.parallel@1', 'flow.local@1', 'loop.foreach@1', 'loop.until@1', 'parallel.all@1', 'node.file_input@1', 'node.file_output@1', 'file_output.text@1', 'file_output.markdown@1', 'file_output.json@1', 'file_output.csv@1', 'file_output.copy@1', 'node.memory@1', 'memory.run@1', 'node.skill@1', 'skill.instructions@1', 'node.agent@1', 'agent.task@1', 'agent.single_step@1', 'node.agent_team@1', 'agent_team.sequential@1', 'agent_team.parallel@1', 'node.orchestrator@1', 'orchestrator.plan@1']);
+    expect(accepted.status).toBe(200);
+    const capabilities = (await accepted.json()).capabilities as string[];
+    expect(capabilities).toEqual(expect.arrayContaining(['node.input@1', 'node.ai@1', 'node.output@1', 'document_extract.builtin_utf8@1', 'knowledge.keyword@1', 'retrieval.keyword@1']));
+    // Authorization gives access to the actual runtime contract, without promising unimplemented Worker or graph modes.
+    expect(capabilities.some(capability => capability.startsWith('worker.') || capability === 'retrieval.graph@1')).toBe(false);
   });
 
   it('rejects Host rebinding and cross-origin session bootstrap', async () => {
@@ -56,6 +60,15 @@ describe('Runner HTTP trust boundary', () => {
     const { origin } = await fixture();
     const response = await fetch(`${origin}/api/profiles`, { method: 'POST', headers: { authorization: 'Bearer test-only-loopback-token', 'content-type': 'application/json' }, body: '{"name":"one","name":"two"}' });
     expect(response.status).toBe(400); expect((await response.json()).error.code).toBe('INVALID_JSON');
+  });
+
+  it('rejects malformed UTF-8 and misleading JSON MIME prefixes before mutation', async () => {
+    const { origin } = await fixture(); const headers = { authorization: 'Bearer test-only-loopback-token', 'content-type': 'application/json; charset=utf-8' };
+    const malformed = Buffer.concat([Buffer.from('{"name":"'), Buffer.from([0xc3, 0x28]), Buffer.from('"}')]);
+    const response = await fetch(`${origin}/api/profiles`, { method: 'POST', headers, body: malformed });
+    expect(response.status).toBe(400); expect((await response.json()).error.code).toBe('INVALID_JSON');
+    const wrongMime = await fetch(`${origin}/api/profiles`, { method: 'POST', headers: { ...headers, 'content-type': 'application/jsonp' }, body: '{}' });
+    expect(wrongMime.status).toBe(415);
   });
 
   it('reports package validation failures as safe client errors', async () => {

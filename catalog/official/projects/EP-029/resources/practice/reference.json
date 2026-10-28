@@ -1,0 +1,31 @@
+{
+  "fictional": true,
+  "sourceLanguage": "ko",
+  "targetLanguage": "en",
+  "terms": [
+    {
+      "id": "T1",
+      "source": "초안",
+      "target": "draft",
+      "meaning": "검토 전 문서이며 승인 완료가 아님"
+    },
+    {
+      "id": "T2",
+      "source": "검토",
+      "target": "review",
+      "meaning": "내용 확인 과정이며 approval로 바꾸지 않음"
+    },
+    {
+      "id": "T3",
+      "source": "결과 불명",
+      "target": "unknown outcome",
+      "meaning": "처리 여부 확인 전이며 실패 또는 취소 확정이 아님"
+    },
+    {
+      "id": "T4",
+      "source": "재시도",
+      "target": "retry",
+      "meaning": "새 시도이며 결과 불명에서 자동 허용되지 않음"
+    }
+  ]
+}

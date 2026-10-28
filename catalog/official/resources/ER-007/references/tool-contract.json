@@ -1,0 +1,23 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "get_sentry_resource",
+    "search_issues",
+    "search_events"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "허용 조직·프로젝트 slug와 사건 ID",
+    "조사 기간과 기준 시간대",
+    "오류 읽기 권한·필요한 검색 기능 사용 조건"
+  ],
+  "comparisonFields": [
+    "project",
+    "issueId",
+    "count",
+    "firstSeen",
+    "lastSeen"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

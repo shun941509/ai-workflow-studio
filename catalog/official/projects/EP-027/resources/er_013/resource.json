@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-013",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "근거 우선 답변",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2416,
+      "sha256": "3e910f48bbe23114df88d4d5b22eb7448141906968e54540a21e742f15331ee8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1438,
+      "sha256": "50e21f172d62adfbf4625de05ce4bd0a184e05476ef64ceb54a70f9307d5eb2e"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 666,
+      "sha256": "02fd92b5f9741128578b8b56ff3dcf4e96c0195b19cc3dfa2516256e42efab67"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1132,
+      "sha256": "4e1d3cb03098bdbde5064c175115d365d6ad5263611b3ecb1a2572cb7834a64d"
+    }
+  ]
+}

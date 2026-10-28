@@ -12,7 +12,7 @@ test('review queue/detail clearly require configured authenticated services', as
 test('review decisions reject foreign Origin, pass flags and malformed bodies before any RPC', async ({ request, baseURL }) => {
   const path = `/api/admin/reviews/${id}`;
   for (const origin of [undefined, 'https://unrelated.invalid']) expect((await request.post(path, { data: decision, headers: origin ? { Origin: origin } : {} })).status()).toBe(403);
-  for (const body of [{ ...decision, passed: true }, { ...decision, role: 'administrator' }, { ...decision, decision: 'published' }, { ...decision, artifactSha256: 'invalid' }]) expect((await request.post(path, { data: body, headers: { Origin: baseURL! } })).status()).toBe(400);
+  for (const body of [{ ...decision, passed: true }, { ...decision, role: 'administrator' }, { ...decision, decision: 'published' }, { ...decision, artifactSha256: 'invalid' }, { ...decision, reason: '확인' }]) expect((await request.post(path, { data: body, headers: { Origin: baseURL! } })).status()).toBe(400);
   expect((await request.post(path, { data: { ...decision, reason: 'x'.repeat(21000) }, headers: { Origin: baseURL! } })).status()).toBe(413);
   const response = await request.post(path, { data: decision, headers: { Origin: baseURL! } }); expect(response.status()).toBe(503); expect((await response.json()).saved).toBeUndefined();
 });

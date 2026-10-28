@@ -46,9 +46,16 @@ describe('bounded single-step agent', () => {
     const work = agent(); work.config.resultSchema = { type: 'number' }; const item = await setup(project(work), { async countInputTokens() { return 1; }, async generate() { return { text: kind === 'malformed' ? '{' : kind === 'schema' ? JSON.stringify({ resultJson: JSON.stringify('wrong') }) : '{"resultJson":"1","effects":[{"approved":true}]}', usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 } }; } }); const result = await run(item); expect(result).toMatchObject({ status: 'failed', error: { code: 'MODEL_OUTPUT_INVALID' } }); expect(item.calls).toHaveLength(1);
   });
 
-  it.each(['multi-step', 'tools', 'indexes', 'agentic-rag'] as const)('rejects unsupported %s configuration in readiness', async (kind) => {
-    const work = agent(); if (kind === 'multi-step') work.config.maxSteps = 2; if (kind === 'tools') work.config.toolAllowlist = [{ kind: 'builtin', id: 'knowledge.search', version: 1 }]; if (kind === 'indexes') work.inputBindings.indexes = literal([]); if (kind === 'agentic-rag') { work.config.strategy = 'agentic_rag'; work.config.retrievalPolicy = { maxRounds: 1, maxQueriesPerRound: 1, maxRetrievedChunks: 1, maxContextTokens: 100, onInsufficient: 'abstain' }; }
+  it.each(['multi-step', 'tools', 'indexes'] as const)('rejects unsupported task-agent %s configuration in readiness', async (kind) => {
+    const work = agent(); if (kind === 'multi-step') work.config.maxSteps = 2; if (kind === 'tools') work.config.toolAllowlist = [{ kind: 'builtin', id: 'knowledge.search', version: 1 }]; if (kind === 'indexes') work.inputBindings.indexes = literal([]);
     const item = await setup(project(work)); expect((await item.service.validate(item.request.packageHandle, item.request.modelBindings)).issues.map((issue) => issue.code)).toContain('AGENT_MODE_UNSUPPORTED'); expect(item.calls).toHaveLength(0);
+  });
+
+  it('rejects an incomplete Agentic configuration instead of executing it as a single-step task', async () => {
+    // Agentic is supported separately; retaining task's one-step limit must still fail before model work.
+    const work = agent(); work.config.strategy = 'agentic_rag'; work.config.retrievalPolicy = { maxRounds: 1, maxQueriesPerRound: 1, maxRetrievedChunks: 1, maxContextTokens: 100, onInsufficient: 'abstain' };
+    const item = await setup(project(work)); const result = await item.service.validate(item.request.packageHandle, item.request.modelBindings);
+    expect(result.issues.map(issue => issue.code)).toContain('AGENTIC_LIMIT_UNSUPPORTED'); expect(item.calls).toHaveLength(0);
   });
 
   it('consumes explicitly attached instruction material while still providing no tool interface', async () => {

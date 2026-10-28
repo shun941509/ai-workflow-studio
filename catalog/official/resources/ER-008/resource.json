@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-008",
+  "revision": 1,
+  "kind": "mcp",
+  "name": "Cloudflare 문서 연결",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "service"
+  ],
+  "files": [
+    {
+      "path": "scripts/connection-plan.mjs",
+      "bytes": 8370,
+      "sha256": "b8baf94e29a92b83013d6e3ffa364b4ab8b83c8a7376c6c4fa401193d33d1af8"
+    },
+    {
+      "path": "connection.json",
+      "bytes": 494,
+      "sha256": "8b9016701e91fc87a23abece4ba3790e190f04e4b8e302bb7549b72aa6661acf"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 126,
+      "sha256": "31de6c049381056480fecd97b10402f0123ca5027c516c815e9af60a2a369753"
+    },
+    {
+      "path": "references/tool-contract.json",
+      "bytes": 579,
+      "sha256": "c50ac99e1be11bf29da52d70ba164ffefb21356908e2e07df09d74b39f0f896d"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 505,
+      "sha256": "44aeb1590bbaa52936ce39d009a574c24e9035382ecf6926f72dbdc150b12f83"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "templates/codex.config.toml.template",
+      "bytes": 284,
+      "sha256": "5e35f85c9fc1972addc840a8100ab44e1559ce8cb10fd322258bba317c7feda0"
+    },
+    {
+      "path": "templates/claude.mcp.json.template",
+      "bytes": 132,
+      "sha256": "b4308258373d36b31669411e6bde354ab123406bc11ac51e2ce33388dc9ab3da"
+    },
+    {
+      "path": "templates/claude.settings.json.template",
+      "bytes": 350,
+      "sha256": "df60d271b2b44aef090cb99f720fe4ec37c2fbac4ee78fd38d9e1627e2466d62"
+    },
+    {
+      "path": "templates/opencode.json.template",
+      "bytes": 342,
+      "sha256": "078a0dc3521075df7aeedc0a4b36df9f2731a4e1459f5d66517e35ca24f49700"
+    },
+    {
+      "path": "scripts/claude-read-guard.mjs",
+      "bytes": 987,
+      "sha256": "ba7775ab428758e322862483568b505457f274ea4d4ae3a5794c93b387e0cba7"
+    },
+    {
+      "path": "scripts/public-docs.mjs",
+      "bytes": 7633,
+      "sha256": "a437bace34a667f6db0ac98ffda9f1f9fe729cb6f11f6198f1044eb1221b2225"
+    },
+    {
+      "path": "references/public-read-input.json",
+      "bytes": 170,
+      "sha256": "e985f8a6257ffe2021faa5c2d495f706b36c2437dfeaf8f596ad1ca806ea6078"
+    },
+    {
+      "path": "instructions.md",
+      "bytes": 4285,
+      "sha256": "3b61cdbded8297a93e9bd6530a002a6f14c9a8b08dff26bad6f58576402704ae"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1080,
+      "sha256": "2525646df494c1aee421f1d198ea02e09a6332a8b527abe642e89f02df17eced"
+    },
+    {
+      "path": "assets/observation-report.md",
+      "bytes": 547,
+      "sha256": "75e0d1c16e59e14f6a304c480a91b2bff7101d5ec1d46d22998e1f237ff5f5b5"
+    }
+  ]
+}

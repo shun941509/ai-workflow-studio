@@ -1,0 +1,11 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "selectedSourceIds": [
+    "policy"
+  ],
+  "initialResults": null,
+  "reject": [
+    "private 응답 주입",
+    "선택한 응답 누락"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "avatar-meeting-template",
+  "revision": 1,
+  "name": "회의 후속 결과 규약",
+  "kind": "document",
+  "entrypoint": "output-template.md",
+  "license": {
+    "id": "MIT",
+    "path": "LICENSE.txt"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "output-template.md",
+      "bytes": 1972,
+      "sha256": "f4bde8763abcc4ae0fdb27626cc087e9de4c4292c1149c268448a732e2c99169"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "6f79eb552f556c309c68f36b499807184b0545de51634276c4e9cdcdb552273e"
+    }
+  ]
+}

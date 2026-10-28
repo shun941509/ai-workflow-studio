@@ -1,0 +1,13 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "requirementIds": [
+    "deadline",
+    "cost"
+  ],
+  "subquestionCount": 2,
+  "reject": [
+    "요구 누락",
+    "가짜 원문 구간",
+    "미래 의존"
+  ]
+}

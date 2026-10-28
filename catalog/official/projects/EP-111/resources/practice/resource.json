@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "EP-111-practice",
+  "revision": 1,
+  "kind": "document",
+  "name": "EP-111 가상 실습 자료",
+  "entrypoint": "guide.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "sample-input.json",
+      "bytes": 164,
+      "sha256": "afa99fbe58b5d2a537867cfdb6f70ce9200992c26fa7299ded9576b831bc1fb3"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 778,
+      "sha256": "0da4cce0ec225b57ea52228fa925a311d0718c4f1e2ba3b9e29039a7be66d0ab"
+    },
+    {
+      "path": "guide.md",
+      "bytes": 996,
+      "sha256": "1f6a3f8b90ec0b2292e291024afd086456a8f41fc343e7e36b7849d7d596c9ce"
+    },
+    {
+      "path": "corpus/PART-QX-120A.md",
+      "bytes": 1114,
+      "sha256": "aea7be4d1cf5ba8cd75a1a71aa9149ddb0a0bb096998f76db6579bd1c455c366"
+    },
+    {
+      "path": "corpus/PART-QX-120B.md",
+      "bytes": 967,
+      "sha256": "703c29467cfc983f040b7edac0284bfcb6aa3fa4f492373b8e0056411cd798c5"
+    },
+    {
+      "path": "corpus/PART-QX-102A.md",
+      "bytes": 864,
+      "sha256": "670de8bc5f58de4ff949a101446976a8fb2821d5a37f2b691e8c8080c8d43848"
+    },
+    {
+      "path": "corpus/PART-QX-210A.md",
+      "bytes": 761,
+      "sha256": "cb5fcf410ea06fada693a8f557cee688e270b127e0ac85020bfe428810d12838"
+    }
+  ]
+}

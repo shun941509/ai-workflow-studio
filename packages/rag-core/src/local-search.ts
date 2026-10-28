@@ -9,7 +9,7 @@ export const LOCAL_SEARCH_FORMAT = 'studio-bm25-exact-v1';
 const ARTIFACT_ID = 'local-search';
 const TOKENIZER = 'nfkc-lower-unicode-words-v1';
 const MAX_COMPONENTS = 32768;
-interface SearchRow { chunkId: string; documentId: string; length: number; terms: [string, number][]; vector?: number[] }
+interface SearchRow { chunkId: string; documentId: string; length: number; terms: [string, number][]; vector?: number[]; sourceChunkSha256?: string }
 interface LocalArtifact { format: typeof LOCAL_SEARCH_FORMAT; tokenizer: typeof TOKENIZER; k1: 1.2; b: 0.75; rows: SearchRow[] }
 export interface ChunkEmbedding { chunkId: string; vector: number[] }
 export interface LocalSearchBundle { corpus: CorpusGeneration; index: IndexGeneration; artifacts: IndexArtifactBytes[] }
@@ -48,7 +48,7 @@ export async function buildLocalSearchIndex(input: {
       embeddings.set(item.chunkId, await validateEmbeddingVector(item.vector, owned.embeddingProfile!));
     }
   }
-  const artifact: LocalArtifact = { format: LOCAL_SEARCH_FORMAT, tokenizer: TOKENIZER, k1: 1.2, b: 0.75, rows: owned.corpus.chunks.map(chunk => ({ ...rowOf(chunk), ...(needsVectors ? { vector: [...embeddings.get(chunk.ref.chunkId)!] } : {}) })) };
+  const artifact: LocalArtifact = { format: LOCAL_SEARCH_FORMAT, tokenizer: TOKENIZER, k1: 1.2, b: 0.75, rows: owned.corpus.chunks.map(chunk => ({ ...rowOf(chunk), ...(needsVectors ? { vector: [...embeddings.get(chunk.ref.chunkId)!], sourceChunkSha256: chunk.ref.sha256 } : {}) })) };
   const encoded = canonicalize(artifact);
   // The same strict parser used for loading is a build-time complexity/byte limit, not just a reader check.
   parseStrictJson(encoded);
@@ -74,11 +74,13 @@ export async function openLocalSearchProvider(bundle: LocalSearchBundle, embedde
   const needsVectors = index.kind !== 'keyword';
   requireCondition(needsVectors ? index.embedding && index.embedding.profile.dimensions * artifact.rows.length <= MAX_COMPONENTS : !index.embedding, 'LOCAL_VECTOR_LIMIT', 'Incompatible local embedding inventory');
   for (const [offset, row] of artifact.rows.entries()) {
-    object(row, ['chunkId', 'documentId', 'length', 'terms', 'vector']);
-    const { vector, ...keyword } = row;
+    object(row, ['chunkId', 'documentId', 'length', 'terms', 'vector', 'sourceChunkSha256']);
+    const { vector, sourceChunkSha256, ...keyword } = row;
     requireCondition(equal(keyword, rowOf(corpus.chunks[offset]!)), 'LOCAL_TERM_PROVENANCE', 'Local terms do not match the sealed original chunk text');
-    if (needsVectors) await validateEmbeddingVector(vector!, index.embedding!.profile);
-    else requireCondition(vector === undefined, 'LOCAL_VECTOR_INVENTORY', 'Keyword-only index contains undeclared vectors');
+    if (needsVectors) {
+      requireCondition(sourceChunkSha256 === corpus.chunks[offset]!.ref.sha256, 'LOCAL_VECTOR_PROVENANCE', 'Vector source hash differs from the sealed chunk');
+      await validateEmbeddingVector(vector!, index.embedding!.profile);
+    } else requireCondition(vector === undefined && sourceChunkSha256 === undefined, 'LOCAL_VECTOR_INVENTORY', 'Keyword-only index contains undeclared vectors');
   }
   const rows = immutable(artifact.rows); const documentIds = new Set(corpus.documents.map(item => item.documentId));
   return {

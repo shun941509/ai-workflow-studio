@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "learn",
+  "endpoint": "https://learn.microsoft.com/api/mcp",
+  "transport": "streamable-http",
+  "auth": "none",
+  "state": "implemented",
+  "blockers": [],
+  "readTools": [
+    "microsoft_docs_search",
+    "microsoft_docs_fetch",
+    "microsoft_code_sample_search"
+  ],
+  "compareFields": [
+    "url",
+    "quote",
+    "language"
+  ],
+  "sourceHosts": [
+    "learn.microsoft.com"
+  ],
+  "sourceHost": "learn.microsoft.com",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

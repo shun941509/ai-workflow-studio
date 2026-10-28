@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-105",
+  "revision": 1,
+  "kind": "skill",
+  "name": "임베딩 배치 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "embedding"
+  ],
+  "files": [
+    {
+      "path": "scripts/embed_batch.py",
+      "bytes": 4917,
+      "sha256": "b2424f7288577e9fca2ef302dec431c770e2e5f8f8120652571e0cbd02eb5ecd"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "scripts/provider_http.py",
+      "bytes": 2596,
+      "sha256": "61b500fa429c9b045736037cedb3749d0ce3b209cf20ec36e8c3be8cddae41ac"
+    },
+    {
+      "path": "references/provider-contract.md",
+      "bytes": 1259,
+      "sha256": "4124b681bee0f3c7ffce05d6c6b140144d4c38fc3fd00fefdbfc1bb9e09f9534"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 346,
+      "sha256": "e99926de47a97546d06485599e795fcec115927669863635917ae252bb2243e7"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 323,
+      "sha256": "970c6ed800737310d46cacf33095d4705b601f8d68d4d44dc76f5d3fdd8eaef0"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3664,
+      "sha256": "8a0c49777b839daae58af19fe3a89fdcfff6176fade71cf5cb735cec25ac00d5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 994,
+      "sha256": "e46db209aed4dd568a65245e83e1395d2c6a76122ac39422c004927f67c82e15"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 767,
+      "sha256": "c6d81e9a42abce6780cc669cb55140c44bf1dbd4d7eab90788e9e584d683201e"
+    }
+  ]
+}

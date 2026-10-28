@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "cloudflare",
+  "endpoint": "https://docs.mcp.cloudflare.com/mcp",
+  "transport": "streamable-http",
+  "auth": "none",
+  "state": "implemented",
+  "blockers": [],
+  "readTools": [
+    "search_cloudflare_documentation"
+  ],
+  "compareFields": [
+    "url",
+    "quote"
+  ],
+  "sourceHosts": [
+    "developers.cloudflare.com"
+  ],
+  "sourceHost": "developers.cloudflare.com",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

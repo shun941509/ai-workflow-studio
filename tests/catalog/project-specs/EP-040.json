@@ -1,0 +1,30 @@
+{
+  "$comment": "Internal acceptance plan only; not a successful run, model answer or signed verification receipt. Keep outside operational ZIPs.",
+  "projectId": "EP-040",
+  "sourceContract": {
+    "purpose": "분류표에 따라 태그 부여",
+    "blocksAndConnections": "`loop·classify·review`",
+    "inputOutput": "목록·태그 → 분류 목록",
+    "acceptanceCriteria": "허용 태그만 사용, 미분류 보존"
+  },
+  "artifactSha256": "cb39fb164e703f08171924fda0f9a9ab69bd524e190097105bad4a113bb3d882",
+  "practiceInput": "catalog/official/projects/EP-040/sample-input.json",
+  "pureChecks": [
+    "Original workflow schema and approved core blocks",
+    "Immutable original resources and all three host ZIPs",
+    "Missing real model fails preflight",
+    "Actual input/resource/extraction or bounded loop prefix executes without a model"
+  ],
+  "actualModelAcceptance": [
+    "I1·I2·I3·I4가 입력 순서대로 각각 정확히 한 결과에 대응해야 합니다.",
+    "로그인 문의는 access, 내보내기는 export, 편집 문의는 editing의 정의와 대조해야 합니다.",
+    "점심 메뉴 질문은 분류 범위 밖이므로 unclassified로 남겨야 합니다.",
+    "허용 라벨 외 결과는 스키마에서 거절하고 사람 거절 결정은 그대로 보존해야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

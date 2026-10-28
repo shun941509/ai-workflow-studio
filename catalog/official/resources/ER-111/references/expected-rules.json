@@ -1,0 +1,7 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "initialAction": "assess",
+  "initialSufficient": null,
+  "missingWithBudget": "search_more",
+  "conflict": "hold"
+}

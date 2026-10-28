@@ -5,7 +5,7 @@ export { validateRunRagNode } from '@studio/workflow-core';
 
 export type RunRagNode = Extract<WorkflowNode, { type: 'knowledge' | 'retrieval' }>;
 export const RUN_KEYWORD_PROFILE = 'local-run-keyword-v1';
-export const RUN_RAG_CAPABILITIES = ['node.knowledge@1', 'knowledge.build@1', 'knowledge.open@1', 'knowledge.keyword@1', 'rag.run_local@1', 'node.retrieval@1', 'retrieval.keyword@1'] as const;
+export const RUN_RAG_CAPABILITIES = ['node.knowledge@1', 'knowledge.build@1', 'knowledge.open@1', 'knowledge.keyword@1', 'knowledge.vector@1', 'knowledge.hybrid@1', 'embedding.openai_small_256@1', 'rag.run_local@1', 'node.retrieval@1', 'retrieval.keyword@1', 'retrieval.vector@1', 'retrieval.hybrid@1'] as const;
 export const RUN_RAG_LIMITS = Object.freeze({ files: 32, fileBytes: MAX_TEXT_DOCUMENT_BYTES, buildBytes: 8 * 1024 * 1024, runBytes: 16 * 1024 * 1024, runChunks: 2000, buildChunks: 1000, builds: 4, operations: 100 });
 
 /** The original decoded UTF-8 text is preserved: markdown/JSON are text, not executable code or an OCR/parser claim. */

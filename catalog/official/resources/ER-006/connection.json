@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "supabase",
+  "endpoint": "https://mcp.supabase.com/mcp",
+  "transport": "streamable-http",
+  "auth": "host-oauth-project-scope",
+  "state": "implemented",
+  "blockers": [],
+  "readTools": [
+    "list_tables",
+    "execute_sql"
+  ],
+  "compareFields": [
+    "projectRef",
+    "table",
+    "rowCount",
+    "dataSha256"
+  ],
+  "sourceHosts": [
+    "supabase.com"
+  ],
+  "sourceHost": "supabase.com",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

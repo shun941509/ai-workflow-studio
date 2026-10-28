@@ -1,0 +1,22 @@
+{
+  "$comment": "Expected roles/names must be reconciled with tools/list from the actual authenticated session; annotations are not authorization.",
+  "readTools": [
+    "list_issues",
+    "get_issue",
+    "list_teams"
+  ],
+  "defaultUnknownTool": "deny",
+  "scopeInputs": [
+    "허용 팀 ID",
+    "UTC from 포함·until 미포함 기간",
+    "담당·기한·상태를 조회할 실제 권한"
+  ],
+  "comparisonFields": [
+    "teamId",
+    "assigneeId",
+    "dueDate",
+    "stateId"
+  ],
+  "mutationExecution": "unimplemented",
+  "sourceAuthentication": "provider/host responsibility"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "studio_linear": {
+      "type": "remote",
+      "url": "https://mcp.linear.app/mcp/readonly",
+      "enabled": false
+    }
+  },
+  "permission": {
+    "studio_linear_*": "deny",
+    "studio_linear_list_issues": "ask",
+    "studio_linear_get_issue": "ask",
+    "studio_linear_list_teams": "ask"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Optional author-supplied terms for a newly created text revision. Absence keeps the legacy private-use notice. This declaration is not reviewed redistribution or private-copy evidence.",
+  "title": "TextResourceLicense",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "copyrightHolder", "copyrightYear", "confirmedAuthority"],
+  "properties": {
+    "id": { "const": "MIT", "description": "The original MIT permission and disclaimer text is included with the resource." },
+    "copyrightHolder": { "type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[^\\u0000-\\u001f\\u007f]+$" },
+    "copyrightYear": { "type": "integer", "minimum": 1900, "maximum": 9999 },
+    "confirmedAuthority": { "const": true, "description": "The author explicitly declares authority to offer these terms; publication still requires separate review and signed rights evidence." }
+  }
+}

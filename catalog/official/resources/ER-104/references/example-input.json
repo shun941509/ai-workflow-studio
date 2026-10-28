@@ -1,0 +1,23 @@
+{
+  "fictional": true,
+  "documents": [
+    {
+      "id": "manual-a",
+      "text": "API-204 반품 접수 지침. API-204 처리 기한은 7일입니다."
+    },
+    {
+      "id": "manual-b",
+      "text": "API-205 교환 접수는 다른 지침입니다."
+    },
+    {
+      "id": "private",
+      "text": "API-204 비공개 내부 지침입니다."
+    }
+  ],
+  "allowedDocumentIds": [
+    "manual-a",
+    "manual-b"
+  ],
+  "query": "API-204",
+  "topK": 5
+}

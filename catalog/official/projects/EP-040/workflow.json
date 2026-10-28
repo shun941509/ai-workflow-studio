@@ -1,0 +1,867 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "official_EP_040",
+  "revision": 1,
+  "name": "항목 일괄 태깅",
+  "entryNodeId": "request",
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "goal": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "id",
+            "text"
+          ],
+          "additionalProperties": false
+        },
+        "minItems": 1,
+        "maxItems": 8
+      }
+    },
+    "required": [
+      "goal",
+      "items"
+    ],
+    "additionalProperties": false
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "taxonomy": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "access"
+              },
+              "description": {
+                "const": "로그인·계정 접근·권한 확인 문의. 실제 권한 변경은 하지 않음."
+              }
+            },
+            "required": [
+              "id",
+              "description"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "export"
+              },
+              "description": {
+                "const": "자료 내보내기·다운로드 파일 문의. 실제 다운로드 성공 여부는 판단하지 않음."
+              }
+            },
+            "required": [
+              "id",
+              "description"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "const": "editing"
+              },
+              "description": {
+                "const": "초안·문서 내용 수정 방법 문의. 실제 내용을 수정하지 않음."
+              }
+            },
+            "required": [
+              "id",
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        ],
+        "items": false,
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "tagging": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                "classification": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "enum": [
+                        "access",
+                        "export",
+                        "editing",
+                        "unclassified"
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "maxLength": 4000
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "item",
+                "classification"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 8
+          },
+          "iterations": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          },
+          "reason": {
+            "const": "completed"
+          }
+        },
+        "required": [
+          "results",
+          "iterations",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "review": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "enum": [
+              "accepted",
+              "rejected"
+            ]
+          },
+          "feedback": {
+            "type": "object",
+            "properties": {
+              "coverageChecked": {
+                "type": "boolean"
+              },
+              "evidenceChecked": {
+                "type": "boolean"
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "coverageChecked",
+              "evidenceChecked",
+              "notes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "decision",
+          "feedback"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "taxonomy",
+      "tagging",
+      "review"
+    ],
+    "additionalProperties": false
+  },
+  "modelProfiles": {
+    "project-model": {
+      "kind": "chat",
+      "requiredFeatures": [
+        "json_schema"
+      ]
+    }
+  },
+  "resources": {
+    "practice": {
+      "id": "EP-040-practice",
+      "revision": 1,
+      "kind": "document",
+      "sha256": "b051a1f4aa61fee3d92870c41c5819bcfc8e8f53c8a377eebd271a46d007f047"
+    }
+  },
+  "subworkflows": {
+    "tag_item": {
+      "entryNodeId": "start",
+      "inputs": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7
+          },
+          "context": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "access"
+                  },
+                  "description": {
+                    "const": "로그인·계정 접근·권한 확인 문의. 실제 권한 변경은 하지 않음."
+                  }
+                },
+                "required": [
+                  "id",
+                  "description"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "export"
+                  },
+                  "description": {
+                    "const": "자료 내보내기·다운로드 파일 문의. 실제 다운로드 성공 여부는 판단하지 않음."
+                  }
+                },
+                "required": [
+                  "id",
+                  "description"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "const": "editing"
+                  },
+                  "description": {
+                    "const": "초안·문서 내용 수정 방법 문의. 실제 내용을 수정하지 않음."
+                  }
+                },
+                "required": [
+                  "id",
+                  "description"
+                ],
+                "additionalProperties": false
+              }
+            ],
+            "items": false,
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "required": [
+          "item",
+          "index",
+          "context"
+        ],
+        "additionalProperties": false
+      },
+      "outputs": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "classification": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "enum": [
+                  "access",
+                  "export",
+                  "editing",
+                  "unclassified"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "maxLength": 4000
+              }
+            },
+            "required": [
+              "label",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "item",
+          "classification"
+        ],
+        "additionalProperties": false
+      },
+      "nodes": [
+        {
+          "id": "start",
+          "type": "input",
+          "typeVersion": 1,
+          "label": "항목 한 건 받기",
+          "inputBindings": {},
+          "config": {},
+          "attachments": [],
+          "execution": {
+            "timeoutMs": 60000,
+            "retry": {
+              "maxAttempts": 1,
+              "backoffMs": 1000,
+              "retryOn": []
+            },
+            "onError": "fail"
+          }
+        },
+        {
+          "id": "classify",
+          "type": "classify",
+          "typeVersion": 1,
+          "label": "허용 분류표로 한 항목 태깅",
+          "inputBindings": {
+            "content": {
+              "from": "workflowInput",
+              "pointer": "/item/text",
+              "onMissing": "error"
+            }
+          },
+          "config": {
+            "modelProfile": "project-model",
+            "labels": [
+              {
+                "id": "access",
+                "description": "로그인·계정 접근·권한 확인 문의. 실제 권한 변경은 하지 않음."
+              },
+              {
+                "id": "export",
+                "description": "자료 내보내기·다운로드 파일 문의. 실제 다운로드 성공 여부는 판단하지 않음."
+              },
+              {
+                "id": "editing",
+                "description": "초안·문서 내용 수정 방법 문의. 실제 내용을 수정하지 않음."
+              }
+            ],
+            "onUncertain": "unclassified"
+          },
+          "attachments": [],
+          "execution": {
+            "timeoutMs": 60000,
+            "retry": {
+              "maxAttempts": 1,
+              "backoffMs": 1000,
+              "retryOn": []
+            },
+            "onError": "fail"
+          }
+        },
+        {
+          "id": "classified",
+          "type": "merge",
+          "typeVersion": 1,
+          "label": "원문 항목과 라벨 연결",
+          "inputBindings": {
+            "item": {
+              "from": "workflowInput",
+              "pointer": "/item",
+              "onMissing": "error"
+            },
+            "classification": {
+              "from": "node",
+              "nodeId": "classify",
+              "pointer": "/data",
+              "onMissing": "error"
+            }
+          },
+          "config": {
+            "waitFor": "all_active",
+            "combine": "object",
+            "collision": "namespace"
+          },
+          "attachments": [],
+          "execution": {
+            "timeoutMs": 60000,
+            "retry": {
+              "maxAttempts": 1,
+              "backoffMs": 1000,
+              "retryOn": []
+            },
+            "onError": "fail"
+          }
+        },
+        {
+          "id": "finish",
+          "type": "output",
+          "typeVersion": 1,
+          "label": "한 항목의 태그",
+          "inputBindings": {
+            "result": {
+              "from": "node",
+              "nodeId": "classified",
+              "pointer": "/data",
+              "onMissing": "error"
+            }
+          },
+          "config": {
+            "format": "json"
+          },
+          "attachments": [],
+          "execution": {
+            "timeoutMs": 60000,
+            "retry": {
+              "maxAttempts": 1,
+              "backoffMs": 1000,
+              "retryOn": []
+            },
+            "onError": "fail"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "start_next_classify",
+          "from": {
+            "nodeId": "start",
+            "port": "next"
+          },
+          "to": {
+            "nodeId": "classify",
+            "port": "in"
+          }
+        },
+        {
+          "id": "classify_access_classified",
+          "from": {
+            "nodeId": "classify",
+            "port": "access"
+          },
+          "to": {
+            "nodeId": "classified",
+            "port": "in"
+          }
+        },
+        {
+          "id": "classify_export_classified",
+          "from": {
+            "nodeId": "classify",
+            "port": "export"
+          },
+          "to": {
+            "nodeId": "classified",
+            "port": "in"
+          }
+        },
+        {
+          "id": "classify_editing_classified",
+          "from": {
+            "nodeId": "classify",
+            "port": "editing"
+          },
+          "to": {
+            "nodeId": "classified",
+            "port": "in"
+          }
+        },
+        {
+          "id": "classify_unclassified_classified",
+          "from": {
+            "nodeId": "classify",
+            "port": "unclassified"
+          },
+          "to": {
+            "nodeId": "classified",
+            "port": "in"
+          }
+        },
+        {
+          "id": "classified_next_finish",
+          "from": {
+            "nodeId": "classified",
+            "port": "next"
+          },
+          "to": {
+            "nodeId": "finish",
+            "port": "in"
+          }
+        }
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "id": "request",
+      "type": "form",
+      "typeVersion": 1,
+      "label": "목록과 목적 입력",
+      "inputBindings": {},
+      "config": {
+        "mode": "initial",
+        "title": "항목 일괄 태깅"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "taxonomy",
+      "type": "resource",
+      "typeVersion": 1,
+      "label": "고정 분류표 읽기",
+      "inputBindings": {},
+      "config": {
+        "resource": "practice",
+        "pointer": "/taxonomy"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "tagging",
+      "type": "loop",
+      "typeVersion": 1,
+      "label": "입력 순서대로 항목 태깅",
+      "inputBindings": {
+        "items": {
+          "from": "node",
+          "nodeId": "request",
+          "pointer": "/data/items",
+          "onMissing": "error"
+        },
+        "context": {
+          "from": "node",
+          "nodeId": "taxonomy",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "mode": "foreach",
+        "bodyFlowRef": {
+          "kind": "local",
+          "flowId": "tag_item"
+        },
+        "maxIterations": 8
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "typeVersion": 1,
+      "label": "전체 항목과 미분류 확인",
+      "inputBindings": {
+        "value": {
+          "from": "node",
+          "nodeId": "tagging",
+          "pointer": "/data",
+          "onMissing": "error"
+        },
+        "context": {
+          "from": "node",
+          "nodeId": "request",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "question": "모든 입력 ID가 한 번씩 있고 원문이 보존됐는지 확인하세요. 허용 라벨 외의 결과나 범위 밖 질문을 억지로 분류했으면 거절하세요. 미분류를 삭제하거나 임의 라벨로 바꾸지 않습니다.",
+        "responseSchema": {
+          "type": "object",
+          "properties": {
+            "coverageChecked": {
+              "type": "boolean"
+            },
+            "evidenceChecked": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "coverageChecked",
+            "evidenceChecked",
+            "notes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "result",
+      "type": "merge",
+      "typeVersion": 1,
+      "label": "분류표·전체 결과·검토 결정",
+      "inputBindings": {
+        "taxonomy": {
+          "from": "node",
+          "nodeId": "taxonomy",
+          "pointer": "/data",
+          "onMissing": "error"
+        },
+        "tagging": {
+          "from": "node",
+          "nodeId": "tagging",
+          "pointer": "/data",
+          "onMissing": "error"
+        },
+        "review": {
+          "from": "node",
+          "nodeId": "review",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "waitFor": "all_active",
+        "combine": "object",
+        "collision": "namespace"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "finish",
+      "type": "output",
+      "typeVersion": 1,
+      "label": "일괄 태깅 결과",
+      "inputBindings": {
+        "result": {
+          "from": "node",
+          "nodeId": "result",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "format": "json"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "request_next_taxonomy",
+      "from": {
+        "nodeId": "request",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "taxonomy",
+        "port": "in"
+      }
+    },
+    {
+      "id": "taxonomy_next_tagging",
+      "from": {
+        "nodeId": "taxonomy",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "tagging",
+        "port": "in"
+      }
+    },
+    {
+      "id": "tagging_next_review",
+      "from": {
+        "nodeId": "tagging",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "review",
+        "port": "in"
+      }
+    },
+    {
+      "id": "review_accepted_result",
+      "from": {
+        "nodeId": "review",
+        "port": "accepted"
+      },
+      "to": {
+        "nodeId": "result",
+        "port": "in"
+      }
+    },
+    {
+      "id": "review_rejected_result",
+      "from": {
+        "nodeId": "review",
+        "port": "rejected"
+      },
+      "to": {
+        "nodeId": "result",
+        "port": "in"
+      }
+    },
+    {
+      "id": "result_next_finish",
+      "from": {
+        "nodeId": "result",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "finish",
+        "port": "in"
+      }
+    }
+  ],
+  "policy": {
+    "approvalMode": "per_effect",
+    "networkMode": "broker_only",
+    "filesystemMode": "workspace_only",
+    "limits": {
+      "maxConcurrentNodes": 1,
+      "maxNodeInstances": 40,
+      "maxModelCalls": 8,
+      "maxTotalTokens": 40000,
+      "maxActiveMs": 600000,
+      "maxChildDepth": 1
+    }
+  }
+}

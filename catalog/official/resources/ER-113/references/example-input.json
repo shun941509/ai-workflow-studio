@@ -1,0 +1,31 @@
+{
+  "fictional": true,
+  "k": 60,
+  "limit": 5,
+  "rankings": {
+    "keyword": [
+      {
+        "documentId": "A",
+        "revision": 1,
+        "sourceSha256": "e6ce7fbe61eb057f4b41fc1da05a89883a9e5dd31079af25a6bc3851e8240917"
+      },
+      {
+        "documentId": "B",
+        "revision": 1,
+        "sourceSha256": "53729cc3ec5256f93da7cf86318804d8f0c0cdff9a1c9af54818265ba5111de8"
+      }
+    ],
+    "vector": [
+      {
+        "documentId": "B",
+        "revision": 1,
+        "sourceSha256": "53729cc3ec5256f93da7cf86318804d8f0c0cdff9a1c9af54818265ba5111de8"
+      },
+      {
+        "documentId": "C",
+        "revision": 1,
+        "sourceSha256": "e2d6ae7bb568f92a23da8c38d466e58c85ecdc006d850539fe013591fcf48c7c"
+      }
+    ]
+  }
+}

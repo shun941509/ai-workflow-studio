@@ -85,6 +85,25 @@ export class SqliteRagStore {
     });
   }
 
+  /** Initial inventory registers IDs only. It preserves every existing subject, ACL and tombstone and never reads file bytes. */
+  registerManagedDocuments(scope: AccessScope, subjectId: string, documentIds: readonly string[], allowNew: boolean): void {
+    checkScope(scope); id(subjectId);
+    requireStore(documentIds.length <= 100 && new Set(documentIds).size === documentIds.length, 'RAG_ACCESS_LIMIT', 'Managed-file inventory exceeds the run limit.');
+    documentIds.forEach(id);
+    this.#transaction(() => {
+      const epoch = this.#scopeEpoch(scope);
+      integer(epoch + 1, 1, Number.MAX_SAFE_INTEGER - 1);
+      requireStore(this.hasCurrentSubject(scope, subjectId), 'RAG_ACCESS_REVOKED', 'The run subject is no longer authorized.');
+      const existing = this.#all('SELECT document FROM rag_access WHERE tenant=? AND project=?', ...coordinates(scope));
+      const known = new Set(existing.map(row => String(row.document))); const additions = documentIds.filter(document => !known.has(document));
+      requireStore(allowNew || additions.length === 0, 'RAG_DISCLOSURE_SEALED', 'New documents cannot expand a sealed run disclosure inventory.');
+      requireStore(existing.length + additions.length <= this.limits.maxAccessDocumentsPerScope, 'RAG_ACCESS_LIMIT', 'Access inventory exceeds its limit.');
+      if (!additions.length) return; // Reusing the same files in another generation must not manufacture an ACL change.
+      for (const document of additions) this.#db.prepare("INSERT INTO rag_access(tenant,project,document,revision,tombstoned,subjects_json,groups_json) VALUES(?,?,?,1,0,?,'[]')").run(...coordinates(scope), document, JSON.stringify([subjectId]));
+      this.#db.prepare('UPDATE rag_scopes SET epoch=? WHERE tenant=? AND project=?').run(epoch + 1, ...coordinates(scope));
+    });
+  }
+
   /**
    * Trusted identity/ACL adapter only. Memberships and documents share one epoch and atomic transaction.
    * Omitted documents become durable tombstones; reviving one requires a strictly newer revision.
@@ -187,14 +206,18 @@ export class SqliteRagStore {
    * Verify outside the write lock, then re-read a byte receipt and compare the full active revision inside BEGIN IMMEDIATE.
    * A concurrent activation or byte mutation cannot publish a stale/partially staged generation, and no await holds the lock.
    */
-  async activate(scope: AccessScope, reference: IndexRef, expected: ActiveIndex | null): Promise<ActiveIndex> {
+  async activate(scope: AccessScope, reference: IndexRef, expected: ActiveIndex | null, authorization?: { subjectId: string; epoch: number }): Promise<ActiveIndex> {
     checkScope(scope); scope = structuredClone(scope); validateIndexRef(reference); sameScope(reference.scope, scope);
+    if (authorization) { exact(authorization, ['subjectId', 'epoch']); id(authorization.subjectId); integer(authorization.epoch, 1, Number.MAX_SAFE_INTEGER); authorization = structuredClone(authorization); }
     if (expected) { assertJsonData(expected); exact(expected, ['ref', 'revision']); validateIndexRef(expected.ref); sameScope(expected.ref.scope, scope); requireStore(expected.ref.indexId === reference.indexId, 'RAG_SCOPE_MISMATCH', 'Expected active index identity differs.'); integer(expected.revision, 1, Number.MAX_SAFE_INTEGER - 1); }
     const pinnedRef = structuredClone(reference); const ownedExpected = expected ? structuredClone(expected) : null;
     const snapshot = this.#transaction(() => this.#readSnapshot(scope, pinnedRef), true);
     await this.#verify(snapshot);
     await planIndexActivation(ownedExpected?.ref ?? null, snapshot.index, ownedExpected?.ref.manifestHash ?? null, snapshot.artifacts);
     return this.#transaction(() => {
+      // Trusted runtime activation can pin the authority snapshot in the same write transaction as publication.
+      // A group/ACL/tombstone change during asynchronous byte verification must not activate stale authorization.
+      if (authorization) requireStore(this.#scopeEpoch(scope) === authorization.epoch && this.hasCurrentSubject(scope, authorization.subjectId), 'RAG_AUTHORIZATION_CHANGED', 'Authorization changed before index activation.');
       const current = this.getActiveIndex(scope, pinnedRef.indexId);
       requireStore(current === null && ownedExpected === null || current !== null && ownedExpected !== null && current.revision === ownedExpected.revision && sameRef(current.ref, ownedExpected.ref), 'RAG_ACTIVATION_CONFLICT', 'Active generation changed before activation.');
       requireStore(this.#readSnapshot(scope, pinnedRef).receipt === snapshot.receipt, 'RAG_STAGING_CHANGED', 'Stored generation changed after verification.');

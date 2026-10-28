@@ -1,0 +1,12 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "initialStatus": "connection_required",
+  "initialRecords": null,
+  "requiredConnection": "embedding",
+  "reject": [
+    "모델 변경",
+    "응답 index 중복",
+    "차원 불일치",
+    "승인 없는 외부 전송"
+  ]
+}

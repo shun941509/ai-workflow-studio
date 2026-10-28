@@ -12,9 +12,9 @@
 |P2-06|001-private-content.sql, 웹 server Auth/프로젝트/자료/Storage, tests/database|02|CRUD·RLS·충돌·실제 Postgres SQL|Supabase 실계정2개·Storage|
 |P2-07|웹 features/editor, navigation.ts, packages/ui, e2e|03,06|기본 편집·자료 연결·복구·실제 ZIP 조작|실계정 저장/재열기·31블록 화면|
 |P2-08|package-kit index/resources/archive/adapters, tests/security/package-*|03,06|3종 workflow/materials·해시/서명/경로/의존 검사|공식 서명·3호스트 실사용·완전한 lock|
-|P2-09|runner providers/openai/model-broker, security/credential-store|04,05|Responses 어댑터·실제 DPAPI·키 경계·예산|실제 text/JSON/한도·실패|
+|P2-09|runner providers/openai/model-broker, security/credential-store|04,05|Responses 어댑터·실제 DPAPI·키 경계·실제 입력 계수 계약/불변 요청·원자적 예약/정산|실제 text/JSON/입력 계수/한도·실패|
 |P2-10|runner local-api/server.ts, mcp/bridge.ts, runner-ui|05,08,09|동일 서비스·루프백 인증·Origin/CSRF·MCP 프로토콜|호스트 실제 도구 호출·재접속|
-|P2-11|build-runner.mjs, verify-runner.ts, tests/e2e|07~10|Node24·운영 UI 동봉, 별도 프로세스9검사|서명 설치·깨끗한 Windows·3호스트 실제 모델|
+|P2-11|build-runner.mjs, verify-runner.ts, tests/e2e|07~10|Node24·운영 UI 동봉, 별도 프로세스19검사(실제 문서/키워드/토크나이저/파일·필요 모델 정보 포함)|서명 설치·깨끗한 Windows·3호스트 실제 모델|
 
 ## 계속할 구현 순서
 

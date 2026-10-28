@@ -17,6 +17,22 @@ export type JsonValue =
   | {
       [k: string]: JsonValue | undefined;
     };
+export type CompletionCriterion =
+  | {
+      id: string;
+      label: string;
+      kind: 'result_schema';
+      schema: UserSchema;
+    }
+  | {
+      id: string;
+      label: string;
+      kind: 'review_accepted' | 'evaluate_passed' | 'agentic_answered' | 'loop_condition_met';
+      /**
+       * Exact root-flow node identity selected as the final acceptance evidence; child scope guesses and historical vetoes are forbidden.
+       */
+      nodeId: string;
+    };
 export type WorkflowNode =
   | InputNode
   | FormNode
@@ -171,6 +187,8 @@ export interface Workflow {
   entryNodeId: string;
   inputs: UserSchema;
   outputs: UserSchema;
+  completion?: CompletionContract;
+  workDefinition?: WorkDefinition;
   /**
    * @minItems 2
    */
@@ -197,6 +215,2124 @@ export interface Workflow {
     [k: string]: FlowDefinition | undefined;
   };
   policy: WorkflowPolicy;
+}
+export interface CompletionContract {
+  version: 1;
+  /**
+   * @minItems 1
+   * @maxItems 32
+   */
+  criteria: [CompletionCriterion, ...CompletionCriterion[]];
+}
+export interface WorkDefinition {
+  version: 1;
+  id: string;
+  revision: number;
+  card: {
+    id: string;
+    title: string;
+    purpose: string;
+  };
+  /**
+   * The selected role belongs to the selected card. Its responsibility is business context, not a permission grant or professional credential.
+   */
+  role: {
+    id: string;
+    title: string;
+    responsibility: string;
+  };
+  /**
+   * Exactly one selected task belongs to the selected role. Every completion criterion must be referenced; subsets cannot redefine business success.
+   */
+  task: {
+    id: string;
+    title: string;
+    goal: string;
+    /**
+     * @minItems 1
+     * @maxItems 32
+     */
+    criterionIds: [string, ...string[]];
+    /**
+     * @maxItems 64
+     */
+    assets: {
+      /**
+       * Exact alias in workflow.resources; never an account resource ID, copied bytes or an external URL.
+       */
+      alias: string;
+      kind: 'instruction' | 'document';
+      usage: 'instructions' | 'reference' | 'template';
+      purpose: string;
+      required: boolean;
+    }[];
+    /**
+     * @maxItems 16
+     */
+    skills:
+      | []
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ]
+      | [
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          },
+          {
+            alias: string;
+            kind: 'skill';
+            /**
+             * Instruction/data bundle only; no tool allowlist, executable entrypoint, approval or permission follows from this link.
+             */
+            usage: 'instructions';
+            purpose: string;
+            required: boolean;
+          }
+        ];
+  };
+  /**
+   * Roles of actual root-flow nodes. These mappings do not introduce edges or duplicate execution policy. selectedContext is design-time selection, not a claim that runtime content was consumed.
+   */
+  harness: {
+    /**
+     * Explicit bounded context preset. The Runner verifies actual prepared model requests; this declaration never proves a provider call or grants permission.
+     */
+    workingContext?: {
+      version: 1;
+      /**
+       * Maximum UTF-8 bytes of the final canonical ModelRequest, including model, instructions, content and response format, before any count or generation disclosure.
+       */
+      maxBytes: number;
+      /**
+       * @minItems 1
+       * @maxItems 16
+       */
+      bindings:
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ]
+        | [
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            },
+            {
+              nodeId: string;
+              contextNodeId: string;
+            }
+          ];
+    };
+    /**
+     * @maxItems 32
+     */
+    context: string[];
+    /**
+     * @minItems 1
+     * @maxItems 16
+     */
+    perform:
+      | [string]
+      | [string, string]
+      | [string, string, string]
+      | [string, string, string, string]
+      | [string, string, string, string, string]
+      | [string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string, string, string, string, string, string, string]
+      | [string, string, string, string, string, string, string, string, string, string, string, string, string, string]
+      | [
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string
+        ]
+      | [
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string,
+          string
+        ];
+    /**
+     * @maxItems 32
+     */
+    accept: string[];
+    /**
+     * @minItems 1
+     * @maxItems 32
+     */
+    deliver: [string, ...string[]];
+    /**
+     * Selected task asset/Skill aliases only. All required links must be selected; unselected optional links remain explicitly excluded.
+     *
+     * @maxItems 80
+     */
+    selectedContext: string[];
+  };
 }
 export interface InputNode {
   id: string;

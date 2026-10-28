@@ -39,3 +39,5 @@ merge all_active는 모든 입력 경로의 활성 여부가 결정되고 활성
 ## 버전·검증
 
 schemaVersion, typeVersion, 설계 revision, 배포 packageVersion, 색인 generationId, 실행 planRevision을 구분한다. 스키마는 유일한 타입 원본이다. Ajv coerceTypes/useDefaults/removeAdditional을 끄고 외부 ref 다운로드를 금지한다. 기본값은 새 노드 생성 때 기록한다. 구조 → 의미 → 준비 → 실행 결과 검사를 분리한다. 시간은 UTC, 일정은 IANA 시간대를 사용한다.
+
+사용자 스키마의 const/enum/uniqueItems는 JavaScript 객체의 constructor가 아니라 JSON 값으로 비교한다. 객체 필드 순서와 일반/null 프로토타입 차이는 무시하고, 배열 순서·타입·필드 유무는 보존한다. -0과0은 같다. 검증 전 descriptor·크기·깊이를 확인하고 스키마만 복제해 컴파일 캐시가 호출자의 수정에 영향받지 않도록 한다. valueOf/toString/toJSON 이름의 데이터는 호출하지 않으며 원래 입력 객체는 변경하지 않는다. required는 상속받은 속성으로 충족할 수 없다.

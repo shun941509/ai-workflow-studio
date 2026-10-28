@@ -1,0 +1,3 @@
+import { defineConfig } from '@playwright/test';
+/** Isolated browser checks distinguish a real completed byte download from pending/error UI. */
+export default defineConfig({ testDir: '.', testMatch: 'publication-download-ui.spec.ts', timeout: 60000, expect: { timeout: 15000 }, workers: 1, reporter: [['list']], outputDir: '../../test-results/publication-download-ui', use: { baseURL: process.env.STUDIO_PUBLICATIONS_TEST_URL ?? 'http://127.0.0.1:3101', browserName: 'chromium', channel: 'chrome', viewport: { width: 1440, height: 1000 }, locale: 'ko-KR', trace: 'retain-on-failure', screenshot: 'only-on-failure' } });

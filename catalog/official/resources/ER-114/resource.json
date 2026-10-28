@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-114",
+  "revision": 1,
+  "kind": "skill",
+  "name": "reranker Skill†",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "reranker"
+  ],
+  "files": [
+    {
+      "path": "scripts/rerank_candidates.py",
+      "bytes": 4028,
+      "sha256": "29f83ca33ac3707c80c065f7e3514b86c0e07bf2ad6ef23c1b2b53e4aa39dd44"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "scripts/provider_http.py",
+      "bytes": 2596,
+      "sha256": "61b500fa429c9b045736037cedb3749d0ce3b209cf20ec36e8c3be8cddae41ac"
+    },
+    {
+      "path": "references/provider-contract.md",
+      "bytes": 1223,
+      "sha256": "daa6c391cdcaf00d94c9acf85ec6948a6f840cdd0c8775cf83dd175c2868d94d"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 774,
+      "sha256": "7b74e70bb1d169fd700a3505a358c9c136c4da3192d311d5fb92dcf9fd546c85"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 304,
+      "sha256": "7a945f6988cde10670ae5f3d53beb2362e4b1e86ea7b04dad5d235deb8b10ab4"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3644,
+      "sha256": "4ce7e7d0fcc3a8de3c52cd6c15dc57859ca30719f0a2cad6bd03f480cc0d76df"
+    },
+    {
+      "path": "README.md",
+      "bytes": 981,
+      "sha256": "946e767d6e2057ab298b0413528651edcb066b1a7bf7121f13da2744162393b6"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 747,
+      "sha256": "93c45f74531a18c44fd845741bf6a32e4008838436c7a9a3ce45dead6b719f02"
+    }
+  ]
+}

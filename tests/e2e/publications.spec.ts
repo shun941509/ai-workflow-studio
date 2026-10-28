@@ -59,7 +59,9 @@ test('metadata cards paginate without rendering HTML and disappear after a fresh
 test('detail report presents authentication errors and never shows a false receipt', async ({ page }) => {
   await page.route(`**/api/publications/${id}?**`, (route) => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ item: release }) }));
   await page.route(`**/api/publications/${id}/reports`, async (route) => { expect(route.request().postDataJSON()).toEqual({ reason: '검토할 부분을 구체적으로 설명합니다.' }); await route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ error: { code: 'AUTH_REQUIRED', message: '로그인이 필요합니다.' } }) }); });
-  await page.goto(`/explore/projects/${id}`); await expect(page.getByRole('heading', { name: release.title, exact: true })).toBeVisible(); await expect(page.getByRole('button', { name: /복사|다운로드/ })).toHaveCount(0);
+  await page.goto(`/explore/projects/${id}`); await expect(page.getByRole('heading', { name: release.title, exact: true })).toBeVisible();
+  // Copy is now an explicit supported action; reading or reporting a publication must not create a copy receipt.
+  await expect(page.getByRole('button', { name: '내 프로젝트로 복사', exact: true })).toBeVisible(); await expect(page.getByRole('link', { name: '복사한 프로젝트 열기', exact: true })).toHaveCount(0);
   await page.getByRole('textbox', { name: '신고 사유' }).fill('짧음'); await expect(page.getByRole('button', { name: '신고 접수', exact: true })).toBeDisabled();
   await page.getByRole('textbox', { name: '신고 사유' }).fill('검토할 부분을 구체적으로 설명합니다.'); await page.getByRole('button', { name: '신고 접수', exact: true }).click();
   await expect(page.getByRole('link', { name: '프로필·설정에서 로그인' })).toBeVisible(); await expect(page.getByText('신고를 접수했습니다.', { exact: false })).toHaveCount(0);

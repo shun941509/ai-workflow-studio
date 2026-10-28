@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "service": "notion",
+  "endpoint": "https://mcp.notion.com/mcp",
+  "transport": "streamable-http",
+  "auth": "host-oauth",
+  "state": "planned",
+  "blockers": [
+    "부모 페이지·작성 본문·승인에 묶인 쓰기 및 작성 후 재조회 검증 실행 경계가 미완성입니다."
+  ],
+  "readTools": [
+    "notion-search",
+    "notion-fetch",
+    "search",
+    "fetch"
+  ],
+  "compareFields": [
+    "pageId",
+    "title",
+    "contentSha256"
+  ],
+  "sourceHosts": [
+    "notion.so",
+    "*.notion.so",
+    "notion.site",
+    "*.notion.site"
+  ],
+  "sourceHost": "notion.so",
+  "remoteVersionImmutable": false,
+  "actualHostVerification": "unverified"
+}

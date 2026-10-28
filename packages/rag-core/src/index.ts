@@ -7,3 +7,4 @@ export * from './access.js';
 export * from './budget.js';
 export * from './local-search.js';
 export * from './retrieval.js';
+export * from './graph/index.js';

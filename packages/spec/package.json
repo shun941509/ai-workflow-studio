@@ -1,6 +1,6 @@
 {
-  "name": "@studio/spec", "version": "0.1.0", "private": true, "type": "module",
-  "exports": { ".": "./src/index.ts" },
+  "name": "@studio/spec", "version": "0.1.0", "license": "MIT", "private": true, "type": "module",
+  "exports": { ".": "./src/index.ts", "./browser": "./src/browser.ts" },
   "scripts": { "typecheck": "tsc --noEmit", "build": "tsc --noEmit" },
   "dependencies": { "ajv": "8.20.0", "ajv-formats": "3.0.1" }
 }

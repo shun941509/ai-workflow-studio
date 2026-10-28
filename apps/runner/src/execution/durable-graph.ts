@@ -3,11 +3,14 @@ import { propagateInactiveEdges, resolveNodeActivation, selectControlEdges, type
 import { RunStore, scopedKey, type EdgeRecord } from '../state/store.js';
 import { RunnerError } from '../errors.js';
 
+/** A scheduling hint from the trusted continuation journal, never permission to replay a running leaf. */
+export interface GraphContinuation { canResumeOwner(node: WorkflowNode): boolean }
+
 /** A sequential DAG scheduler uses durable edge decisions, never node-array order or recursive descendant skipping. */
 export class DurableGraph {
   private readonly states = new Map<string, string>();
   private readonly edges = new Map<string, EdgeRecord>();
-  constructor(private readonly runId: string, private readonly workflow: FlowDefinition, private readonly store: RunStore, private readonly scopeId = 'main') {
+  constructor(private readonly runId: string, private readonly workflow: FlowDefinition, private readonly store: RunStore, private readonly scopeId = 'main', private readonly continuation?: GraphContinuation) {
     const persisted = store.graphState(runId, scopeId);
     for (const node of persisted.nodes) this.states.set(node.nodeId, node.status);
     for (const edge of persisted.edges) this.edges.set(edge.edgeId, edge);
@@ -15,7 +18,10 @@ export class DurableGraph {
 
   next(): WorkflowNode | undefined {
     for (const node of this.workflow.nodes) {
-      if (this.states.get(node.id) !== 'pending') continue;
+      const state = this.states.get(node.id);
+      // Only a fixed single-child owner can continue in R10-A. Its attempt must be CAS-claimed again before dispatch.
+      if (state === 'waiting_children' && node.type === 'subworkflow' && this.continuation?.canResumeOwner(node)) return node;
+      if (state !== 'pending') continue;
       const activation = resolveNodeActivation({ nodeId: node.id, entryNodeId: this.workflow.entryNodeId,
         incoming: this.workflow.edges.filter((edge) => edge.to.nodeId === node.id).map((edge) => this.edges.get(edge.id)!),
         waitFor: node.type === 'merge' ? 'all_active' : 'single', acceptRecoverableError: node.type === 'error',

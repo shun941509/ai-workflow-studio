@@ -1,0 +1,15 @@
+{
+  "fictional": true,
+  "operation": "prepare",
+  "projectRef": "abcdefghijklmnopqrst",
+  "schema": "public",
+  "table": "handbook",
+  "allowedTables": [
+    "public.handbook"
+  ],
+  "columns": [
+    "id",
+    "title"
+  ],
+  "limit": 20
+}

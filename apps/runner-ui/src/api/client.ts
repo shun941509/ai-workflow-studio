@@ -1,5 +1,10 @@
 let csrf = '';
 
+/** Preserve only the public error code/status so a disclosure denial can clear cached content immediately. */
+export class RunnerApiError extends Error {
+  constructor(message: string, readonly code: string | undefined, readonly status: number) { super(message); this.name = 'RunnerApiError'; }
+}
+
 /** Fetch metadata and Origin protect bootstrap; the returned CSRF token remains in memory. */
 export async function connect(): Promise<void> {
   const response = await fetch('/api/session', { method: 'POST', headers: { 'content-type': 'application/json', 'x-studio-client': 'local-ui' }, body: '{}' });
@@ -15,8 +20,8 @@ export async function request<T>(path: string, options: { method?: string; body?
     headers: { 'x-studio-csrf': csrf, ...(options.zip ? { 'content-type': 'application/zip' } : options.body !== undefined ? { 'content-type': 'application/json' } : {}) },
     body: options.zip ?? (options.body === undefined ? undefined : JSON.stringify(options.body)),
   });
-  const value = await response.json() as T & { error?: { message?: string } };
-  if (!response.ok) throw new Error(value.error?.message ?? '요청을 완료하지 못했습니다.');
+  const value = await response.json() as T & { error?: { message?: string; code?: string } };
+  if (!response.ok) throw new RunnerApiError(value.error?.message ?? '요청을 완료하지 못했습니다.', value.error?.code, response.status);
   return value;
 }
 
@@ -29,8 +34,11 @@ export async function uploadFile<T>(path: string, file: File, uploadId: string):
 }
 
 /** Download uses the authenticated bytes route and a user-triggered save, never an inline document renderer. */
-export async function downloadFile(path: string, filename: string): Promise<void> {
+export async function downloadFile(path: string, filename: string, maySave: () => boolean): Promise<void> {
   const response = await fetch(path, { headers: { 'x-studio-csrf': csrf } });
-  if (!response.ok) { const value = await response.json() as { error?: { message?: string } }; throw new Error(value.error?.message ?? '파일을 내려받지 못했습니다.'); }
-  const url = URL.createObjectURL(await response.blob()); const link = document.createElement('a'); link.href = url; link.download = filename; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  if (!response.ok) { const value = await response.json() as { error?: { message?: string; code?: string } }; throw new RunnerApiError(value.error?.message ?? '파일을 내려받지 못했습니다.', value.error?.code, response.status); }
+  const bytes = await response.blob();
+  // A status denial or page change observed while reading bytes cancels this local save as well.
+  if (!maySave()) return;
+  const url = URL.createObjectURL(bytes); const link = document.createElement('a'); link.href = url; link.download = filename; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

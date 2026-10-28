@@ -1,0 +1,6 @@
+# 수동 검토 후 프로젝트 .codex/config.toml에 병합하세요. 전역 설정 변경 금지.
+[mcp_servers.studio_supabase]
+url = "https://mcp.supabase.com/mcp?project_ref=REPLACE_PROJECT_REF&read_only=true&features=database"
+enabled = false
+enabled_tools = ["list_tables","execute_sql"]
+default_tools_approval_mode = "prompt"

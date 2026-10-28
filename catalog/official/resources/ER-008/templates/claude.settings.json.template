@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "ask": [
+      "mcp__studio_cloudflare__*"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__studio_cloudflare__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node resources/ER-008/scripts/claude-read-guard.mjs"
+          }
+        ]
+      }
+    ]
+  }
+}

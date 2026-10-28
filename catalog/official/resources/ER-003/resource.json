@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-003",
+  "revision": 1,
+  "kind": "mcp",
+  "name": "Atlassian 연결",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "service"
+  ],
+  "files": [
+    {
+      "path": "scripts/connection-plan.mjs",
+      "bytes": 8370,
+      "sha256": "b8baf94e29a92b83013d6e3ffa364b4ab8b83c8a7376c6c4fa401193d33d1af8"
+    },
+    {
+      "path": "connection.json",
+      "bytes": 610,
+      "sha256": "9547c0c4f0510ccfe77548e80b3abb1be123e52bdef23b1ce096993d17a3b86a"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 153,
+      "sha256": "15a7fba6c07a94a3fd1002980d569b853cdd85ce2fed20876caa4194dafb768d"
+    },
+    {
+      "path": "references/tool-contract.json",
+      "bytes": 680,
+      "sha256": "bb8bc4039a91cc18d215a70a687eb2ace23a85e44ce93a5612cf917f5f8b3a3e"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 536,
+      "sha256": "b32072dd59497fed2920665fde32034824d9db81f0aa9c9773402e1cc5c91caf"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "templates/codex.config.toml.template",
+      "bytes": 355,
+      "sha256": "2e0d15d99d999193b9b85c0e4ac20d33883afccd29dd72b86add139c156fa2f1"
+    },
+    {
+      "path": "templates/claude.mcp.json.template",
+      "bytes": 138,
+      "sha256": "4e0865ad035be39e9c762f9d53bf2dc4cbd3c13ac6bb510338776537456485ae"
+    },
+    {
+      "path": "templates/claude.settings.json.template",
+      "bytes": 348,
+      "sha256": "68e0d4a8c3a134e6a80b209159cc7343360a650a3ce08cdc1b306a9fb5c55a85"
+    },
+    {
+      "path": "templates/opencode.json.template",
+      "bytes": 476,
+      "sha256": "c87cc9ee628e57cdc37e6ea1604624bc68b0c0f37d4fe53a8a69f33642b1bdd9"
+    },
+    {
+      "path": "scripts/claude-read-guard.mjs",
+      "bytes": 987,
+      "sha256": "ba7775ab428758e322862483568b505457f274ea4d4ae3a5794c93b387e0cba7"
+    },
+    {
+      "path": "instructions.md",
+      "bytes": 4031,
+      "sha256": "fd1322fddd8d99ebe54c8a1a33e0e5f4050045ba6c754b4a74ca1a02ce2c3eaa"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1088,
+      "sha256": "d0fab90b254f8bd4a424a15154efe4a0130e3257ed9515dad0d062f2b3714c37"
+    },
+    {
+      "path": "assets/observation-report.md",
+      "bytes": 580,
+      "sha256": "4e29697a8c86038b8ab3392c5ee71a58ed02db5301216d4da986b89d544c58b4"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "tables": 1,
+  "tableHeading": "승인 기준",
+  "sourceReconstruction": "모든 청크 text를 합치면 원문과 동일",
+  "reject": [
+    "닫히지 않은 fence",
+    "maxCharacters보다 큰 표"
+  ]
+}

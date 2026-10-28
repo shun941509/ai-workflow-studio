@@ -1,28 +1,62 @@
 import { createBasicWorkflow, validateWorkflowShape, type Workflow } from "@studio/spec";
+import { freeGridPosition, normalizeViewport, validPoint, type StoredViewport } from './canvas-navigation';
+import { validateResourceState, type ResourceState } from './resource-state';
+import type { PrivateResourceDetail } from '../resources/types';
 
-export type EditorLayout = { schemaVersion: "1.0.0"; positions: Record<string, { x: number; y: number }> };
-export type LocalDraft = { storageVersion: 1; workflow: Workflow; editor: EditorLayout; updatedAt: string; cloud?: { id: string; version: number } };
+type Positions = Record<string, { x: number; y: number }>;
+export type EditorLayout = { schemaVersion: "1.0.0"; positions: Positions; viewport?: StoredViewport; subflows?: Record<string, { positions: Positions; name?: string; viewport?: StoredViewport }> };
+export type LocalDraft = ResourceState & { storageVersion: 1; workflow: Workflow; editor: EditorLayout; updatedAt: string; cloud?: { id: string; version: number }; origin?: PrivateResourceDetail['origin'] };
 const PREFIX = "studio.draft.v1:";
 
 /** Canvas positions are bounded presentation data and never become executable workflow fields. */
 export function normalizeLayout(value: unknown, workflow: Workflow): EditorLayout {
+  const record = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+  const subflows = record.subflows && typeof record.subflows === 'object' ? record.subflows as Record<string, unknown> : {};
+  const viewport = normalizeViewport(record.viewport);
+  return { schemaVersion: '1.0.0', positions: normalizePositions(value, workflow.nodes), ...(viewport ? { viewport } : {}), subflows: Object.fromEntries(Object.entries(workflow.subworkflows).filter(([, flow]) => Boolean(flow)).map(([id, flow]) => {
+    const stored = subflows[id]; const name = stored && typeof stored === 'object' && 'name' in stored ? stored.name : undefined;
+    const view = normalizeViewport(stored && typeof stored === 'object' && 'viewport' in stored ? stored.viewport : undefined);
+    return [id, { positions: normalizePositions(stored, flow!.nodes), ...(view ? { viewport: view } : {}), ...(typeof name === 'string' && name.trim() && name.length <= 80 && !/[\u0000-\u001f\u007f]/.test(name) ? { name } : {}) }];
+  })) };
+}
+
+/** Each scope normalizes against its own node IDs; obsolete scopes and unbounded coordinates cannot leak across layouts. */
+function normalizePositions(value: unknown, nodes: Workflow['nodes']): Positions {
   const source = value && typeof value === "object" && "positions" in value && value.positions && typeof value.positions === "object" ? value.positions as Record<string, unknown> : {};
   const positions: EditorLayout["positions"] = {};
-  workflow.nodes.forEach((node, index) => {
+  // Collect every valid saved position first; repairing a missing earlier node must not overlap a later saved one.
+  nodes.forEach((node) => {
     const position = source[node.id];
-    positions[node.id] = position && typeof position === "object" && "x" in position && "y" in position && typeof position.x === "number" && typeof position.y === "number" && Number.isFinite(position.x) && Number.isFinite(position.y) && Math.abs(position.x) <= 1e6 && Math.abs(position.y) <= 1e6 ? { x: position.x, y: position.y } : { x: 70 + index * 300, y: 170 };
+    if (validPoint(position)) positions[node.id] = { x: position.x, y: position.y };
   });
-  return { schemaVersion: "1.0.0", positions };
+  nodes.forEach(node => { if (!Object.hasOwn(positions, node.id)) positions[node.id] = freeGridPosition(Object.values(positions)); });
+  return positions;
 }
 
 /** Click-added cards occupy a free grid cell instead of overlapping existing nodes; explicit drag positions stay untouched. */
 export function nextNodePosition(positions: EditorLayout['positions']): { x: number; y: number } {
-  const occupied = Object.values(positions);
-  for (let index = 0; index <= occupied.length * 9 + 9; index++) {
-    const candidate = { x: 70 + index % 3 * 320, y: 170 + Math.floor(index / 3) * 300 };
-    if (!occupied.some((position) => Math.abs(position.x - candidate.x) < 280 && Math.abs(position.y - candidate.y) < 250)) return candidate;
-  }
-  return { x: 70, y: Math.max(170, ...occupied.map((position) => position.y)) + 300 };
+  return freeGridPosition(Object.values(positions));
+}
+
+/** Imports reject unrecognized metadata before repair can discard it; the source remains available to the caller. */
+export function validateImportedLayout(value: unknown, workflow: Workflow): EditorLayout {
+  const fail = () => { throw new Error('가져온 편집기 배치를 보존할 수 없습니다. 지원하지 않거나 잘못된 화면 정보가 있습니다. 원본 파일을 보관해 주세요.'); };
+  const record = (candidate: unknown): Record<string, unknown> => {
+    if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate) || ![Object.prototype, null].includes(Object.getPrototypeOf(candidate))) return fail();
+    return candidate as Record<string, unknown>;
+  };
+  const keys = (candidate: Record<string, unknown>, allowed: string[]) => { if (Object.keys(candidate).some(key => !allowed.includes(key))) fail(); };
+  const scope = (candidate: unknown, nodeIds: string[], child: boolean) => {
+    const item = record(candidate); keys(item, child ? ['positions', 'name', 'viewport'] : ['schemaVersion', 'positions', 'subflows', 'viewport']);
+    if (Object.hasOwn(item, 'positions')) for (const [id, raw] of Object.entries(record(item.positions))) { const point = record(raw); keys(point, ['x', 'y']); if (!nodeIds.includes(id) || !validPoint(point)) fail(); }
+    if (Object.hasOwn(item, 'viewport')) { const view = record(item.viewport); keys(view, ['center', 'zoom']); keys(record(view.center), ['x', 'y']); if (!normalizeViewport(view)) fail(); }
+    if (child && Object.hasOwn(item, 'name') && (typeof item.name !== 'string' || !item.name.trim() || item.name.length > 80 || /[\u0000-\u001f\u007f]/.test(item.name))) fail();
+    return item;
+  };
+  const root = scope(value, workflow.nodes.map(node => node.id), false);
+  if (Object.hasOwn(root, 'schemaVersion') && root.schemaVersion !== '1.0.0') fail();
+  if (Object.hasOwn(root, 'subflows')) for (const [id, child] of Object.entries(record(root.subflows))) { const flow = workflow.subworkflows[id]; if (!Object.hasOwn(workflow.subworkflows, id) || !flow) fail(); scope(child, flow!.nodes.map(node => node.id), true); }
+  return normalizeLayout(value, workflow);
 }
 
 /** Every new local draft has its own id so separate projects cannot overwrite one template key. */
@@ -41,7 +75,9 @@ export function readLocalDraft(id: string): LocalDraft | undefined {
     const parsed = validateWorkflowShape(value.workflow); if (!parsed.valid) return;
     const record = value as Record<string, unknown>;
     const cloud = record.cloud && typeof record.cloud === "object" && "id" in record.cloud && typeof record.cloud.id === "string" && "version" in record.cloud && Number.isInteger(record.cloud.version) ? { id: record.cloud.id, version: Number(record.cloud.version) } : undefined;
-    return { storageVersion: 1, workflow: parsed.value, editor: normalizeLayout(record.editor, parsed.value), updatedAt: typeof record.updatedAt === "string" ? record.updatedAt : "", cloud };
+    const materials = validateResourceState(parsed.value, record.resourceBindings, record.resourceDependencies);
+    const origin = record.origin && typeof record.origin === 'object' && 'source' in record.origin && record.origin.source && typeof record.origin.source === 'object' && !Array.isArray(record.origin.source) && 'copied_at' in record.origin && typeof record.origin.copied_at === 'string' ? record.origin as NonNullable<LocalDraft['origin']> : undefined;
+    return { storageVersion: 1, workflow: parsed.value, editor: normalizeLayout(record.editor, parsed.value), updatedAt: typeof record.updatedAt === "string" ? record.updatedAt : "", cloud, ...materials, ...(origin ? { origin } : {}) };
   } catch { return; }
 }
 

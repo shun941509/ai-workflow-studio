@@ -1,4 +1,6 @@
-import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir, mkdir, writeFile, rename, unlink } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compile } from 'json-schema-to-typescript';
@@ -49,6 +51,15 @@ const bundle = {
   $defs: definitions,
 };
 const banner = '/** Generated from canonical JSON Schemas. Run pnpm generate:spec; do not edit by hand. */\n';
+// CSP-safe clients consume a compiled validator, not Ajv's runtime compiler/new Function.
+// Resolve the existing spec-owned dependencies without adding a second version to the toolchain.
+const specRequire = createRequire(new URL('../packages/spec/package.json', import.meta.url));
+const StandaloneAjv = specRequire('ajv/dist/2020.js').default;
+const addStandaloneFormats = specRequire('ajv-formats').default;
+const standaloneCode = specRequire('ajv/dist/standalone/index.js').default;
+const standaloneAjv = new StandaloneAjv({ strict: true, allErrors: true, ownProperties: true, coerceTypes: false, useDefaults: false, removeAdditional: false, code: { source: true } });
+addStandaloneFormats(standaloneAjv);
+const outcomeValidator = standaloneAjv.compile(definitions.run_outcome);
 const types = await compile(bundle as Parameters<typeof compile>[0], 'Workflow', {
   bannerComment: banner.trim(),
   additionalProperties: false,
@@ -57,9 +68,24 @@ const types = await compile(bundle as Parameters<typeof compile>[0], 'Workflow',
   style: { singleQuote: true, semi: true },
 });
 const outputs = new Map([
+  ['run-outcome-validator.generated.cjs', banner + standaloneCode(standaloneAjv, outcomeValidator) + '\n'],
+  ['run-outcome-validator.generated.d.cts', banner + 'declare const validate: (value: unknown) => boolean;\nexport = validate;\n'],
   ['types.generated.ts', types],
   // File references are emitted independently because workflow definitions contain bindings, not run artifacts.
   ['file-ref.generated.ts', await compile(definitions.file_ref as Parameters<typeof compile>[0], 'FileRef', {
+    bannerComment: banner.trim(), additionalProperties: false, unknownAny: true,
+    style: { singleQuote: true, semi: true },
+  })],
+  ['text-resource-license.generated.ts', await compile(definitions.text_resource_license as Parameters<typeof compile>[0], 'TextResourceLicense', {
+    bannerComment: banner.trim(), additionalProperties: false, unknownAny: true,
+    style: { singleQuote: true, semi: true },
+  })],
+  // Acceptance definitions reference the same user-schema contract; runtime outcomes are independent of Workflow data.
+  ['completion.generated.ts', await compile({ ...(definitions.completion as object), $defs: definitions } as Parameters<typeof compile>[0], 'CompletionContract', {
+    bannerComment: banner.trim(), additionalProperties: false, unknownAny: true,
+    style: { singleQuote: true, semi: true },
+  })],
+  ['run-outcome.generated.ts', await compile(definitions.run_outcome as Parameters<typeof compile>[0], 'RunOutcome', {
     bannerComment: banner.trim(), additionalProperties: false, unknownAny: true,
     style: { singleQuote: true, semi: true },
   })],
@@ -71,6 +97,12 @@ for (const [name, content] of outputs) {
   if (checkOnly) {
     const current = await readFile(target, 'utf8').catch(() => '');
     if (current !== content) throw new Error(`Generated contract drift: ${name}`);
-  } else await writeFile(target, content, 'utf8');
+  } else if (await readFile(target, 'utf8').catch(() => '') !== content) {
+    // Readers/watchers must observe a whole generated module, not a truncated in-place write on Windows.
+    // Only this generator owns these exact temporary paths; cleanup never traverses a directory.
+    const temporary = `${target}.${randomUUID()}.tmp`;
+    try { await writeFile(temporary, content, { encoding: 'utf8', flag: 'wx' }); await rename(temporary, target); }
+    finally { await unlink(temporary).catch((error: NodeJS.ErrnoException) => { if (error.code !== 'ENOENT') throw error; }); }
+  }
 }
 process.stdout.write(checkOnly ? 'Generated contracts match canonical schemas.\n' : 'Generated Studio workflow contracts.\n');

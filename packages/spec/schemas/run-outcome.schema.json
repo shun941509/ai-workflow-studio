@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Runner-authored business assessment beside engine status and unchanged NodeOutput. Model-generated fields with these names are ordinary data.",
+  "title": "RunOutcome",
+  "type": "object",
+  "properties": {
+    "version": { "const": 1 },
+    "status": { "enum": ["unassessed", "complete", "incomplete"] },
+    "reason": { "enum": ["criteria_missing", "not_assessed", "criteria_satisfied", "criteria_not_satisfied", "execution_incomplete", "outcome_record_invalid"] },
+    "planHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$", "description": "Null only for legacy or invalid records whose pinned plan identity cannot be established; never valid for a complete assessment." },
+    "criteriaHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "resultHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "assessedAt": { "type": ["string", "null"], "format": "date-time" },
+    "checks": {
+      "type": "array", "minItems": 0, "maxItems": 32,
+      "items": {
+        "title": "CompletionCheck",
+        "type": "object",
+        "properties": {
+          "criterionId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$" },
+          "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+          "kind": { "enum": ["result_schema", "review_accepted", "evaluate_passed", "agentic_answered", "loop_condition_met"] },
+          "method": { "enum": ["json_schema", "human_review", "rule_evaluation", "model_evaluation", "agentic_protocol", "loop_control"] },
+          "status": { "enum": ["passed", "failed", "unavailable"] },
+          "reason": { "enum": ["satisfied", "schema_mismatch", "criterion_not_executed", "evidence_unavailable", "review_rejected", "evaluation_failed", "insufficient_evidence", "conflicting_evidence", "iteration_limit"] },
+          "source": {
+            "type": "object",
+            "properties": {
+              "nodeId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$" },
+              "nodeInstanceId": { "type": ["string", "null"], "maxLength": 512 },
+              "resultHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+            },
+            "required": ["nodeId", "nodeInstanceId", "resultHash"], "additionalProperties": false
+          }
+        },
+        "required": ["criterionId", "label", "kind", "method", "status", "reason", "source"], "additionalProperties": false
+      }
+    }
+  },
+  "required": ["version", "status", "reason", "planHash", "criteriaHash", "resultHash", "assessedAt", "checks"], "additionalProperties": false
+}

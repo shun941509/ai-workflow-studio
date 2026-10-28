@@ -1,0 +1,29 @@
+{
+  "$comment": "Internal acceptance plan only; not a successful run, model answer or signed verification receipt. Keep outside operational ZIPs.",
+  "projectId": "EP-022",
+  "sourceContract": {
+    "purpose": "설명 부족 부분 발견",
+    "blocksAndConnections": "`document_extract·agent·form`",
+    "inputOutput": "발표 자료 → 질문·보완 구간",
+    "acceptanceCriteria": "질문과 피드백의 자료 근거 확인"
+  },
+  "artifactSha256": "9f75e6b982323bcc74a576021d5410f271a6bb87d056929e231fe2bb2be5ed4b",
+  "practiceInput": "catalog/official/projects/EP-022/sample-input.json",
+  "pureChecks": [
+    "Original workflow schema and approved core blocks",
+    "Immutable original resources and all three host ZIPs",
+    "Missing real model fails preflight",
+    "Actual input/resource/extraction or bounded loop prefix executes without a model"
+  ],
+  "actualModelAcceptance": [
+    "슬라이드 3의 문의 접수 화면 위치 누락을 실제 인용에 연결해야 합니다.",
+    "시험 도입·별도 승인·종료일 미정을 유지하고 새 날짜나 화면 경로를 만들지 않아야 합니다.",
+    "모든 질문과 개선안이 원문 제목·질문 ID로 대응하며 실제 사용자 조사라고 주장하지 않아야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

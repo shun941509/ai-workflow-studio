@@ -1,0 +1,40 @@
+{
+  "version": "studio-keyword-ko-1",
+  "description": "Internally authored fictional policy corpus with relevance judgments fixed before observing search results. This small diagnostic set is not a production quality certification.",
+  "documents": [
+    { "id": "delivery", "text": "배송 기간: 결제 확인 후 영업일 3일 이내입니다. 제주 지역 배송 기간은 영업일 5일입니다." },
+    { "id": "refund", "text": "환불 처리: 반품 검수 완료 후 영업일 7일 이내 결제 수단으로 돌려드립니다. 배송 완료 후 14일 이내 반품을 신청하세요." },
+    { "id": "account", "text": "비밀번호 재설정: 로그인 화면에서 이메일 인증을 요청하세요. 계정 복구 링크는 30분 동안 유효합니다." },
+    { "id": "security", "text": "계정 보호: MFA 등록으로 추가 인증을 켭니다. 복구 코드는 외부에 공개하지 마세요. API KEY는 비밀 저장소에 보관하세요." },
+    { "id": "leave", "text": "연차 신청: 사용 예정일 3일 전 담당자에게 요청하세요. 긴급 휴가는 당일 먼저 연락한 뒤 기록하세요." },
+    { "id": "expense", "text": "경비 정산: 영수증 원본과 지출 목적을 제출하세요. 제출 마감은 매월 마지막 영업일입니다. 외화 지출은 결제일 환율을 기록하세요." },
+    { "id": "backup", "text": "백업 보존 기간: 개인 프로젝트 백업은 30일 보관합니다. 복원 요청에는 프로젝트 식별자가 필요합니다." },
+    { "id": "support", "text": "고객 지원: 상담 시간은 평일 09:00부터 18:00까지입니다. 공휴일에는 문의를 접수하고 다음 영업일에 답변합니다." }
+  ],
+  "queries": [
+    { "id": "q01", "category": "exact", "query": "배송 기간", "judgments": { "delivery": 3, "refund": 1 } },
+    { "id": "q02", "category": "exact", "query": "환불 처리", "judgments": { "refund": 3 } },
+    { "id": "q03", "category": "exact", "query": "비밀번호 재설정", "judgments": { "account": 3 } },
+    { "id": "q04", "category": "exact", "query": "연차 신청", "judgments": { "leave": 3 } },
+    { "id": "q05", "category": "exact", "query": "경비 정산 영수증", "judgments": { "expense": 3 } },
+    { "id": "q06", "category": "exact", "query": "백업 보존 기간", "judgments": { "backup": 3 } },
+    { "id": "q07", "category": "exact", "query": "고객 지원 상담 시간", "judgments": { "support": 3 } },
+    { "id": "q08", "category": "exact", "query": "제주 배송", "judgments": { "delivery": 3 } },
+    { "id": "q09", "category": "normalization", "query": "ｍｆａ", "judgments": { "security": 3 } },
+    { "id": "q10", "category": "normalization", "query": "api key", "judgments": { "security": 3 } },
+    { "id": "q11", "category": "normalization", "query": "ＡＰＩ ＫＥＹ", "judgments": { "security": 3 } },
+    { "id": "q12", "category": "normalization", "query": "비밀번호, 재설정!", "judgments": { "account": 3 } },
+    { "id": "q13", "category": "morphology", "query": "환불은 며칠 걸리나요?", "judgments": { "refund": 3 } },
+    { "id": "q14", "category": "morphology", "query": "비밀번호를 잊었습니다", "judgments": { "account": 3 } },
+    { "id": "q15", "category": "morphology", "query": "연차를 신청하려면", "judgments": { "leave": 3 } },
+    { "id": "q16", "category": "morphology", "query": "백업을 언제까지 보관하나요", "judgments": { "backup": 3 } },
+    { "id": "q17", "category": "semantic", "query": "물건이 언제 도착하나요?", "judgments": { "delivery": 3 } },
+    { "id": "q18", "category": "semantic", "query": "구매 취소한 돈은 언제 입금돼요?", "judgments": { "refund": 3 } },
+    { "id": "q19", "category": "semantic", "query": "일한 비용을 돌려받는 방법", "judgments": { "expense": 3 } },
+    { "id": "q20", "category": "semantic", "query": "상담원과 통화 가능한 시각", "judgments": { "support": 3 } },
+    { "id": "q21", "category": "unanswerable", "query": "주차장 위치", "judgments": {} },
+    { "id": "q22", "category": "unanswerable", "query": "해외 항공권 변경", "judgments": {} },
+    { "id": "q23", "category": "unanswerable", "query": "오늘 점심 메뉴", "judgments": {} },
+    { "id": "q24", "category": "unanswerable", "query": "고객 지원 전화번호", "judgments": {} }
+  ]
+}

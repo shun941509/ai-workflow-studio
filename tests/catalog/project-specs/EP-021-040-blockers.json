@@ -1,0 +1,25 @@
+{
+  "$comment": "Scope audit only, not successful-use evidence. Preserve original purposes instead of substituting model guesses for program execution or external writes.",
+  "newlyMaterialized": ["EP-021", "EP-022", "EP-023", "EP-024", "EP-025", "EP-027", "EP-028", "EP-029", "EP-038", "EP-040"],
+  "boundedModes": {
+    "EP-021": "One follow-up per prior answer, at most five answers; next conversation is a new explicit run, never a child user wait.",
+    "EP-022": "Original UTF-8 presentation text, no PDF/PPTX/OCR claim.",
+    "EP-029": "Pinned Korean-to-English glossary; another language requires an explicit new version.",
+    "EP-038": "Four named requirement IDs with user-provided descriptions and UTF-8 report text.",
+    "EP-040": "Pinned access/export/editing taxonomy with unclassified; changing taxonomy requires a consistent new workflow/resource version."
+  },
+  "planned": [
+    {"id": "EP-026", "required": "program agenda/time calculator", "blocker": "No operational isolated program worker; do not claim exact total-time verification from model prose."},
+    {"id": "EP-030", "required": "program scheduling and staffing conflict checker", "blocker": "No operational isolated scheduling program; model-only plans do not prove time/staff conflict detection."},
+    {"id": "EP-031", "required": "program CSV cleaning with change ledger", "blocker": "No operational isolated program worker providing original row/cell provenance."},
+    {"id": "EP-032", "required": "program record deduplication with conflict ledger", "blocker": "No operational isolated program worker; unresolved values must not be guessed by a model."},
+    {"id": "EP-033", "required": "program keyed list comparator", "blocker": "No operational isolated program worker; transform alone does not implement the approved comparator."},
+    {"id": "EP-034", "required": "program filename mapping/collision and path boundary checker", "blocker": "No operational isolated program worker and verified safe copy operation."},
+    {"id": "EP-035", "required": "loop program data conversion with round-trip validation", "blocker": "No operational isolated conversion program; file_output serialization alone cannot prove original type/row/column round-trip preservation."},
+    {"id": "EP-036", "required": "approved GitHub issue write tool and duplicate-effect protection", "blocker": "Runner has no authenticated GitHub MCP write adapter or actual approval-to-effect/idempotency evidence."},
+    {"id": "EP-037", "required": "approved external document write and reread", "blocker": "Runner has no external document write adapter or exact approved-body reread evidence."},
+    {"id": "EP-039", "required": "trigger and program time-window log aggregation", "blocker": "No operational scheduled trigger or isolated exact log aggregation with duplicate-period protection."}
+  ],
+  "usableProjects": 0,
+  "publishedProjects": 0
+}

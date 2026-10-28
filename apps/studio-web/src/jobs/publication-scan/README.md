@@ -33,11 +33,21 @@
 ## 관리자 API
 
 - `GET /api/admin/reviews?status=scanned`: 최대25개 metadata와 다음 cursor.
-- `GET /api/admin/reviews/:id`: 검수 대상 metadata와 현재 형식의 hash-checked 검사 보고서. private 원본/Storage 경로/인증정보는 반환하지 않는다.
-- `POST /api/admin/reviews/:id`: `{artifactSha256,decision:'approved'|'rejected',reason}`. 동일 Origin,20,000 bytes JSON, 실제 Auth getUser, DB reviewer/administrator 역할을 요구한다. 입력한 pass flag/역할/게시 동작은 거절한다.
+- `GET /api/admin/reviews/:id`: 검수 대상 metadata와 현재 형식의 hash-checked 검사 보고서, 현재 권리 상태/readiness. private 원본/Storage 경로/인증정보는 반환하지 않는다.
+- `POST /api/admin/reviews/:id`: `{artifactSha256,decision:'approved'|'rejected',reason}`. 동일 Origin,20,000 bytes JSON,10~4,000자 사유, 실제 Auth getUser, DB reviewer/administrator 역할을 요구한다. 입력한 pass flag/역할/게시 동작은 거절한다.
 
 API와 DB 모두 검수 해시가 실제 검사한 해시와 일치해야 한다. 승인해도 signed/published 상태로 바꾸지 않는다. 서명·외부 업로드·공식 예제 사용 증거·전체 release gates와 배포 시점의 재검증이 연결되기 전에는 실제 게시 성공을 주장할 수 없다.
 
+## 관리자 검수 화면
+
+`/admin/reviews`와 `/admin/reviews/:id`는 위 API를 사용하는 실제 검수 목록·상세 화면이다. 일반 사용자의8개 메뉴에 관리자 메뉴를 추가하지 않는다. 주소 접근이나 브라우저 UI의 상태가 검수 권한을 부여하지 않으며, 모든 읽기·결정은 서버 Auth와 DB 역할을 확인한다.
+
+006의 `publication_review_readiness`는 reviewer/administrator에게만 현재 권리 근거 만료·취소·키 변경 및 승인 차단 이유를 돌려준다. 비공개 신뢰 키와 Storage 경로는 노출하지 않는다. 실제 결정 RPC는 이를 다시 검사하므로 조회 후 권리나 상태가 바뀌어도 오래된 화면으로 승인할 수 없다.
+
+화면은 고정 ZIP/manifest/source/report/policy 해시,8개 검사 결과, 코드·경로 형태의 위험 신호, 저장된 검수 사유를 escaped text로 표시한다. 파일·HTML·실행 코드를 미리보기로 실행하지 않는다. 구체적 사유와 표시 해시 확인을 요구하고 연속 클릭은 한 요청으로 제한한다. 경쟁 상태/응답 유실은 성공으로 표시하지 않고 최신 기록을 다시 읽는다. 해시·보고서·권리 상태가 바뀌면 입력한 확인을 초기화한다. 창 복귀·60초 주기·수동 새로고침으로 상세 상태를 다시 확인한다.
+
+계정 서비스가 없으면 실제503 준비 안내,401은 로그인 안내,403은 역할 부족을 표시한다. 가짜 목록·승인 기록을 제품에 넣지 않는다. 승인 기록은 서명·게시 동작을 호출하지 않는다.
+
 ## 검증과 미검증
 
-`tests/contracts/publication-scan.test.ts`는 실제3종 ZIP·자료 ZIP·로컬 파일·암호 서명·미검증 내용·응답 유실/재시도 경계를 검증한다. `tests/database/publication-reviews.test.ts`는001~005 migration과 실제 scanner output을 PostgreSQL(PGlite)에 연결한다. Auth 주입과 운영자 테스트 공개키는 테스트 경계에만 있다. `tests/e2e/publication-reviews.spec.ts`는 실제 로컬 Next API의 미설정·Origin·요청 한도·권한 상승 입력을 확인한다. 실제 Supabase Auth/Storage 연결, 인간의 콘텐츠 검토, 상용 악성코드 엔진, 공식 서명/게시 증거는 아직 없다.
+`tests/contracts/publication-scan.test.ts`는 실제3종 ZIP·자료 ZIP·로컬 파일·암호 서명·미검증 내용·응답 유실/재시도 경계를 검증한다. `tests/database/publication-reviews.test.ts`는001~006 migration과 실제 scanner output을 PostgreSQL(PGlite)에 연결한다. Auth 주입과 운영자 테스트 공개키는 테스트 경계에만 있다. `tests/e2e/publication-reviews.spec.ts`는 실제 로컬 Next API의 미설정·Origin·요청 한도·권한 상승 입력을 확인한다. `tests/e2e/reviews-ui.spec.ts`는 Chrome에서 실제 미설정 화면과 테스트 전용 HTTP 응답을 이용한401/403·페이지 이동·해시 확인·중복 클릭·경쟁·만료·취소·모바일 표시를 검증한다. 이 HTTP 응답 시험은 실제 클라우드 로그인/게시 성공의 증거가 아니다. 실제 Supabase Auth/Storage 연결, 인간의 콘텐츠 검토, 상용 악성코드 엔진, 공식 서명/게시 증거는 아직 없다.

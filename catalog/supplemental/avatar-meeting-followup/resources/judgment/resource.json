@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "avatar-meeting-judgment",
+  "revision": 1,
+  "name": "회의 후속 판단 지침",
+  "kind": "instruction",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "MIT",
+    "path": "LICENSE.txt"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2882,
+      "sha256": "12b04fa90bfa2db44263d3879134002fb1ddffa0f3414ad9a0bdac546c5bd67b"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 1088,
+      "sha256": "6f79eb552f556c309c68f36b499807184b0545de51634276c4e9cdcdb552273e"
+    }
+  ]
+}

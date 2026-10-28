@@ -27,6 +27,8 @@ jobs:
       - run: pnpm exec playwright install chromium
       # Experimental Python isolation proof uses verified embed bytes; no global installer or user ZIP dependency.
       - run: node tooling/prepare-windows-python.mjs
+      # Alternate engine experiment is pinned and never copied into the operational Runner package.
+      - run: node tooling/prepare-windows-wasmtime.mjs
       - run: pnpm check:generated
       - run: pnpm check:boundaries
       - run: pnpm check:catalog

@@ -1,0 +1,31 @@
+{
+  "fictional": true,
+  "categoryAliases": {
+    "운영지침": "operations"
+  },
+  "chunks": [
+    {
+      "id": "policy-part",
+      "text": "가상 반품 접수 기한은 7일입니다.",
+      "source": {
+        "documentId": "policy",
+        "revision": 1,
+        "text": "가상 반품 접수 기한은 7일입니다.",
+        "start": 0,
+        "end": 45
+      },
+      "metadata": {
+        "publishedAt": "2026-01-03T09:00:00+09:00",
+        "category": "운영지침",
+        "access": {
+          "tenantId": "demo",
+          "projectId": "handbook",
+          "subjects": [
+            "reviewer"
+          ],
+          "groups": []
+        }
+      }
+    }
+  ]
+}

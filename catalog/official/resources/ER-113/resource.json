@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-113",
+  "revision": 1,
+  "kind": "skill",
+  "name": "Hybrid 결합 Skill†",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/fuse_rrf.py",
+      "bytes": 2551,
+      "sha256": "cb6a8a1261bb3dc42dd100d62cf4108a96cfca622bd9f3d1d5f85efe9c5c48bb"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 746,
+      "sha256": "becf56495a3c5d941024e736765401301f394a9a6282db3934b35858d5639ab0"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 316,
+      "sha256": "188608e7f973bb4a539277508f756e6f7be3eccbd850a06897126bbc7baf74e4"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3195,
+      "sha256": "c58035354df4441d01bcff8658502cb6c101c4fafa503389ab6d91ea86f3c067"
+    },
+    {
+      "path": "README.md",
+      "bytes": 991,
+      "sha256": "ce2707a56e9d356cd849dec0e09fea5927e3bbd1adfdf3b52172aa209f254603"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 580,
+      "sha256": "5a3967d85bbd17f177779e10c9ea6960280a94fcae6e44bec31ac5f9a2df172b"
+    }
+  ]
+}

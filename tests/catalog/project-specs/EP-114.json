@@ -1,0 +1,69 @@
+{
+  "$comment": "Internal future acceptance cases, not actual model/host evidence. Excluded from production ZIPs.",
+  "projectId": "EP-114",
+  "sourceContract": {
+    "purpose": "긴 질의의 핵심 근거 선택",
+    "blocksAndConnections": "`retrieval·evaluate·ai` / reranker",
+    "inputOutput": "요구사항 → 항목별 근거",
+    "acceptanceCriteria": "정답 구간·재정렬 전후 순위 기록"
+  },
+  "artifactSha256": "e6d430bbb43d9ba2332401312b5fa09a931ecd92ad09dab5e4c2ab48a73e6283",
+  "practiceInput": "catalog/official/projects/EP-114/sample-input.json",
+  "boundaryChecks": [
+    "Exact managed source bytes, index/citation lineage and three host payloads",
+    "Missing role-specific model profiles block full execution",
+    "Test-only provider boundaries verify real SQLite ranking events and failure handling; no semantic quality claim"
+  ],
+  "actualModelAcceptance": [
+    "각 요구사항 ID와 배열 위치를 부모 입력에서 보존하며 항목별 검색·판단을 독립 자식 실행으로 기록합니다.",
+    "채택된 180일 정책과 폐기된 365일 제안을 구분하고, 삭제 완료 24시간 보장처럼 없는 조건은 유보해야 합니다.",
+    "각 실제 rag.rerank 이벤트에서 후보 ID·before/after rank·검증 점수·fingerprint를 대조합니다. topK 밖 후보의 after=null은 미선택이며 원래 순위를 지워서는 안 됩니다.",
+    "evaluate는 준비 상태만 판정합니다. 정답 구간 회수·판단 정확성은 고정 질문 세트와 원문 범위에 대한 실제 모델 검증으로 별도 평가합니다.",
+    "빈 키워드 검색은 skipped_empty와 no_search_results로 끝나며 재순위·답변 모델을 호출하지 않습니다."
+  ],
+  "qualityCases": [
+    {
+      "id": "Q114-KEEP",
+      "input": {
+        "id": "REQ-KEEP",
+        "text": "요구사항: 승인된 작업 기록의 보관 기간을 180일로 적용하고 검토 중 초안은 별도 기간으로 관리해야 합니다. 승인 기준 시점과 초안의 기준 시점을 구분할 수 있는 근거를 찾아 주세요. 과거에 제안된 365일 정책이 현재 정책인지도 함께 확인합니다."
+      },
+      "expectedSourceIds": [
+        "RQ-RET-01"
+      ],
+      "counterexampleSourceIds": [
+        "RQ-OLD-06"
+      ],
+      "criterion": "현재180일/초안30일과 폐기365일을 구별하고 원문 구간을 인용"
+    },
+    {
+      "id": "Q114-DELETE",
+      "input": {
+        "id": "REQ-DELETE",
+        "text": "요구사항: 기록 삭제 요청은 승인된 대상만 처리하고 결과 불명 상태를 따로 남겨야 합니다. 또한 24시간 이내 완료를 보장해야 한다는 조건을 추가했는데, 해당 시간 조건까지 근거가 있는지 구분해 주세요."
+      },
+      "expectedSourceIds": [
+        "RQ-DEL-02",
+        "RQ-AUDIT-04"
+      ],
+      "criterion": "승인·결과불명 근거를 보존하고 24시간 보장은 미확인"
+    },
+    {
+      "id": "Q114-XLSX",
+      "input": {
+        "id": "REQ-XLSX",
+        "text": "요구사항: XLSX 내보내기와 이메일 자동 발송을 제공해야 합니다."
+      },
+      "expectedSourceIds": [
+        "RQ-EXPORT-05"
+      ],
+      "criterion": "명시적 미지원 조건과 단순 검색 부재를 구분"
+    }
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

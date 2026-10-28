@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "studio_atlassian": {
+      "type": "remote",
+      "url": "https://mcp.atlassian.com/v2/mcp?tools=all",
+      "enabled": false
+    }
+  },
+  "permission": {
+    "studio_atlassian_*": "deny",
+    "studio_atlassian_getAccessibleAtlassianResources": "ask",
+    "studio_atlassian_getJiraIssue": "ask",
+    "studio_atlassian_searchJiraIssuesUsingJql": "ask",
+    "studio_atlassian_getConfluenceContent": "ask"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-115",
+  "revision": 1,
+  "kind": "skill",
+  "name": "문맥 예산 Skill†",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/context_budget.mjs",
+      "bytes": 4905,
+      "sha256": "5951e6b99fd5f76d73e3840ee4001f8662ded7957058717fe2036a5d51c650a8"
+    },
+    {
+      "path": "scripts/vendor/tokenizer.mjs",
+      "bytes": 2333679,
+      "sha256": "95c0db497c43c7ced6998e8d00cf0d969ef4db1f7bce8067198cc55eb48eaeab"
+    },
+    {
+      "path": "scripts/vendor/LICENSE-js-tiktoken.txt",
+      "bytes": 1078,
+      "sha256": "418cb499b436128d653d79941333a5437b7be2ea9213dcc2f04d15d5d2c51d86"
+    },
+    {
+      "path": "scripts/vendor/LICENSE-base64-js.txt",
+      "bytes": 1081,
+      "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1"
+    },
+    {
+      "path": "scripts/vendor/provenance.json",
+      "bytes": 1431,
+      "sha256": "11e11aa321d3da72e89963fa76f82a781e61fab8ef33ce5b42f69855306708df"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1805,
+      "sha256": "9feabdfce95e7f21ac4183beae853f86d19772206b6aa85cb54709897801400c"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 935,
+      "sha256": "bc6f4e6e8c08fe36ba65db744d33a85761db50c941890d929f62deef4017a555"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 294,
+      "sha256": "a04864d47c29c581d8cdd64ee06f0150831f6e56194705a4d5864156afc98844"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3422,
+      "sha256": "ccaae036a55301d0bd347ad063bbbeff01eda3c5f800440f56ada0357b00b1c4"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1003,
+      "sha256": "51d0e8eb1cd6dce34e58f34c12f7767f718b280d60ba1b4b6841ffcba39f1ae8"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 687,
+      "sha256": "945435ea758f079c538b7167770f212a3f6b023fb4a0ca7f544315c43bc9ba53"
+    }
+  ]
+}

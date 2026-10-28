@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-010",
+  "revision": 1,
+  "kind": "mcp",
+  "name": "Microsoft Learn 연결",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [
+    "service"
+  ],
+  "files": [
+    {
+      "path": "scripts/connection-plan.mjs",
+      "bytes": 8370,
+      "sha256": "b8baf94e29a92b83013d6e3ffa364b4ab8b83c8a7376c6c4fa401193d33d1af8"
+    },
+    {
+      "path": "connection.json",
+      "bytes": 547,
+      "sha256": "f8e74ab4e0d7b744caade74697ad7dccc74799545c2c2fee5affe425b7209b6e"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 130,
+      "sha256": "80286024ac2d20f10940dd74a91e66a13fedc0f2e211bc72c49bc931721b4ddf"
+    },
+    {
+      "path": "references/tool-contract.json",
+      "bytes": 651,
+      "sha256": "98090e69f975f07d4acc30ce3d634dbb97b89264895a3ca47b7c014165e298f0"
+    },
+    {
+      "path": "references/sources.json",
+      "bytes": 481,
+      "sha256": "3c0c1615a4ccbb334d1fc9e415d651c8f36d02da3c76d55de20e991c03ce4f44"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "templates/codex.config.toml.template",
+      "bytes": 323,
+      "sha256": "21032a0fe4e3ccd8b60adf5fadb5bfa367b21f6688d21ad4d0c92b4812f545b1"
+    },
+    {
+      "path": "templates/claude.mcp.json.template",
+      "bytes": 127,
+      "sha256": "cf13a50e9a187f386c78ae91f9f77d706ec0b6c4082dd25121dee07018289dd4"
+    },
+    {
+      "path": "templates/claude.settings.json.template",
+      "bytes": 340,
+      "sha256": "8848631fb9829e5e23d818208a40a6eca2567ba270cfcec646928d9c163f42e4"
+    },
+    {
+      "path": "templates/opencode.json.template",
+      "bytes": 421,
+      "sha256": "086cbf14b3bb27e1727bbe38fa9468532a10f10bc287e05bbf56e5142c36bc06"
+    },
+    {
+      "path": "scripts/claude-read-guard.mjs",
+      "bytes": 987,
+      "sha256": "ba7775ab428758e322862483568b505457f274ea4d4ae3a5794c93b387e0cba7"
+    },
+    {
+      "path": "scripts/public-docs.mjs",
+      "bytes": 7633,
+      "sha256": "a437bace34a667f6db0ac98ffda9f1f9fe729cb6f11f6198f1044eb1221b2225"
+    },
+    {
+      "path": "references/public-read-input.json",
+      "bytes": 164,
+      "sha256": "aa9767f313dea99b62655a56b994d18a043c3f9ffd1078decf9525a082e26df0"
+    },
+    {
+      "path": "instructions.md",
+      "bytes": 4426,
+      "sha256": "029da05ee9ce6f31b8501ca40b5b4f4fe7a79be48a21ec361ebfa842c5a72be7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1080,
+      "sha256": "f89cded97e8978c915d2bb6be4d0fd0d517d829e2daa2515359d881eac3503f2"
+    },
+    {
+      "path": "assets/observation-report.md",
+      "bytes": 565,
+      "sha256": "08c95eb0a54d48d04ec46b529657ea354e26e09b38a81a3482c0567f9a70a291"
+    }
+  ]
+}

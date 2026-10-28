@@ -26,7 +26,7 @@
 & '.tools/node/node-v24.22.1-win-x64/node.exe' node_modules/vitest/vitest.mjs run tests/security/windows-python-sandbox.test.ts
 ```
 
-두 번째 명령은 현재 **종료 코드 1**이며 `.tools/windows-python-sandbox/latest-verification.json`에 실패 증거를 남긴다. 세 번째 명령은 실패가 지원 완료로 승격되지 않음을 검증하는 회귀 시험이다. 회귀 시험 통과와 Python 실행 성공은 다른 상태이다. CI는 첫 준비 명령과 Windows .NET Framework C# compiler가 필요하고, 로더 실패 진단에는 MSVC 14.40.33807·Windows SDK 10.0.22000.0이 필요하다. 준비 누락·컴파일 오류는 성공/skip으로 처리하지 않는다.
+두 번째 명령은 현재 **종료 코드 1**이며 `.tools/windows-python-sandbox/latest-verification.json`에 실패 증거를 남긴다. 세 번째 명령은 실패가 지원 완료로 승격되지 않음을 검증하는 회귀 시험이다. 회귀 시험 통과와 Python 실행 성공은 다른 상태이다. CI는 첫 준비 명령과 Windows .NET Framework C# compiler가 필요하고, 로더 실패 진단에는 MSVC x64·완전한 Windows SDK가 필요하다. `windows-probe-build.mjs`가 vswhere로 도구 위치를 찾아 실제 compiler 해시와 버전을 기록한다. 이 기계의 관찰 버전은 MSVC14.40.33807/SDK10.0.22000.0이다. 준비 누락·컴파일 오류는 성공/skip으로 처리하지 않는다.
 
 `native/windows-sandbox/SandboxHost.cs`에 고정 `python-embed` 프로필을 추가했다. 이 프로필은 진단 바이너리라도 registryRead 옵션을 거절한다. 고정 명령은 staged `python.exe -I -S -B <worker.py> <request.json>`이다. 사용자 Python 환경·site hook·bytecode 쓰기를 허용하지 않는다. 기존 LPAC, 새 private desktop, Job, 명시적 handle 상속, fresh staging ACL 규칙을 유지한다. 기존 node/native-probe 프로필은 그대로 지원하며 필요한 staging 파일을 각 프로필별로 검사한다.
 

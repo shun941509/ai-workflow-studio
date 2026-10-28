@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "studio_learn": {
+      "type": "remote",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "enabled": false,
+      "oauth": false
+    }
+  },
+  "permission": {
+    "studio_learn_*": "deny",
+    "studio_learn_microsoft_docs_search": "ask",
+    "studio_learn_microsoft_docs_fetch": "ask",
+    "studio_learn_microsoft_code_sample_search": "ask"
+  }
+}

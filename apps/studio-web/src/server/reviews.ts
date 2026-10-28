@@ -39,7 +39,7 @@ export async function getReview(id: string) {
 /** A reviewer decides only the already-scanned hash; scan attestations and release signing have separate service authority. */
 export async function decideReview(id: string, body: Record<string, unknown>) {
   assertId(id);
-  if (Object.keys(body).sort().join(',') !== 'artifactSha256,decision,reason' || body.decision !== 'approved' && body.decision !== 'rejected' || typeof body.artifactSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(body.artifactSha256) || typeof body.reason !== 'string' || !body.reason.trim() || Array.from(body.reason.trim()).length > 4000) throw new HttpError(400, 'REVIEW_DECISION_INVALID', '검수한 파일 해시·승인 또는 반려·판단 사유가 필요합니다.');
+  if (Object.keys(body).sort().join(',') !== 'artifactSha256,decision,reason' || body.decision !== 'approved' && body.decision !== 'rejected' || typeof body.artifactSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(body.artifactSha256) || typeof body.reason !== 'string' || Array.from(body.reason.trim()).length < 10 || Array.from(body.reason.trim()).length > 4000) throw new HttpError(400, 'REVIEW_DECISION_INVALID', '검수한 파일 해시·승인 또는 반려·10자 이상의 구체적인 판단 사유가 필요합니다.');
   const { client } = await reviewerClient(); const { error } = await client.rpc('review_publication', { p_submission: id, p_artifact_sha: body.artifactSha256, p_decision: body.decision, p_reason: body.reason.trim() });
   if (error?.code === '42501') throw new HttpError(403, 'REVIEW_ROLE_REQUIRED', '검수 권한을 확인해 주세요.');
   if (error && ['INVALID_PUBLICATION_STATE', 'REVIEW_HASH_MISMATCH', 'REVIEW_EVIDENCE_EXPIRED'].includes(error.message)) throw new HttpError(409, 'REVIEW_CONFLICT', '검사 상태나 파일 해시가 변경되었습니다. 최신 검수 내용을 확인해 주세요.');

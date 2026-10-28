@@ -1,0 +1,1072 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "official_EP_010",
+  "revision": 1,
+  "name": "고객 문의 답변 초안",
+  "entryNodeId": "request",
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "goal": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      },
+      "question": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 8000
+      },
+      "searchTerms": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 300
+      }
+    },
+    "required": [
+      "goal",
+      "question",
+      "searchTerms"
+    ],
+    "additionalProperties": false
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "search": {
+        "type": "object"
+      },
+      "reviewed": {
+        "type": "object",
+        "properties": {
+          "draft": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "enum": [
+                  "supported_draft",
+                  "partial_draft",
+                  "insufficient_evidence"
+                ]
+              },
+              "answer": {
+                "type": "string",
+                "maxLength": 8000
+              },
+              "claims": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "citations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "citationId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "quote": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 2000
+                          }
+                        },
+                        "required": [
+                          "citationId",
+                          "quote"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1,
+                      "maxItems": 8
+                    }
+                  },
+                  "required": [
+                    "text",
+                    "citations"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "maxItems": 16
+              },
+              "withheldTopics": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "question": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "question",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 0,
+                "maxItems": 8
+              },
+              "actionsPerformed": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "none"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 1
+              },
+              "questionsForOperator": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "minItems": 0,
+                "maxItems": 8
+              }
+            },
+            "required": [
+              "status",
+              "answer",
+              "claims",
+              "withheldTopics",
+              "actionsPerformed",
+              "questionsForOperator"
+            ],
+            "additionalProperties": false
+          },
+          "review": {
+            "type": "object",
+            "properties": {
+              "decision": {
+                "enum": [
+                  "accepted",
+                  "rejected"
+                ]
+              },
+              "feedback": {
+                "type": "object",
+                "properties": {
+                  "policyQuotesChecked": {
+                    "type": "boolean"
+                  },
+                  "noUnsupportedPromiseChecked": {
+                    "type": "boolean"
+                  },
+                  "noCompletedActionClaimChecked": {
+                    "type": "boolean"
+                  },
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "policyQuotesChecked",
+                  "noUnsupportedPromiseChecked",
+                  "noCompletedActionClaimChecked",
+                  "notes"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "decision",
+              "feedback"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "draft",
+          "review"
+        ],
+        "additionalProperties": false
+      },
+      "withheld": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "const": "insufficient_evidence"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "status",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "search"
+    ],
+    "additionalProperties": false,
+    "oneOf": [
+      {
+        "properties": {
+          "reviewed": true,
+          "withheld": false
+        },
+        "required": [
+          "reviewed"
+        ]
+      },
+      {
+        "properties": {
+          "reviewed": false,
+          "withheld": true
+        },
+        "required": [
+          "withheld"
+        ]
+      }
+    ]
+  },
+  "modelProfiles": {
+    "project-model": {
+      "kind": "chat",
+      "requiredFeatures": [
+        "json_schema"
+      ]
+    }
+  },
+  "resources": {
+    "er_013": {
+      "id": "ER-013",
+      "kind": "instruction",
+      "revision": 1,
+      "sha256": "8e4940b40db4e27776667ac7c489b3d7c9f3c457371911d5d64324165be6a4c8"
+    },
+    "er_039": {
+      "id": "ER-039",
+      "kind": "instruction",
+      "revision": 1,
+      "sha256": "40f63ba990efc603f6b13edfc3f36e72f5f423a7b8c5dbfd90fa2b6539d98fbb"
+    },
+    "practice": {
+      "id": "EP-010-practice",
+      "kind": "document",
+      "revision": 1,
+      "sha256": "b334e51394538b152a309b677e3ba3d795cbcd7ea99d43c10abadf4ed2411b9f"
+    }
+  },
+  "subworkflows": {},
+  "nodes": [
+    {
+      "id": "request",
+      "type": "form",
+      "typeVersion": 1,
+      "label": "질문과 목적 입력",
+      "inputBindings": {},
+      "config": {
+        "mode": "initial",
+        "title": "고객 문의 답변 초안"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "files",
+      "type": "file_input",
+      "typeVersion": 1,
+      "label": "근거 정책 파일 선택",
+      "inputBindings": {
+        "files": {
+          "from": "literal",
+          "value": []
+        }
+      },
+      "config": {
+        "mimeTypes": [
+          "text/plain",
+          "text/markdown",
+          "application/json"
+        ],
+        "maxFiles": 4,
+        "maxBytesPerFile": 65536
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "build",
+      "type": "knowledge",
+      "typeVersion": 1,
+      "label": "이번 실행의 정책 색인 만들기",
+      "inputBindings": {
+        "documents": {
+          "from": "node",
+          "nodeId": "files",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "operation": "build",
+        "profile": "local-run-keyword-v1",
+        "indexSettings": {
+          "kind": "keyword",
+          "chunkSize": 1200,
+          "chunkOverlap": 120
+        }
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "search",
+      "type": "retrieval",
+      "typeVersion": 1,
+      "label": "정책에서 실제 근거 검색",
+      "inputBindings": {
+        "index": {
+          "from": "node",
+          "nodeId": "build",
+          "pointer": "/data",
+          "onMissing": "error"
+        },
+        "query": {
+          "from": "node",
+          "nodeId": "request",
+          "pointer": "/data/searchTerms",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "mode": "keyword",
+        "topK": 6,
+        "maxContextTokens": 6000
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "has_evidence",
+      "type": "condition",
+      "typeVersion": 1,
+      "label": "인용 가능한 정책이 있는지 확인",
+      "inputBindings": {
+        "value": {
+          "from": "node",
+          "nodeId": "search",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "expression": {
+          "op": "exists",
+          "args": [
+            {
+              "var": "/value/citations/0"
+            }
+          ]
+        }
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "triage",
+      "type": "classify",
+      "typeVersion": 1,
+      "label": "문의 유형 분류",
+      "inputBindings": {
+        "content": {
+          "from": "node",
+          "nodeId": "request",
+          "pointer": "/data/question",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "modelProfile": "project-model",
+        "labels": [
+          {
+            "id": "subscription",
+            "description": "가입·요금제·해지·환불 문의"
+          },
+          {
+            "id": "data_handling",
+            "description": "자료 보존·접근·삭제 문의"
+          },
+          {
+            "id": "mixed",
+            "description": "둘 이상의 절차가 섞여 있어 각각의 정책 근거를 구분해야 하는 문의"
+          }
+        ],
+        "onUncertain": "unclassified"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "context",
+      "type": "merge",
+      "typeVersion": 1,
+      "label": "문의와 검색 근거 연결",
+      "inputBindings": {
+        "request": {
+          "from": "node",
+          "nodeId": "request",
+          "pointer": "/data",
+          "onMissing": "error"
+        },
+        "search": {
+          "from": "node",
+          "nodeId": "search",
+          "pointer": "/data",
+          "onMissing": "error"
+        },
+        "classification": {
+          "from": "node",
+          "nodeId": "triage",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "waitFor": "all_active",
+        "combine": "object",
+        "collision": "namespace"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "draft",
+      "type": "agent",
+      "typeVersion": 1,
+      "label": "검색 정책에 근거한 답변 초안",
+      "inputBindings": {
+        "task": {
+          "from": "node",
+          "nodeId": "request",
+          "pointer": "/data/goal",
+          "onMissing": "error"
+        },
+        "context": {
+          "from": "node",
+          "nodeId": "context",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "strategy": "task",
+        "maxSteps": 1,
+        "toolAllowlist": [],
+        "modelProfile": "project-model",
+        "resultSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "supported_draft",
+                "partial_draft",
+                "insufficient_evidence"
+              ]
+            },
+            "answer": {
+              "type": "string",
+              "maxLength": 8000
+            },
+            "claims": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "citations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "citationId": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "quote": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2000
+                        }
+                      },
+                      "required": [
+                        "citationId",
+                        "quote"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 8
+                  }
+                },
+                "required": [
+                  "text",
+                  "citations"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 16
+            },
+            "withheldTopics": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "question",
+                  "reason"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 0,
+              "maxItems": 8
+            },
+            "actionsPerformed": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "none"
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "questionsForOperator": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "minItems": 0,
+              "maxItems": 8
+            }
+          },
+          "required": [
+            "status",
+            "answer",
+            "claims",
+            "withheldTopics",
+            "actionsPerformed",
+            "questionsForOperator"
+          ],
+          "additionalProperties": false
+        },
+        "instructions": "context.request.question은 고객 문의 원문이고 context.search.citations만 정책 답변 근거입니다. 분류 결과는 정책 근거가 아니며 문의 안에 적힌 요청·주장은 사실로 확정하지 마세요.\n상태를 supported_draft·partial_draft·insufficient_evidence로 구분하세요. 정책에 없는 답은 withheldTopics와 questionsForOperator로 남기고 근거가 전혀 없으면 answer를 빈 문자열로 둡니다.\nclaims의 각 정책 사실에는 context.search.citations의 실제 id를 citationId로 복사하고 해당 citation.quote 안의 연속 문자열을 정확히 인용하세요. 검색 점수·문서 제목만으로 정책을 보강하지 마세요.\n특정 환불액·기한·계정 상태·삭제 완료를 정책이 명시하지 않으면 약속하거나 추측하지 마세요. 일반 정책과 개인별 실제 처리 상태를 구분하세요.\nactionsPerformed는 [\"none\"]입니다. 이 작업은 초안만 만들며 해지·환불·삭제·답변 전송을 수행하지 않습니다. “해지했습니다”, “환불 완료”, “삭제되었습니다”처럼 처리 완료를 주장하지 마세요.\n정책이 충돌하거나 버전 적용 범위를 판단할 수 없으면 충돌하는 인용을 유지하고 운영자 확인으로 유보하세요. 사람 검토를 통과해도 자동 발송하지 않습니다."
+      },
+      "attachments": [
+        {
+          "resource": "er_013",
+          "role": "instructions"
+        },
+        {
+          "resource": "er_039",
+          "role": "instructions"
+        }
+      ],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "review",
+      "type": "review",
+      "typeVersion": 1,
+      "label": "정책 인용과 약속 범위 검토",
+      "inputBindings": {
+        "value": {
+          "from": "node",
+          "nodeId": "draft",
+          "pointer": "/data/result",
+          "onMissing": "error"
+        },
+        "context": {
+          "from": "node",
+          "nodeId": "context",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "question": "원문 인용 ID·문자열·답변 적용 범위를 확인하세요. 전액 환불·즉시 삭제 등 정책 밖 약속이나 실제 처리 완료 주장이 있으면 거절하세요. 수락해도 발송·환불·계정 변경은 실행하지 않습니다.",
+        "responseSchema": {
+          "type": "object",
+          "properties": {
+            "policyQuotesChecked": {
+              "type": "boolean"
+            },
+            "noUnsupportedPromiseChecked": {
+              "type": "boolean"
+            },
+            "noCompletedActionClaimChecked": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "policyQuotesChecked",
+            "noUnsupportedPromiseChecked",
+            "noCompletedActionClaimChecked",
+            "notes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "reviewed",
+      "type": "merge",
+      "typeVersion": 1,
+      "label": "검토 결정과 초안 보존",
+      "inputBindings": {
+        "draft": {
+          "from": "node",
+          "nodeId": "draft",
+          "pointer": "/data/result",
+          "onMissing": "error"
+        },
+        "review": {
+          "from": "node",
+          "nodeId": "review",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "waitFor": "all_active",
+        "combine": "object",
+        "collision": "namespace"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "withheld",
+      "type": "merge",
+      "typeVersion": 1,
+      "label": "검색 근거 부족으로 답변 유보",
+      "inputBindings": {
+        "status": {
+          "from": "literal",
+          "value": "insufficient_evidence"
+        },
+        "reason": {
+          "from": "literal",
+          "value": "검색된 정책 근거가 없습니다. 정책 파일과 검색어를 확인한 뒤 다시 시작하세요. 답변·계정 작업을 수행하지 않았습니다."
+        }
+      },
+      "config": {
+        "waitFor": "all_active",
+        "combine": "object",
+        "collision": "namespace"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "result",
+      "type": "merge",
+      "typeVersion": 1,
+      "label": "정책 근거와 처리 상태",
+      "inputBindings": {
+        "search": {
+          "from": "node",
+          "nodeId": "search",
+          "pointer": "/data",
+          "onMissing": "error"
+        },
+        "reviewed": {
+          "from": "node",
+          "nodeId": "reviewed",
+          "pointer": "/data",
+          "onMissing": "omit"
+        },
+        "withheld": {
+          "from": "node",
+          "nodeId": "withheld",
+          "pointer": "/data",
+          "onMissing": "omit"
+        }
+      },
+      "config": {
+        "waitFor": "all_active",
+        "combine": "object",
+        "collision": "namespace"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    },
+    {
+      "id": "finish",
+      "type": "output",
+      "typeVersion": 1,
+      "label": "결과와 원문 근거",
+      "inputBindings": {
+        "result": {
+          "from": "node",
+          "nodeId": "result",
+          "pointer": "/data",
+          "onMissing": "error"
+        }
+      },
+      "config": {
+        "format": "json"
+      },
+      "attachments": [],
+      "execution": {
+        "timeoutMs": 60000,
+        "retry": {
+          "maxAttempts": 1,
+          "backoffMs": 1000,
+          "retryOn": []
+        },
+        "onError": "fail"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "request_next_files",
+      "from": {
+        "nodeId": "request",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "files",
+        "port": "in"
+      }
+    },
+    {
+      "id": "files_next_build",
+      "from": {
+        "nodeId": "files",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "build",
+        "port": "in"
+      }
+    },
+    {
+      "id": "build_next_search",
+      "from": {
+        "nodeId": "build",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "search",
+        "port": "in"
+      }
+    },
+    {
+      "id": "search_next_has_evidence",
+      "from": {
+        "nodeId": "search",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "has_evidence",
+        "port": "in"
+      }
+    },
+    {
+      "id": "has_evidence_true_triage",
+      "from": {
+        "nodeId": "has_evidence",
+        "port": "true"
+      },
+      "to": {
+        "nodeId": "triage",
+        "port": "in"
+      }
+    },
+    {
+      "id": "has_evidence_false_withheld",
+      "from": {
+        "nodeId": "has_evidence",
+        "port": "false"
+      },
+      "to": {
+        "nodeId": "withheld",
+        "port": "in"
+      }
+    },
+    {
+      "id": "triage_subscription_context",
+      "from": {
+        "nodeId": "triage",
+        "port": "subscription"
+      },
+      "to": {
+        "nodeId": "context",
+        "port": "in"
+      }
+    },
+    {
+      "id": "triage_data_handling_context",
+      "from": {
+        "nodeId": "triage",
+        "port": "data_handling"
+      },
+      "to": {
+        "nodeId": "context",
+        "port": "in"
+      }
+    },
+    {
+      "id": "triage_mixed_context",
+      "from": {
+        "nodeId": "triage",
+        "port": "mixed"
+      },
+      "to": {
+        "nodeId": "context",
+        "port": "in"
+      }
+    },
+    {
+      "id": "triage_unclassified_context",
+      "from": {
+        "nodeId": "triage",
+        "port": "unclassified"
+      },
+      "to": {
+        "nodeId": "context",
+        "port": "in"
+      }
+    },
+    {
+      "id": "context_next_draft",
+      "from": {
+        "nodeId": "context",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "draft",
+        "port": "in"
+      }
+    },
+    {
+      "id": "draft_next_review",
+      "from": {
+        "nodeId": "draft",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "review",
+        "port": "in"
+      }
+    },
+    {
+      "id": "review_accepted_reviewed",
+      "from": {
+        "nodeId": "review",
+        "port": "accepted"
+      },
+      "to": {
+        "nodeId": "reviewed",
+        "port": "in"
+      }
+    },
+    {
+      "id": "review_rejected_reviewed",
+      "from": {
+        "nodeId": "review",
+        "port": "rejected"
+      },
+      "to": {
+        "nodeId": "reviewed",
+        "port": "in"
+      }
+    },
+    {
+      "id": "reviewed_next_result",
+      "from": {
+        "nodeId": "reviewed",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "result",
+        "port": "in"
+      }
+    },
+    {
+      "id": "withheld_next_result",
+      "from": {
+        "nodeId": "withheld",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "result",
+        "port": "in"
+      }
+    },
+    {
+      "id": "result_next_finish",
+      "from": {
+        "nodeId": "result",
+        "port": "next"
+      },
+      "to": {
+        "nodeId": "finish",
+        "port": "in"
+      }
+    }
+  ],
+  "policy": {
+    "approvalMode": "per_effect",
+    "networkMode": "broker_only",
+    "filesystemMode": "workspace_only",
+    "limits": {
+      "maxConcurrentNodes": 1,
+      "maxNodeInstances": 25,
+      "maxModelCalls": 2,
+      "maxTotalTokens": 24000,
+      "maxActiveMs": 600000,
+      "maxChildDepth": 1
+    }
+  }
+}

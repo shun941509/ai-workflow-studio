@@ -1,0 +1,39 @@
+{
+  "fictional": true,
+  "maxTokens": 100,
+  "candidates": [
+    {
+      "id": "c1",
+      "text": "가상 문서의 반품 기한은 7일입니다.",
+      "source": {
+        "documentId": "policy",
+        "revision": 1,
+        "text": "가상 문서의 반품 기한은 7일입니다.",
+        "start": 0,
+        "end": 48
+      }
+    },
+    {
+      "id": "c1-copy",
+      "text": "가상 문서의 반품 기한은 7일입니다.",
+      "source": {
+        "documentId": "policy",
+        "revision": 1,
+        "text": "가상 문서의 반품 기한은 7일입니다.",
+        "start": 0,
+        "end": 48
+      }
+    },
+    {
+      "id": "c2",
+      "text": "<|endoftext|> 표시는 문서의 평문입니다. 😀",
+      "source": {
+        "documentId": "note",
+        "revision": 1,
+        "text": "<|endoftext|> 표시는 문서의 평문입니다. 😀",
+        "start": 0,
+        "end": 55
+      }
+    }
+  ]
+}

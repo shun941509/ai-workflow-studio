@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-110",
+  "revision": 1,
+  "kind": "skill",
+  "name": "검색원 선택 Skill",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/select_sources.py",
+      "bytes": 2522,
+      "sha256": "9d3c44a70fe73d376768213022cf824aab6dd8b178d6369497cdf078f6c82267"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 431,
+      "sha256": "61bcee5c5b9fc9f0e256750591538a71d590b5f1c8498fceaf5c8abeef20fc56"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 240,
+      "sha256": "be524838ccb931b3d82bda6f1bd12d25e157d030e35d3757da82acc0f7d8cde6"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3307,
+      "sha256": "5912bb9e0246628033109f217fc2206f87a9f9ff709b8685a72f85800644465d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 983,
+      "sha256": "74ad7226103f2df6de63777e448137caa3aef20e8be61fcb47b92bc0fb22fe59"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 630,
+      "sha256": "20a29b26c51a0a721303ee1329fdaafab2fbd834f4be0bad985f640888b99b5e"
+    }
+  ]
+}

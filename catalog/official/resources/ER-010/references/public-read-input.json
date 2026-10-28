@@ -1,0 +1,7 @@
+{
+  "operation": "read",
+  "tool": "microsoft_docs_search",
+  "arguments": {
+    "query": "Azure Functions HTTP trigger의 인증 수준은 무엇인가요?"
+  }
+}

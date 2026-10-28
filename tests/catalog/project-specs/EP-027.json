@@ -1,0 +1,29 @@
+{
+  "$comment": "Internal acceptance plan only; not a successful run, model answer or signed verification receipt. Keep outside operational ZIPs.",
+  "projectId": "EP-027",
+  "sourceContract": {
+    "purpose": "스타일 적용",
+    "blocksAndConnections": "`resource·agent·review`",
+    "inputOutput": "초안·지침 → 수정본",
+    "acceptanceCriteria": "수치·고유명사·핵심 사실 보존"
+  },
+  "artifactSha256": "525a59d58adbb2025e5b864435169e5f8358d3942c42b41bd962dba061e2db53",
+  "practiceInput": "catalog/official/projects/EP-027/sample-input.json",
+  "pureChecks": [
+    "Original workflow schema and approved core blocks",
+    "Immutable original resources and all three host ZIPs",
+    "Missing real model fails preflight",
+    "Actual input/resource/extraction or bounded loop prefix executes without a model"
+  ],
+  "actualModelAcceptance": [
+    "라온 보드 v2.4 및 2026-10-15 15:00(KST)를 정확히 유지해야 합니다.",
+    "모든 원문 문단 ID와 보호 사실 ID가 결과에 대응하며 외부 공유 금지와 초안 상태가 유지되어야 합니다.",
+    "changes의 before/after와 규칙 ID가 실제 원문·수정문·고정 지침에 존재해야 합니다."
+  ],
+  "actualModelStatus": "unverified",
+  "actualHostsStatus": {
+    "codex": "unverified",
+    "claude-code": "unverified",
+    "opencode": "unverified"
+  }
+}

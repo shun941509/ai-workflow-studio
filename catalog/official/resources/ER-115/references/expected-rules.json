@@ -1,0 +1,8 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "encoding": "o200k_base",
+  "duplicateId": "c1-copy",
+  "duplicateReason": "duplicate_source_range",
+  "tokenCount": "<=maxTokens이며 전체 context encode 길이와 동일",
+  "prefixTokens": 20
+}

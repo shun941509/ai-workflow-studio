@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-117",
+  "revision": 1,
+  "kind": "skill",
+  "name": "개체 추출 Skill†",
+  "entrypoint": "SKILL.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "scripts/extract_entities.py",
+      "bytes": 2445,
+      "sha256": "891e4d4c66586daf9c0ad10eecf30a66bcf39bb798c83e96fcaae3ec643d867a"
+    },
+    {
+      "path": "scripts/contracts.py",
+      "bytes": 3163,
+      "sha256": "8de6f1b500741e9364ef5423345832415ece7a3c82070a34eb7192ce622cf432"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1330,
+      "sha256": "45fe065c0c43bd38a1358f33cebe94538a0abbec1b1fccbf12a2b6e74bda1729"
+    },
+    {
+      "path": "references/example-input.json",
+      "bytes": 510,
+      "sha256": "a630d0f5e4a95ce98a2bd3754581008249535f3e5b89aefbed69371b6a88045f"
+    },
+    {
+      "path": "references/expected-rules.json",
+      "bytes": 247,
+      "sha256": "9935efb3368234ac9b70d07853069f4ca3b93888807ed5221268aa837a165475"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3218,
+      "sha256": "67fb14791ae54bf418b50c83bd4d8e09399b6b53968a0efc6d6eba617bb2197e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 992,
+      "sha256": "b87b90f25bb8633309fbf9ec7b59cb365f2c88b93e2aa584bff2bb442dc6c11d"
+    },
+    {
+      "path": "assets/report.md",
+      "bytes": 547,
+      "sha256": "017a9eb65d01538633070da4e5ebead056b6817dc63d102015153c20544996b0"
+    }
+  ]
+}

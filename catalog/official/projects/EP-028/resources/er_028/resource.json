@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-028",
+  "revision": 1,
+  "kind": "instruction",
+  "name": "비판적 검토 관점",
+  "entrypoint": "instructions.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "instructions.md",
+      "bytes": 2159,
+      "sha256": "468b4eae4fe3d57cf0d3b7298e143465e48d4c833b30cfcf4b504981216bf064"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1431,
+      "sha256": "da3288b52d57022cab57272e047a7f8d87e0c0fdfcc47dc2fe1f410ac6f3555c"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    },
+    {
+      "path": "templates/result.md",
+      "bytes": 696,
+      "sha256": "dc074b6847773d0e65ff6dfcc447a443f25a905720b3a6966867819c91bd2c30"
+    },
+    {
+      "path": "examples/usage.md",
+      "bytes": 1189,
+      "sha256": "2772e280b74eb38c6903996516473af975e47bf799def8bed7e910a54d852e34"
+    }
+  ]
+}

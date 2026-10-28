@@ -1,0 +1,28 @@
+{
+  "fictional": true,
+  "candidates": [
+    {
+      "id": "c1",
+      "text": "가상 규정: 반품 접수 기한은 7일입니다.",
+      "source": {
+        "documentId": "policy",
+        "revision": 1,
+        "text": "가상 규정: 반품 접수 기한은 7일입니다.",
+        "start": 0,
+        "end": 53,
+        "page": 2
+      }
+    }
+  ],
+  "claims": [
+    {
+      "text": "이 가상 규정의 반품 접수 기한은 7일입니다.",
+      "evidence": [
+        {
+          "candidateId": "c1",
+          "quote": "반품 접수 기한은 7일입니다."
+        }
+      ]
+    }
+  ]
+}

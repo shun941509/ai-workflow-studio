@@ -1,0 +1,12 @@
+{
+  "$comment": "Fictional practice acceptance rules, not recorded model/provider output.",
+  "initialStatus": "embeddings_required",
+  "initialCandidates": null,
+  "metric": "cosine",
+  "reject": [
+    "원문 해시 변경",
+    "다른 모델 프로필",
+    "0벡터",
+    "접근 범위 밖 정답"
+  ]
+}

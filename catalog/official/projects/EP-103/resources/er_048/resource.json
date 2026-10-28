@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "ER-048",
+  "revision": 1,
+  "kind": "document",
+  "name": "회의 기록 자료집",
+  "entrypoint": "document.md",
+  "license": {
+    "id": "LicenseRef-Studio-Examples-v1",
+    "path": "LICENSE.md"
+  },
+  "dependencies": {},
+  "requiredConnections": [],
+  "files": [
+    {
+      "path": "document.md",
+      "bytes": 1991,
+      "sha256": "83d9ee97f7399fbaebd9cacd946694541f2b11327b6636b3d19e8ce336499164"
+    },
+    {
+      "path": "meetings.json",
+      "bytes": 1411,
+      "sha256": "52f6543224e8587ca4b280e09c594bd4f4232482a3202ca37c152a1037f893b0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1342,
+      "sha256": "03718a33fe9508ddcf0cd3c00dd519c2b5d6b1ae265068e590c8a86114f33e37"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1296,
+      "sha256": "ef6f56f9a001c8535c1951989f81424b4d407d5fc0d3b1dc2f15aba583e3d3a1"
+    }
+  ]
+}

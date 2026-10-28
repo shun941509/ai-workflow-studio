@@ -1,0 +1,6 @@
+# 수동 검토 후 프로젝트 .codex/config.toml에 병합하세요. 전역 설정 변경 금지.
+[mcp_servers.studio_linear]
+url = "https://mcp.linear.app/mcp/readonly"
+enabled = false
+enabled_tools = ["list_issues","get_issue","list_teams"]
+default_tools_approval_mode = "prompt"

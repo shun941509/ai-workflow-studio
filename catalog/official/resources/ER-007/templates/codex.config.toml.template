@@ -1,0 +1,6 @@
+# 수동 검토 후 프로젝트 .codex/config.toml에 병합하세요. 전역 설정 변경 금지.
+[mcp_servers.studio_sentry]
+url = "https://mcp.sentry.dev/mcp/REPLACE_ORGANIZATION/REPLACE_PROJECT"
+enabled = false
+enabled_tools = ["get_sentry_resource","search_issues","search_events"]
+default_tools_approval_mode = "prompt"

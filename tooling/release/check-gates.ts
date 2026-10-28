@@ -16,7 +16,7 @@ export const RELEASE_CHECKS = Object.freeze({
   model: ['real-text', 'real-structured-output', 'usage-accounting', 'auth-rate-limit', 'unknown-no-replay'],
   packages: ['three-host-archives', 'path-link-bomb', 'original-byte-hashes', 'signature-trust-root', 'no-secret-dev-files'],
   operations: ['review-publish-exact-hash', 'report-revoke', 'db-storage-restore', 'monitor-queue-recovery'],
-  signing: ['installer-signature', 'package-signature', 'key-rotation-revocation', 'sbom-vulnerabilities'],
+  signing: ['installer-signature', 'package-signature', 'key-rotation-revocation', 'sbom-vulnerabilities', 'license-notices-complete'],
   usability: ['keyboard-workflow', 'accessible-errors', 'save-recover', 'real-material-consumption'],
 } as const);
 export type ReleaseGate = keyof typeof RELEASE_CHECKS;

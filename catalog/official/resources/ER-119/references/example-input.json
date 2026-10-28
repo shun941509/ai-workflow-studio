@@ -1,0 +1,66 @@
+{
+  "fictional": true,
+  "handAuthoredPractice": true,
+  "question": "한빛 연구소와 새봄 프로젝트의 연결 근거는?",
+  "start": "hanbit",
+  "target": "spring",
+  "entityIds": [
+    "hanbit",
+    "blue",
+    "spring",
+    "moon",
+    "purple"
+  ],
+  "allowedEntityIds": [
+    "hanbit",
+    "blue",
+    "spring"
+  ],
+  "allowedDocumentIds": [
+    "graph-document"
+  ],
+  "edges": [
+    {
+      "id": "develops",
+      "from": "hanbit",
+      "to": "blue",
+      "quote": "한빛 연구소는 푸른 제품을 개발합니다.",
+      "source": {
+        "documentId": "graph-document",
+        "revision": 1,
+        "text": "가상 한빛 연구소는 푸른 제품을 개발합니다. 푸른 제품은 새봄 프로젝트에 속합니다. 가상 달빛 팀은 보라 실험을 진행합니다.",
+        "start": 7,
+        "end": 60
+      }
+    },
+    {
+      "id": "belongs",
+      "from": "blue",
+      "to": "spring",
+      "quote": "푸른 제품은 새봄 프로젝트에 속합니다.",
+      "source": {
+        "documentId": "graph-document",
+        "revision": 1,
+        "text": "가상 한빛 연구소는 푸른 제품을 개발합니다. 푸른 제품은 새봄 프로젝트에 속합니다. 가상 달빛 팀은 보라 실험을 진행합니다.",
+        "start": 61,
+        "end": 114
+      }
+    },
+    {
+      "id": "runs",
+      "from": "moon",
+      "to": "purple",
+      "quote": "달빛 팀은 보라 실험을 진행합니다.",
+      "source": {
+        "documentId": "graph-document",
+        "revision": 1,
+        "text": "가상 한빛 연구소는 푸른 제품을 개발합니다. 푸른 제품은 새봄 프로젝트에 속합니다. 가상 달빛 팀은 보라 실험을 진행합니다.",
+        "start": 122,
+        "end": 169
+      }
+    }
+  ],
+  "maxDepth": 3,
+  "maxExpansions": 30,
+  "maxPaths": 5
+}

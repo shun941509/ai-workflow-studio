@@ -1,0 +1,22 @@
+{
+  "fictional": true,
+  "history": [
+    {
+      "round": 1,
+      "query": "반품 기한",
+      "tokens": 80,
+      "documentIds": [
+        "policy"
+      ]
+    }
+  ],
+  "limits": {
+    "rounds": 3,
+    "tokens": 400,
+    "documents": 5
+  },
+  "sufficientEvidence": false,
+  "cancelled": false,
+  "nextQuery": "교환 비용",
+  "nextTokenReservation": 120
+}

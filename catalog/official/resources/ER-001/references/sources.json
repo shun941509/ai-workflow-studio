@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-28",
+  "urls": [
+    "https://github.com/github/github-mcp-server",
+    "https://developers.openai.com/codex/mcp/",
+    "https://code.claude.com/docs/en/mcp",
+    "https://code.claude.com/docs/en/permissions",
+    "https://opencode.ai/docs/mcp-servers/",
+    "https://opencode.ai/docs/permissions/",
+    "https://code.claude.com/docs/en/hooks"
+  ],
+  "copiedThirdPartyImplementation": false,
+  "hostExecutionProof": false
+}

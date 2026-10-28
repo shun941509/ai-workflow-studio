@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Optional business acceptance checks. Every declared criterion is required; an execution status or an output-format schema alone never creates this declaration.",
+  "title": "CompletionContract",
+  "type": "object",
+  "properties": {
+    "version": { "const": 1 },
+    "criteria": {
+      "type": "array", "minItems": 1, "maxItems": 32,
+      "items": {
+        "title": "CompletionCriterion",
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$" },
+              "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+              "kind": { "const": "result_schema" },
+              "schema": { "$ref": "user-schema.schema.json" }
+            },
+            "required": ["id", "label", "kind", "schema"], "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$" },
+              "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+              "kind": { "enum": ["review_accepted", "evaluate_passed", "agentic_answered", "loop_condition_met"] },
+              "nodeId": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$", "description": "Exact root-flow node identity selected as the final acceptance evidence; child scope guesses and historical vetoes are forbidden." }
+            },
+            "required": ["id", "label", "kind", "nodeId"], "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": ["version", "criteria"], "additionalProperties": false
+}

@@ -1,0 +1,42 @@
+{
+  "$comment": "Operational dependency provenance, not host execution or security review evidence.",
+  "packages": [
+    {
+      "name": "js-tiktoken",
+      "version": "1.0.21",
+      "integrity": "sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==",
+      "gitHead": "4c8b748e07992c00386f3180af5c574b27b65139"
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1"
+    }
+  ],
+  "originalInputs": [
+    {
+      "source": "base64-js/index.js",
+      "sha256": "829eadd8a1a441d25be0cb93b00e16a0d0c20fd294db95d8f2ed87e6954b7182"
+    },
+    {
+      "source": "js-tiktoken/dist/lite.cjs",
+      "sha256": "e055861839442275fc6934696b102b3a5a09c34b5199b4e8d5ea8f4d3587e327"
+    },
+    {
+      "source": "js-tiktoken/dist/ranks/o200k_base.cjs",
+      "sha256": "d2a4d9f263b2de045dcd98f347c50e38d71104141948918b6c30a92fb2411f42"
+    }
+  ],
+  "outputSha256": "95c0db497c43c7ced6998e8d00cf0d969ef4db1f7bce8067198cc55eb48eaeab",
+  "notices": [
+    {
+      "path": "LICENSE-js-tiktoken.txt",
+      "source": "https://raw.githubusercontent.com/dqbd/tiktoken/4c8b748e07992c00386f3180af5c574b27b65139/LICENSE",
+      "sha256": "418cb499b436128d653d79941333a5437b7be2ea9213dcc2f04d15d5d2c51d86"
+    },
+    {
+      "path": "LICENSE-base64-js.txt",
+      "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1"
+    }
+  ],
+  "staticExecutionSecurityReview": "unverified"
+}

@@ -1,0 +1,19 @@
+{
+  "goal": "가상 라온 보드 안내를 고정 용어집에 맞게 영어로 전달",
+  "targetLanguage": "en",
+  "sentences": [
+    {
+      "id": "S1",
+      "text": "라온 보드 v2.4의 초안은 2026-10-15 15:00(KST)까지 검토합니다."
+    },
+    {
+      "id": "S2",
+      "text": "결과 불명 상태에서는 재시도를 시작하지 말고 https://example.com/help 의 확인 절차를 따릅니다."
+    }
+  ],
+  "preserveTokens": [
+    "라온 보드 v2.4",
+    "2026-10-15 15:00(KST)",
+    "https://example.com/help"
+  ]
+}

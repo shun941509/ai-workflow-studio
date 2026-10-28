@@ -5,7 +5,7 @@ import { validateIndexRef, type IndexRef } from './corpus.js';
 type AgentConfig = Extract<WorkflowNode, { type: 'agent' }>['config'];
 export type RetrievalPolicy = NonNullable<AgentConfig['retrievalPolicy']>;
 export interface AgenticLimits { maxRounds: number; maxQueriesPerRound: number; maxRetrievedChunks: number; maxContextTokens: number; maxSteps: number }
-export interface AgenticReservation { operationId: string; kind: 'query' | 'tool'; index?: IndexRef; toolId?: string; maxChunks: number; maxContextTokens: number }
+export interface AgenticReservation { operationId: string; kind: 'query' | 'tool' | 'model'; index?: IndexRef; toolId?: string; maxChunks: number; maxContextTokens: number }
 export interface AgenticOperation { request: AgenticReservation; round: number; status: 'reserved' | 'unknown' | 'settled'; actualChunks?: number; actualContextTokens?: number }
 export interface AgenticSession { id: string; revision: number; scope: AccessScope; limits: AgenticLimits; allowedIndexes: IndexRef[]; allowedTools: string[]; phase: 'running' | 'waiting_clarification' | 'completed'; round: number; operations: AgenticOperation[] }
 export interface AgenticUsage { rounds: number; steps: number; queries: number; queriesThisRound: number; retrievedChunks: number; contextTokens: number }
@@ -33,6 +33,9 @@ function validateRequest(request: AgenticReservation, session: AgenticSession): 
     requireCondition(request.index && request.toolId === undefined && request.maxChunks > 0, 'QUERY_RESERVATION', 'Query requires a pinned index and positive chunk bound');
     validateIndexRef(request.index); assertScope(request.index.scope, session.scope);
     requireCondition(session.allowedIndexes.some(index => equal(index, request.index)), 'INDEX_NOT_ALLOWED', 'Agent cannot search an unlisted generation');
+  } else if (request.kind === 'model') {
+    // Planning and evidence decisions consume steps too. Paid token accounting belongs to the shared model broker.
+    requireCondition(request.index === undefined && request.toolId === undefined && request.maxChunks === 0 && request.maxContextTokens === 0, 'MODEL_RESERVATION', 'Model steps cannot invent index/tool grants or retrieval usage');
   } else {
     requireCondition(request.kind === 'tool' && request.index === undefined && typeof request.toolId === 'string' && session.allowedTools.includes(request.toolId), 'TOOL_NOT_ALLOWED', 'Agent cannot call an unlisted tool');
   }

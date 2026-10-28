@@ -28,6 +28,11 @@ describe('complete product release gate', () => {
   it('accepts an exact complete set of trusted signed observations in verifier contract tests', () => {
     expect(checkReleaseGates({ ...base, evidence: all() }).releaseReady).toBe(true);
   });
+  it('does not accept a signed distribution review that omitted shipped dependency notices', () => {
+    const checks = RELEASE_CHECKS.signing.filter(id => id !== 'license-notices-complete').map(id => ({ id, outcome: 'passed' as const, method: 'actual' as const }));
+    const result = checkReleaseGates({ ...base, evidence: [record('signing', { checks })] });
+    expect(result.valid).toBe(false); expect(result.missingGates).toContain('signing');
+  });
   it('requires catalogue publication even when every engineering gate has evidence', () => {
     expect(checkReleaseGates({ ...base, evidence: all(), catalog: { ...base.catalog, releaseReady: false } }).releaseReady).toBe(false);
   });
